@@ -88,7 +88,7 @@ const Login = () => {
                   Remember me
                 </Label>
               </div>
-              <a href="#" className="text-blue-600 hover:underline">
+              <a href="/password_recovery" className="text-blue-600 hover:underline">
                 Forgot password?
               </a>
             </div>
@@ -101,7 +101,7 @@ const Login = () => {
         <CardFooter className="flex justify-center pb-6">
           <p className="text-center text-sm text-gray-600">
             Don't have an account?{" "}
-            <a href="#" className="text-blue-600 hover:underline">
+            <a href="/signup" className="text-blue-600 hover:underline">
               Sign up
             </a>
           </p>
