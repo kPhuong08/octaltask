@@ -9,7 +9,7 @@ export default function AppRoutes() {
     <Routes>
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
-      <Route path="/password_recovery" element={<PasswordRecovery />} />
+      <Route path="/password-recovery" element={<PasswordRecovery />} />
       <Route path="/" element={<Navigate to="/login" replace />} />
       <Route path="/reset-password" element={<ResetPassword />} />
 
