@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { CheckCircle } from "lucide-react"
+import { forgotPassword } from "@/lib/api/auth"
 
 // Form validation schema
 const passwordRecoverySchema = z.object({
@@ -31,7 +32,15 @@ const PasswordRecovery = () => {
   })
 
   const onSubmit = async (data: PasswordRecoveryFormValues) => {
-    // Simulate API call
+    try {
+          const res = await forgotPassword(data.email);
+          console.log('Send email success:', res);
+          localStorage.setItem('token', res.access_token); 
+          // Lưu token vào localStorage hoặc context
+        } catch (err: any) {
+          alert(err.message || 'Send thất bại');
+        }
+       
     console.log("Form submitted:", data)
 
     // Add your password recovery logic here
