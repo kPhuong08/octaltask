@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { signup } from "@/lib/api/auth"
+import { useNavigate } from "react-router-dom"
 
 // Form validation schema
 const signupSchema = z
@@ -22,7 +24,8 @@ const signupSchema = z
 
 type SignupFormValues = z.infer<typeof signupSchema>
 
-const Signup = () => {
+const Signup = (email: string, password: string, name: string) => {
+  const navigate = useNavigate(); 
   const {
     register,
     handleSubmit,
@@ -38,9 +41,12 @@ const Signup = () => {
   })
 
   const onSubmit = async (data: SignupFormValues) => {
-    // Simulate API call
+    const res = await signup(data.email, data.password, data.name);
+    console.log("Signup success:", res);
+    alert("Đăng ký thành công!");
     console.log("Form submitted:", data)
     // Add your registration logic here
+    navigate("/login"); 
   }
 
   return (

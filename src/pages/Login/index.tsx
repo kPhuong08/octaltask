@@ -7,6 +7,8 @@ import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { login } from "@/lib/api/auth"
+import { useNavigate } from "react-router-dom"
 
 // Form validation schema
 const loginSchema = z.object({
@@ -34,10 +36,19 @@ const Login = () => {
   const [rememberMe, setRememberMe] = useState(false)
 
   const onSubmit = async (data: LoginFormValues) => {
-    // Simulate API call
+    try {
+      const res = await login(data.email, data.password);
+      console.log('Login success:', res);
+      localStorage.setItem('token', res.access_token); 
+      // Lưu token vào localStorage hoặc context
+      alert('Đăng nhập thành công');
+    } catch (err: any) {
+      alert(err.message || 'Đăng nhập thất bại');
+    }
     console.log("Form submitted:", data)
-    // Add your authentication logic here
+    
   }
+  
 
   return (
     <div className="min-h-screen bg-white flex items-center justify-center px-4">
@@ -88,7 +99,7 @@ const Login = () => {
                   Remember me
                 </Label>
               </div>
-              <a href="/password_recovery" className="text-blue-600 hover:underline">
+              <a href="/password-recovery" className="text-blue-600 hover:underline">
                 Forgot password?
               </a>
             </div>
