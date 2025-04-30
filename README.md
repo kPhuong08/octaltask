@@ -162,11 +162,11 @@ Thank you for your using!
 
 ## Credits
 Contributors:
-- Le Ngoc Duy Linh
-Github link: [YuilRin] (https://github.com/YuilRin)
-- Tran Dong Truc Lam
-GIthub link: [limelight-hub] (https://github.com/limelight-hub)
-- Vo Tran Phi
-Github link: [votranphi] (https://github.com/votranphi)
-- Thai Kieu Phuong 
-Github link: [kPhuong08] (https://github.com/kPhuong08)
+- Tran Dong Truc Lam  (Student ID: 22520746)  
+Github link: [limelight-hub](https://github.com/limelight-hub)
+- Le Ngoc Duy Linh (Student ID: 22520762)  
+Github link: [YuilRin](https://github.com/YuilRin)
+- Vo Tran Phi  (Student ID: 22521081)  
+Github link: [votranphi](https://github.com/votranphi)
+- Thai Kieu Phuong  (Student ID: 22521170)  
+Github link: [kPhuong08](https://github.com/kPhuong08)
