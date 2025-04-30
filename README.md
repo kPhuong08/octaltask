@@ -9,7 +9,7 @@
 ![TypeScript](https://img.shields.io/badge/TailwindCSS-5.7.2-red)
 
 
-OctalTask is a website to help user manage their work conveniently and intuitily
+OctalTask is a website to help user manage their work conveniently and intuitively
 
 # Feature
 
@@ -150,3 +150,23 @@ export default tseslint.config({
    ```
    http://localhost:5173
    ```
+## Acknowledgements
+
+OctalTask is an intuitive task management web application designed to help individuals and teams stay organized, prioritize effectively, and collaborate effortlessly. With features that support both team-based and personal task tracking, OctalTask can help users maintain a healthy balance between collaborative work and individual responsibilities.
+
+Thank you for your using!
+
+## License
+
+
+
+## Credits
+Contributors:
+- Le Ngoc Duy Linh
+Github link: [YuilRin] (https://github.com/YuilRin)
+- Tran Dong Truc Lam
+GIthub link: [limelight-hub] (https://github.com/limelight-hub)
+- Vo Tran Phi
+Github link: [votranphi] (https://github.com/votranphi)
+- Thai Kieu Phuong 
+Github link: [kPhuong08] (https://github.com/kPhuong08)
