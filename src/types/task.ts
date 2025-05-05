@@ -42,6 +42,7 @@ export interface Task {
   completed: boolean;
   dueDate?: string;
   notes?: string;
+  isStarred?: boolean;
   listId?: string;  // For organizing into lists
   position?: number; // For ordering tasks in a list
   subtasks?: SubTask[]; // For adding subtasks
