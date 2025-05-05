@@ -342,9 +342,17 @@ export default function TaskDashboard() {
   };
 
   // Show loading state
-  if (loading) {
-    return <div className="flex items-center justify-center h-screen">Loading tasks...</div>;
-  }
+if (loading) {
+    return (
+        <div className="flex items-center justify-center h-screen">
+        <div className="flex flex-col items-center">
+            <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500"></div>
+            <p className="mt-4 text-gray-500 dark:text-gray-400">Loading tasks...</p>
+        </div>
+        </div>
+    );
+}
+
 
   // Handle error state
   if (error) {
@@ -357,24 +365,24 @@ export default function TaskDashboard() {
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col">
       <header className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 sticky top-0 z-30">
         <div className="px-4 py-2.5 flex justify-between items-center">
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 ">
             <button
-              className="text-gray-500 dark:text-gray-400 p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700"
+              className="text-gray-500 dark:text-gray-400 p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-all duration-200"
               onClick={toggleSidebar}
               aria-label="Toggle sidebar"
             >
               {showMobileSidebar || showDesktopSidebar ? (
-                <X className="h-5 w-5" />
+                <X className="h-5 w-5 transition-all duration-200" />
               ) : (
-                <Menu className="h-5 w-5" />
+                <Menu className="h-5 w-5 transition-all duration-200" />
               )}
             </button>
+
             <Logo
               size="lg"
               color={darkMode ? 'text-blue-400' : 'text-blue-600'}
               className="font-sans"
             />
-
           </div>
 
           <div className="flex items-center gap-3 ">
@@ -388,11 +396,15 @@ export default function TaskDashboard() {
         {/* Mobile Sidebar */}
         {showMobileSidebar && (
           <div
-            className="md:hidden fixed inset-0 bg-black/50 z-40"
+            className={`md:hidden fixed inset-0 bg-black/50 z-40 transition-opacity duration-300 ease-in-out ${
+              showMobileSidebar ? 'opacity-100' : 'opacity-0 pointer-events-none'
+            }`}
             onClick={() => setShowMobileSidebar(false)}
           >
             <div
-              className="bg-white dark:bg-gray-800 h-full w-64 p-4 overflow-auto"
+              className={`bg-white dark:bg-gray-800 h-full w-64 p-4 overflow-auto transform transition-transform duration-300 ease-in-out ${
+                showMobileSidebar ? 'translate-x-0' : '-translate-x-full'
+              }`}
               onClick={e => e.stopPropagation()}
             >
               <TaskListSidebar
@@ -409,9 +421,9 @@ export default function TaskDashboard() {
 
         {/* Desktop Sidebar */}
         <div
-          className={`hidden md:block w-64 shrink-0 border-r border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 transition-all duration-300 ${
-            showDesktopSidebar ? '' : 'md:hidden'
-          }`}
+          className={`hidden md:block w-0 transition-all duration-300 ease-in-out ${
+            showDesktopSidebar ? 'w-64' : 'w-0'
+          } shrink-0 overflow-hidden border-r border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800`}
         >
           <div className="sticky top-[73px] pt-6 h-[calc(100vh-73px)] overflow-y-auto">
             <TaskListSidebar
@@ -426,7 +438,7 @@ export default function TaskDashboard() {
         </div>
 
         <main
-          className={`flex-1 p-5 md:p-8 bg-gray-50 dark:bg-gray-900 transition-all duration-300 ${
+          className={`flex-1 p-5 md:p-8 bg-gray-50 dark:bg-gray-900 transition-all duration-300 ease-in-out ${
             showDesktopSidebar ? '' : 'md:px-20'
           }`}
         >
@@ -449,7 +461,9 @@ export default function TaskDashboard() {
                 setSortOption(option);
               }}
               onShare={
-                activeListId && activeListId !== 'today' && activeListId !== 'important' ? handleShareCurrentList : undefined
+                activeListId && activeListId !== 'today' && activeListId !== 'important'
+                  ? handleShareCurrentList
+                  : undefined
               }
               isShared={
                 activeListId && activeListId !== 'today' && activeListId !== 'important'

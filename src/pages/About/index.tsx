@@ -22,7 +22,7 @@ export default function About() {
           >
             <ArrowLeft className="h-5 w-5" />
           </Link>
-          <h1 className="text-xl font-semibold ml-4 tracking-tight">About Us</h1>
+          <h1 className="text-xl font-semibold ml-4 tracking-tight">About OctalTask</h1>
         </div>
       </header>
 
