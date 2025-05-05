@@ -43,8 +43,8 @@ const Login = () => {
       setLoginError('');
       const res = await login(data.email, data.password);
       console.log('Login success:', res);
-      if (res.access_token) {
-        localStorage.setItem('token', res.access_token);
+      if (res.accessToken) {
+        localStorage.setItem('token', res.accessToken);
         navigate('/');
       } else {
         setLoginError('An unexpected error occurred');
