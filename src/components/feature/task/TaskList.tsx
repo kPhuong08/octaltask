@@ -205,9 +205,13 @@ export function TaskList({
           {tasks.map(task => (
             <div
               key={task.id}
-              className={`bg-white dark:bg-gray-800 p-3 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm transition-all hover:shadow-md`}
+              className={`bg-white dark:bg-gray-800 p-3 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm transition-all hover:shadow-md ${
+                activeTaskId === task.id ? 'ring-2 ring-blue-500 ring-opacity-50' : ''
+              }`}
+              onMouseEnter={() => setActiveTaskId(task.id)}
+              onMouseLeave={() => setActiveTaskId(null)}
             >
-              <div className={`flex items-center gap-3 `}>
+              <div className="flex items-center gap-3">
                 <Checkbox
                   checked={task.completed}
                   onCheckedChange={() => toggleTaskCompletion(task.id)}
