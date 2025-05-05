@@ -16,7 +16,7 @@ import { Menu, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-type FilterOption = 'all' | 'today';
+type FilterOption = 'all' | 'today' | 'important';
 
 export default function TaskDashboard() {
   const { darkMode } = useTheme();
@@ -41,6 +41,7 @@ export default function TaskDashboard() {
     shareList,
     updateListPermission,
     removeListUser,
+    starTask
   } = useTask();
 
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
@@ -71,6 +72,8 @@ export default function TaskDashboard() {
   useEffect(() => {
     if (currentFilter === 'today' && activeListId !== 'today') {
       setActiveListId('today');
+    } else if (currentFilter === 'important' && activeListId !== 'important') {
+      setActiveListId('important');
     } else if (currentFilter === 'all' && activeListId !== null) {
       setActiveListId(null);
     }
@@ -80,6 +83,8 @@ export default function TaskDashboard() {
   useEffect(() => {
     if (activeListId === 'today' && currentFilter !== 'today') {
       setCurrentFilter('today');
+    } else if (currentFilter === 'important' && activeListId !== 'important') {
+      setActiveListId('important');
     } else if (activeListId === null && currentFilter !== 'all') {
       setCurrentFilter('all');
     }
@@ -93,7 +98,10 @@ export default function TaskDashboard() {
       // Filter for today's tasks
       const today = new Date().toISOString().split('T')[0];
       return task.dueDate === today;
-    } else {
+    } else if (activeListId === 'important') {
+        return task.isStarred === true;
+    }
+    else {
       return task.listId === activeListId;
     }
   });
@@ -131,7 +139,14 @@ export default function TaskDashboard() {
           ...task,
           dueDate: today,
         });
-      } else {
+      }
+      else if (activeListId === 'important') {
+        await addTask ({
+            ...task,
+            isStarred: true,
+        });
+      }
+      else {
         await addTask({
           ...task,
           listId: activeListId === null ? undefined : activeListId,
@@ -221,7 +236,11 @@ export default function TaskDashboard() {
       setCurrentFilter('all');
     } else if (listId === 'today') {
       setCurrentFilter('today');
-    } else {
+    } else if (listId === 'important') {
+        setCurrentFilter('important')
+    }
+
+    else {
       // If a custom list is selected, we keep the same filter
       // and just change the active list
     }
@@ -300,17 +319,25 @@ export default function TaskDashboard() {
   // Get the taskList ID in the correct format for the component
   const getTaskListId = (): string | undefined => {
     if (!activeListId) return undefined;
-    if (activeListId === 'today') return undefined;
+    if (activeListId === 'today' || activeListId === 'important') return undefined;
     return activeListId;
   };
 
   // Add handler for sharing the current list
   const handleShareCurrentList = () => {
-    if (!activeListId || activeListId === 'today') return;
+    if (!activeListId || activeListId === 'today' || activeListId === 'important') return;
 
     const listToShare = lists.find(list => list.id === activeListId);
     if (listToShare) {
       setSelectedListForShare(listToShare);
+    }
+  };
+
+  const handleStarTask = async (taskId: string) => {
+    try {
+      await starTask(taskId);
+    } catch (error) {
+      console.error('Error starring task:', error);
     }
   };
 
@@ -410,6 +437,8 @@ export default function TaskDashboard() {
                   ? 'All Tasks'
                   : activeListId === 'today'
                   ? 'Today'
+                  : activeListId === 'important'
+                  ? 'Important'
                   : lists.find(l => l.id === activeListId)?.name || 'Tasks'
               }
               totalTasks={totalTasks}
@@ -420,10 +449,10 @@ export default function TaskDashboard() {
                 setSortOption(option);
               }}
               onShare={
-                activeListId && activeListId !== 'today' ? handleShareCurrentList : undefined
+                activeListId && activeListId !== 'today' && activeListId !== 'important' ? handleShareCurrentList : undefined
               }
               isShared={
-                activeListId && activeListId !== 'today'
+                activeListId && activeListId !== 'today' && activeListId !== 'important'
                   ? lists.find(l => l.id === activeListId)?.isShared || false
                   : false
               }
@@ -441,6 +470,7 @@ export default function TaskDashboard() {
                 onAddTask={handleAddTask}
                 onUpdateTask={handleUpdateTask}
                 onDeleteTask={handleDeleteTask}
+                onStarTask={handleStarTask}
               />
             </div>
           </div>
