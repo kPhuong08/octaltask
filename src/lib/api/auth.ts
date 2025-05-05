@@ -1,11 +1,11 @@
 // src/lib/api/auth.ts
 import axios from 'axios';
 
-const API_BASE = 'http://localhost:3000/auth'; // Đổi URL khi deploy
+const API_BASE = import.meta.env.VITE_API_BASE; // Đổi URL khi deploy
 
 export const login = async (email: string, password: string) => {
   try {
-    const res = await axios.post(`${API_BASE}/login`, { email, password });
+    const res = await axios.post(`${API_BASE}/auth/login`, { email, password });
     return res.data;
   } catch (err: any) {
     throw err.response?.data || err;
@@ -14,7 +14,8 @@ export const login = async (email: string, password: string) => {
 
 export const signup = async (email: string, password: string,name: string) => {
   try {
-    const res = await axios.post(`${API_BASE}/signup`, { email, password, name });
+    console.log(API_BASE);
+    const res = await axios.post(`${API_BASE}/auth/signup`, { email, password, name });
     return res.data;
   } catch (err: any) {
     throw err.response?.data || err;
@@ -23,7 +24,7 @@ export const signup = async (email: string, password: string,name: string) => {
 
 export const forgotPassword = async (email: string) => {
   try {
-    const res = await axios.post(`${API_BASE}/forgot-password`, { email });
+    const res = await axios.post(`${API_BASE}/auth/forgot-password`, { email });
     return res.data;
   } catch (err: any) {
     throw err.response?.data || err;
@@ -32,7 +33,7 @@ export const forgotPassword = async (email: string) => {
 
 export const resetPassword = async (token: string, password: string) => {
   try {
-    const res = await axios.post(`${API_BASE}/reset-password`, { token, password });
+    const res = await axios.post(`${API_BASE}/auth/reset-password`, { token, password });
     return res.data;
   } catch (err: any) {
     throw err.response?.data || err;
