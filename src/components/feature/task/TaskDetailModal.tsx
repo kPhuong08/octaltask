@@ -1,6 +1,14 @@
 import { Task, TaskList } from '@/types/task';
 import { format } from 'date-fns';
-import {Calendar, ListTodo, MessageSquare, Plus, Share2, Trash2, X} from 'lucide-react';
+import {
+  Calendar,
+  ListTodo,
+  MessageSquare,
+  Plus,
+  MessageSquareShare,
+  Trash2,
+  X,
+} from 'lucide-react';
 import { useState } from 'react';
 import { Button } from '../../ui/button';
 import { Checkbox } from '../../ui/checkbox';
@@ -213,7 +221,7 @@ export function TaskDetailModal({
                                         : 'Add due date'}
                                 </Button>
 
-                                {/* Share button - moved to the right */}
+                                {/* Assign task to people */}
                                 {onShareTask && (
                                     <Button
                                         variant={isShared ? "outline" : "default"}
@@ -223,8 +231,8 @@ export function TaskDetailModal({
                                             : "bg-blue-600 text-white hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-700"}`}
                                         onClick={() => setShowShareModal(true)}
                                     >
-                                        <Share2 className="h-4 w-4 mr-1.5" />
-                                        {isShared ? `Shared (${editedTask.sharedWith?.length})` : 'Share'}
+                                        <MessageSquareShare className="h-4 w-4 mr-1.5" />
+                                        {isShared ? `Assigned (${editedTask.sharedWith?.length})` : 'Assign'}
                                     </Button>
                                 )}
                             </div>
