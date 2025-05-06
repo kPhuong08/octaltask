@@ -100,7 +100,7 @@ export function TaskListHeader({
             )}
 
             {/* Sort dropdown */}
-            <div className="relative" ref={sortMenuRef}>
+            <div ref={sortMenuRef}>
               <Button
                 variant="outline"
                 size="sm"
@@ -112,7 +112,7 @@ export function TaskListHeader({
               </Button>
 
               {sortMenuOpen && (
-                <div className="absolute right-0 top-full mt-1 w-48 bg-white dark:bg-gray-800 shadow-lg rounded-lg overflow-hidden z-20 border border-gray-100 dark:border-gray-700">
+                <div className="absolute right-0 top-full mt-1 w-48 bg-white dark:bg-gray-800 shadow-lg rounded-lg overflow-hidden z-30 border border-gray-100 dark:border-gray-700">
                   <div className="py-1">
                     <button
                       className="w-full text-left px-4 py-2 text-sm hover:bg-gray-50 dark:hover:bg-gray-700 dark:text-gray-200"
