@@ -242,9 +242,6 @@ const Login = () => {
           </Card>
         </div>
       </div>
-      <div className="w-full absolute bottom-0">
-        <Footer />
-      </div>
     </div>
   );
 };

@@ -15,19 +15,6 @@ export interface Comment {
   updatedAt?: string;
 }
 
-export interface Question extends Comment {
-  isAnswered: boolean;
-  answer?: {
-    id: string;
-    userId: string;
-    userName: string;
-    userPhotoUrl?: string;
-    content: string;
-    createdAt: string;
-    updatedAt?: string;
-  };
-}
-
 export interface SharedUser {
   id: string;
   name: string;
