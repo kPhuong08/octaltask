@@ -23,6 +23,7 @@ export interface SharedUser {
   role: 'viewer' | 'editor' | 'admin';
 }
 
+
 export interface Task {
   id: string;
   title: string;
@@ -38,7 +39,6 @@ export interface Task {
   assignedTo?: string; // UserID of person assigned to task
   sharedWith?: SharedUser[]; // Users that have access to this task
   comments?: Comment[]; // Comments on the task
-  questions?: Question[]; // Questions related to the task
 }
 
 export interface TaskList {

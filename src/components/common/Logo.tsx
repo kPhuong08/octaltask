@@ -10,9 +10,9 @@ interface LogoProps {
 export function Logo({ size = 'md', showText = true, color = 'text-blue-600', className = '' }: LogoProps) {
   // Size classes mapping
   const sizeClasses = {
-    sm: 'h-6 w-6',
-    md: 'h-8 w-8',
-    lg: 'h-10 w-10'
+    sm: 'h-9 w-13',
+    md: 'h-11 w-15',
+    lg: 'h-13 w-17'
   };
 
   const textSizeClasses = {

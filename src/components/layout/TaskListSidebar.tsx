@@ -81,16 +81,16 @@ export function TaskListSidebar({
     const getListIcon = (list: TaskList) => {
         switch (list.icon) {
             case 'work':
-                return <Briefcase className="h-4 w-4 mr-2" />;
+                return <Briefcase className="w-4 h-4 mr-2" />;
             case 'personal':
-                return <CheckCircle2 className="h-4 w-4 mr-2" />;
+                return <CheckCircle2 className="w-4 h-4 mr-2" />;
             case 'home':
-                return <Home className="h-4 w-4 mr-2" />;
+                return <Home className="w-4 h-4 mr-2" />;
             case 'study':
-                return <BookOpen className="h-4 w-4 mr-2" />;
+                return <BookOpen className="w-4 h-4 mr-2" />;
             case 'default':
             default:
-                return <Folder className="h-4 w-4 mr-2" />;
+                return <Folder className="w-4 h-4 mr-2" />;
         }
     };
 
@@ -113,7 +113,7 @@ export function TaskListSidebar({
 
     return (
       <div className="w-full px-3">
-        <div className="space-y-1 mb-6">
+        <div className="mb-6 space-y-1">
           <Button
             variant="ghost"
             className={`w-full justify-start text-sm py-2.5 h-auto rounded-full
@@ -124,7 +124,7 @@ export function TaskListSidebar({
             }`}
             onClick={() => onSelectList(null)}
           >
-            <CheckCircle2 className="h-5 w-5 mr-3 flex-shrink-0" />
+            <CheckCircle2 className="flex-shrink-0 w-5 h-5 mr-3" />
             <span>All Tasks</span>
           </Button>
 
@@ -138,7 +138,7 @@ export function TaskListSidebar({
             }`}
             onClick={() => onSelectList('today')}
           >
-            <Calendar className="h-5 w-5 mr-3 flex-shrink-0" />
+            <Calendar className="flex-shrink-0 w-5 h-5 mr-3" />
             <span>Today</span>
           </Button>
           <Button
@@ -151,29 +151,29 @@ export function TaskListSidebar({
             }`}
             onClick={() => onSelectList('important')}
           >
-            <Star className="h-5 w-5 mr-3 flex-shrink-0" />
+            <Star className="flex-shrink-0 w-5 h-5 mr-3" />
             <span>Important</span>
           </Button>
         </div>
 
-        <div className="mb-6">
-          <div className="flex items-center justify-between mb-2 px-3">
-            <h2 className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">
+        <div className="mb-6 ">
+          <div className="flex items-center justify-between px-3 mb-2">
+            <h2 className="text-xs font-medium tracking-wide text-gray-500 uppercase dark:text-gray-400">
               Lists
             </h2>
             <Button
               variant="ghost"
               size="sm"
-              className="h-6 w-6 p-0 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700"
+              className="w-6 h-6 p-0 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700"
               onClick={() => setShowCreateListModal(true)}
             >
-              <PlusCircle className="h-4 w-4 text-gray-500 dark:text-gray-400" />
+              <PlusCircle className="w-4 h-4 text-gray-500 dark:text-gray-400" />
             </Button>
           </div>
 
           <div className="space-y-1">
             {lists.map(list => (
-              <div key={list.id} className="group relative">
+              <div key={list.id} className="relative group">
                 <Button
                   variant="ghost"
                   className={`w-full justify-start text-sm py-2.5 h-auto rounded-full
@@ -194,20 +194,20 @@ export function TaskListSidebar({
                   )}
                 </Button>
 
-                <div className="absolute right-2 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity">
+                <div className="absolute transition-opacity -translate-y-1/2 opacity-0 right-2 top-1/2 group-hover:opacity-100">
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                       <Button
                         variant="ghost"
                         size="sm"
-                        className="h-6 w-6 p-0 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700"
+                        className="w-6 h-6 p-0 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700"
                       >
                         <MoreHorizontal className="h-3.5 w-3.5 text-gray-500 dark:text-gray-400" />
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end" className="w-40">
                       <DropdownMenuItem
-                        className="cursor-pointer flex items-center gap-2 text-sm"
+                        className="flex items-center gap-2 text-sm cursor-pointer"
                         onClick={e => {
                           e.stopPropagation();
                           handleShareList(list);
@@ -219,7 +219,7 @@ export function TaskListSidebar({
 
                       {onUpdateList && (
                         <DropdownMenuItem
-                          className="cursor-pointer flex items-center gap-2 text-sm"
+                          className="flex items-center gap-2 text-sm cursor-pointer"
                           onClick={e => {
                             e.stopPropagation();
                             handleEditList(list);
@@ -232,7 +232,7 @@ export function TaskListSidebar({
 
                       {onDeleteList && (
                         <DropdownMenuItem
-                          className="cursor-pointer flex items-center gap-2 text-sm text-red-600 dark:text-red-400"
+                          className="flex items-center gap-2 text-sm text-red-600 cursor-pointer dark:text-red-400"
                           onClick={e => {
                             e.stopPropagation();
                             onDeleteList(list.id);
@@ -252,10 +252,10 @@ export function TaskListSidebar({
 
         <Button
           variant="ghost"
-          className="w-full justify-start text-sm py-2.5 pl-3 pr-2 h-auto rounded-full text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/30"
+          className=" mb-5 w-full justify-start text-sm py-2.5 pl-3 pr-2 h-auto rounded-full text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/30"
           onClick={() => setShowCreateListModal(true)}
         >
-          <PlusCircle className="h-5 w-5 mr-3" />
+          <PlusCircle className="w-5 h-5mr-3" />
           <span>Create new list</span>
         </Button>
 

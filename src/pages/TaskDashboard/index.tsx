@@ -347,7 +347,7 @@ export default function TaskDashboard() {
         return (
             <div className="flex items-center justify-center h-screen">
                 <div className="flex flex-col items-center">
-                    <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500"></div>
+                    <div className="w-16 h-16 border-t-4 border-blue-500 rounded-full animate-spin"></div>
                     <p className="mt-4 text-gray-500 dark:text-gray-400">Loading tasks...</p>
                 </div>
             </div>
@@ -363,8 +363,8 @@ export default function TaskDashboard() {
     }
 
     return (
-        <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col">
-            <header className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 sticky top-0">
+        <div className="flex flex-col min-h-screen bg-gray-50 dark:bg-gray-900">
+            <header className="sticky top-0 bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
                 <div className="px-4 py-2.5 flex justify-between items-center">
                     <div className="flex items-center gap-3 ">
                         <button
@@ -373,9 +373,9 @@ export default function TaskDashboard() {
                             aria-label="Toggle sidebar"
                         >
                             {showMobileSidebar || showDesktopSidebar ? (
-                                <X className="h-5 w-5 transition-all duration-200" />
+                                <X className="w-5 h-5 transition-all duration-200" />
                             ) : (
-                                <Menu className="h-5 w-5 transition-all duration-200" />
+                                <Menu className="w-5 h-5 transition-all duration-200" />
                             )}
                         </button>
 
@@ -402,7 +402,7 @@ export default function TaskDashboard() {
                         onClick={() => setShowMobileSidebar(false)}
                     >
                         <div
-                            className={`bg-white dark:bg-gray-800 h-full w-64 p-4 overflow-auto transform transition-transform duration-300 ease-in-out ${showMobileSidebar ? 'translate-x-0' : '-translate-x-full'
+                            className={ ` bg-white dark:bg-gray-800 h-full w-64 p-4 overflow-auto transform transition-transform duration-300 ease-in-out ${showMobileSidebar ? 'translate-x-0' : '-translate-x-full'
                                 }`}
                             onClick={e => e.stopPropagation()}
                         >
@@ -421,9 +421,9 @@ export default function TaskDashboard() {
                 {/* Desktop Sidebar */}
                 <div
                     className={`hidden md:block w-0 transition-all duration-300 ease-in-out ${showDesktopSidebar ? 'w-64' : 'w-0'
-                        } shrink-0 overflow-hidden border-r border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800`}
+                        }  fixed left-0 top-18.5 pt-3 shrink-0  border-r border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800`}
                 >
-                    <div className="sticky top-[73px] pt-6 h-[calc(100vh-73px)] overflow-y-auto">
+                    <div className="sticky top-[73px] h-[calc(100vh-73px-73px)] overflow-y-auto">
                         <TaskListSidebar
                             lists={lists}
                             activeListId={activeListId}
@@ -436,7 +436,7 @@ export default function TaskDashboard() {
                 </div>
 
                 <main
-                    className={`flex-1 p-5 md:p-8 bg-gray-50 dark:bg-gray-900 transition-all duration-300 ease-in-out ${showDesktopSidebar ? '' : 'md:px-20'
+                    className={`flex-1 p-5 md:p-8 overflow-y-auto overflow-x-hidden max-h-[calc(100vh-73px-68px)] bg-gray-50 dark:bg-gray-900 transition-all duration-300 ease-in-out ${showDesktopSidebar ? '' : 'md:px-20'
                         }`}
                 >
                     <div className="max-w-3xl mx-auto">
@@ -526,7 +526,9 @@ export default function TaskDashboard() {
                 />
             )}
 
+            <div className='bottom-0 z-50 fix'>
             <Footer />
+            </div>
         </div>
     );
 }
