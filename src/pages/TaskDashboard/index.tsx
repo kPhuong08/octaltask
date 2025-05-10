@@ -380,7 +380,7 @@ export default function TaskDashboard() {
               </button>
 
               <Logo
-                size="lg"
+                size="md"
                 color={darkMode ? 'text-blue-400' : 'text-blue-600'}
                 className="font-sans"
               />
