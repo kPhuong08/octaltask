@@ -12,7 +12,7 @@ export function Logo({ size = 'md', showText = true, color = 'text-blue-600', cl
   const sizeClasses = {
     sm: 'h-3 w-5',
     md: 'h-6 w-8',
-    lg: 'h-10 w-10'
+    lg: 'h-10 w-12'
   };
 
   const textSizeClasses = {

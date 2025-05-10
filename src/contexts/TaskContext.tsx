@@ -77,7 +77,6 @@ export function TaskProvider({ children }: { children: ReactNode }) {
                             updatedAt: new Date().toISOString(),
                             listId: '1',
                             comments: [],
-                            questions: []
                         },
                         {
                             id: '2',
@@ -87,7 +86,6 @@ export function TaskProvider({ children }: { children: ReactNode }) {
                             updatedAt: new Date().toISOString(),
                             listId: '1',
                             comments: [],
-                            questions: []
                         },
                         {
                             id: '3',
@@ -98,7 +96,6 @@ export function TaskProvider({ children }: { children: ReactNode }) {
                             listId: '2',
                             dueDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
                             comments: [],
-                            questions: []
                         },
                     ];
                     setTasks(defaultTasks);
