@@ -1,49 +1,53 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { Task, TaskList, Comment, Question, SharedUser } from '@/types/task';
+import { Task, TaskList, Comment, Question, SharedUser, Attachment } from '@/types/task';
 import { useUser } from './UserContext';
 
 interface TaskContextType {
-  tasks: Task[];
-  lists: TaskList[];
-  loading: boolean;
-  error: string | null;
+    tasks: Task[];
+    lists: TaskList[];
+    loading: boolean;
+    error: string | null;
 
-  // Task operations
-  addTask: (task: Partial<Task>) => Promise<Task>;
-  updateTask: (taskId: string, updates: Partial<Task>) => Promise<Task>;
-  deleteTask: (taskId: string) => Promise<void>;
-  getTasksByList: (listId: string) => Task[];
-  starTask: (taskId: string) => Promise<Task>;
+    // Task operations
+    addTask: (task: Partial<Task>) => Promise<Task>;
+    updateTask: (taskId: string, updates: Partial<Task>) => Promise<Task>;
+    deleteTask: (taskId: string) => Promise<void>;
+    getTasksByList: (listId: string) => Task[];
+    starTask: (taskId: string) => Promise<Task>;
 
-  // List operations
-  addList: (list: Partial<TaskList>) => Promise<TaskList>;
-  updateList: (listId: string, updates: Partial<TaskList>) => Promise<TaskList>;
-  deleteList: (listId: string) => Promise<void>;
+    // List operations
+    addList: (list: Partial<TaskList>) => Promise<TaskList>;
+    updateList: (listId: string, updates: Partial<TaskList>) => Promise<TaskList>;
+    deleteList: (listId: string) => Promise<void>;
 
-  // Sharing operations
-  shareTask: (task: Task, email: string, role: 'viewer' | 'editor' | 'admin') => Promise<Task>;
-  updateTaskPermission: (
-    task: Task,
-    userId: string,
-    role: 'viewer' | 'editor' | 'admin'
-  ) => Promise<Task>;
-  removeTaskUser: (task: Task, userId: string) => Promise<Task>;
+    // Sharing operations
+    shareTask: (task: Task, email: string, role: 'viewer' | 'editor' | 'admin') => Promise<Task>;
+    updateTaskPermission: (
+        task: Task,
+        userId: string,
+        role: 'viewer' | 'editor' | 'admin'
+    ) => Promise<Task>;
+    removeTaskUser: (task: Task, userId: string) => Promise<Task>;
 
-  shareList: (
-    list: TaskList,
-    email: string,
-    role: 'viewer' | 'editor' | 'admin'
-  ) => Promise<TaskList>;
-  updateListPermission: (
-    list: TaskList,
-    userId: string,
-    role: 'viewer' | 'editor' | 'admin'
-  ) => Promise<TaskList>;
-  removeListUser: (list: TaskList, userId: string) => Promise<TaskList>;
+    shareList: (
+        list: TaskList,
+        email: string,
+        role: 'viewer' | 'editor' | 'admin'
+    ) => Promise<TaskList>;
+    updateListPermission: (
+        list: TaskList,
+        userId: string,
+        role: 'viewer' | 'editor' | 'admin'
+    ) => Promise<TaskList>;
+    removeListUser: (list: TaskList, userId: string) => Promise<TaskList>;
 
-  // Comments & Questions
-  addComment: (taskId: string, content: string) => Promise<Comment>;
-  deleteComment: (commentId: string) => Promise<void>;
+    // Comments & Questions
+    addComment: (taskId: string, content: string) => Promise<Comment>;
+    deleteComment: (commentId: string) => Promise<void>;
+
+    // Attachments
+    addAttachment: (taskId: string, file: File) => Promise<Attachment>;
+    deleteAttachment: (attachmentId: string) => Promise<void>;
 }
 
 const TaskContext = createContext<TaskContextType | undefined>(undefined);

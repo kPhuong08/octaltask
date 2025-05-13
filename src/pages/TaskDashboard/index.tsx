@@ -41,7 +41,9 @@ export default function TaskDashboard() {
         shareList,
         updateListPermission,
         removeListUser,
-        starTask
+        starTask,
+        addAttachment,
+        deleteAttachment
     } = useTask();
 
     const [selectedTask, setSelectedTask] = useState<Task | null>(null);
@@ -342,6 +344,23 @@ export default function TaskDashboard() {
         }
     };
 
+    const handleAddAttachment = async (taskId: string, file: File) => {
+        try {
+            return await addAttachment(taskId, file);
+        } catch (error) {
+            console.error('Error adding attachment:', error);
+            throw error;
+        }
+    };
+
+    const handleDeleteAttachment = async (attachmentId: string) => {
+        try {
+            await deleteAttachment(attachmentId);
+        } catch (error) {
+            console.error('Error deleting attachment:', error);
+        }
+    };
+
     // Show loading state
     if (loading) {
         return (
@@ -363,178 +382,176 @@ export default function TaskDashboard() {
     }
 
     return (
-      <div className="flex flex-col min-h-screen bg-gray-50 dark:bg-gray-900">
-        <header className="sticky top-0 bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
-          <div className="px-4 py-2.5 flex justify-between items-center">
-            <div className="flex items-center gap-3 ">
-              <button
-                className="text-gray-500 dark:text-gray-400 p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-all duration-200"
-                onClick={toggleSidebar}
-                aria-label="Toggle sidebar"
-              >
-                {showMobileSidebar || showDesktopSidebar ? (
-                  <X className="w-5 h-5 transition-all duration-200" />
-                ) : (
-                  <Menu className="w-5 h-5 transition-all duration-200" />
+        <div className="flex flex-col min-h-screen bg-gray-50 dark:bg-gray-900">
+            <header className="sticky top-0 bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
+                <div className="px-4 py-2.5 flex justify-between items-center">
+                    <div className="flex items-center gap-3 ">
+                        <button
+                            className="text-gray-500 dark:text-gray-400 p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-all duration-200"
+                            onClick={toggleSidebar}
+                            aria-label="Toggle sidebar"
+                        >
+                            {showMobileSidebar || showDesktopSidebar ? (
+                                <X className="w-5 h-5 transition-all duration-200" />
+                            ) : (
+                                <Menu className="w-5 h-5 transition-all duration-200" />
+                            )}
+                        </button>
+
+                        <Logo
+                            size="md"
+                            color={darkMode ? 'text-blue-400' : 'text-blue-600'}
+                            className="font-sans"
+                        />
+                    </div>
+
+                    <div className="flex items-center gap-3 ">
+                        <ThemeToggle />
+                        {currentUser && <UserMenu user={currentUser} onLogout={handleLogout} />}
+                    </div>
+                </div>
+            </header>
+
+            <div className={`flex-1 flex ${showTaskDetail ? 'relative' : ''}`}>
+                {/* Mobile Sidebar */}
+                {showMobileSidebar && (
+                    <div
+                        className={` md:hidden fixed inset-0 bg-black/50 z-40 transition-opacity duration-300 ease-in-out ${showMobileSidebar ? 'opacity-100' : 'opacity-0 pointer-events-none'
+                            }`}
+                        onClick={() => setShowMobileSidebar(false)}
+                    >
+                        <div
+                            className={` bg-white dark:bg-gray-800 h-full w-64 p-4 overflow-auto transform transition-transform duration-300 ease-in-out ${showMobileSidebar ? 'translate-x-0' : '-translate-x-full'
+                                }`}
+                            onClick={e => e.stopPropagation()}
+                        >
+                            <TaskListSidebar
+                                lists={lists}
+                                activeListId={activeListId}
+                                onSelectList={handleSelectList}
+                                onCreateList={handleCreateList}
+                                onDeleteList={handleDeleteList}
+                                onUpdateList={handleUpdateList}
+                            />
+                        </div>
+                    </div>
                 )}
-              </button>
 
-              <Logo
-                size="md"
-                color={darkMode ? 'text-blue-400' : 'text-blue-600'}
-                className="font-sans"
-              />
+                {/* Desktop Sidebar */}
+                <div
+                    className={`hidden md:block w-0 transition-all duration-300 ease-in-out ${showDesktopSidebar ? 'w-64' : 'w-0'
+                        }  shrink-0 overflow-hidden border-r pt-3 border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800`}
+                >
+                    <div className="sticky top-[73px] h-[calc(100vh-73px-73px)] overflow-y-auto">
+                        <TaskListSidebar
+                            lists={lists}
+                            activeListId={activeListId}
+                            onSelectList={handleSelectList}
+                            onCreateList={handleCreateList}
+                            onDeleteList={handleDeleteList}
+                            onUpdateList={handleUpdateList}
+                        />
+                    </div>
+                </div>
+
+                <main
+                    className={`flex-1 p-5 md:p-8 overflow-y-auto overflow-x-hidden max-h-[calc(100vh-73px-68px)] bg-gray-50 dark:bg-gray-900 transition-all duration-300 ease-in-out ${showDesktopSidebar ? '' : 'md:px-20'
+                        }`}
+                >
+                    <div className="max-w-3xl mx-auto">
+                        <TaskListHeader
+                            title={
+                                activeListId === null
+                                    ? 'All Tasks'
+                                    : activeListId === 'today'
+                                        ? 'Today'
+                                        : activeListId === 'important'
+                                            ? 'Important'
+                                            : lists.find(l => l.id === activeListId)?.name || 'Tasks'
+                            }
+                            totalTasks={totalTasks}
+                            completedTasks={completedTasks}
+                            currentFilter={currentFilter}
+                            onFilterChange={handleFilterChange}
+                            onSortChange={option => {
+                                setSortOption(option);
+                            }}
+                            onShare={
+                                activeListId && activeListId !== 'today' && activeListId !== 'important'
+                                    ? handleShareCurrentList
+                                    : undefined
+                            }
+                            isShared={
+                                activeListId && activeListId !== 'today' && activeListId !== 'important'
+                                    ? lists.find(l => l.id === activeListId)?.isShared || false
+                                    : false
+                            }
+                        />
+
+                        {/* Task list with conditional rendering when modal is open */}
+                        <div>
+                            <TaskList
+                                tasks={sortedTasks}
+                                listId={getTaskListId()}
+                                listName={
+                                    activeListId === null
+                                        ? 'All Tasks'
+                                        : lists.find(l => l.id === activeListId)?.name
+                                }
+                                onEditTask={handleEditTask}
+                                onAddTask={handleAddTask}
+                                onUpdateTask={handleUpdateTask}
+                                onDeleteTask={handleDeleteTask}
+                                onStarTask={handleStarTask}
+                            />
+                        </div>
+                    </div>
+                </main>
             </div>
 
-            <div className="flex items-center gap-3 ">
-              <ThemeToggle />
-              {currentUser && <UserMenu user={currentUser} onLogout={handleLogout} />}
-            </div>
-          </div>
-        </header>
-
-        <div className={`flex-1 flex ${showTaskDetail ? 'relative' : ''}`}>
-          {/* Mobile Sidebar */}
-          {showMobileSidebar && (
-            <div
-              className={` md:hidden fixed inset-0 bg-black/50 z-40 transition-opacity duration-300 ease-in-out ${
-                showMobileSidebar ? 'opacity-100' : 'opacity-0 pointer-events-none'
-              }`}
-              onClick={() => setShowMobileSidebar(false)}
-            >
-              <div
-                className={` bg-white dark:bg-gray-800 h-full w-64 p-4 overflow-auto transform transition-transform duration-300 ease-in-out ${
-                  showMobileSidebar ? 'translate-x-0' : '-translate-x-full'
-                }`}
-                onClick={e => e.stopPropagation()}
-              >
-                <TaskListSidebar
-                  lists={lists}
-                  activeListId={activeListId}
-                  onSelectList={handleSelectList}
-                  onCreateList={handleCreateList}
-                  onDeleteList={handleDeleteList}
-                  onUpdateList={handleUpdateList}
+            {showTaskDetail && selectedTask && (
+                <TaskDetailModal
+                    task={selectedTask}
+                    lists={lists}
+                    currentUserId={currentUser?.id || ''}
+                    currentUserName={currentUser?.name || 'User'}
+                    currentUserPhoto={currentUser?.photoUrl}
+                    onClose={() => {
+                        setShowTaskDetail(false);
+                        setSelectedTask(null);
+                    }}
+                    onSave={handleSaveTask}
+                    onDelete={handleDeleteTask}
+                    onShareTask={handleShareTask}
+                    onUpdatePermission={handleUpdatePermission}
+                    onRemoveUser={handleRemoveUser}
+                    onAddComment={handleAddComment}
+                    onDeleteComment={handleDeleteComment}
+                    onAddAttachment={handleAddAttachment}
+                    onDeleteAttachment={handleDeleteAttachment}
                 />
-              </div>
-            </div>
-          )}
+            )}
 
-          {/* Desktop Sidebar */}
-          <div
-            className={`hidden md:block w-0 transition-all duration-300 ease-in-out ${
-              showDesktopSidebar ? 'w-64' : 'w-0'
-            }  shrink-0 overflow-hidden border-r pt-3 border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800`}
-          >
-            <div className="sticky top-[73px] h-[calc(100vh-73px-73px)] overflow-y-auto">
-              <TaskListSidebar
-                lists={lists}
-                activeListId={activeListId}
-                onSelectList={handleSelectList}
-                onCreateList={handleCreateList}
-                onDeleteList={handleDeleteList}
-                onUpdateList={handleUpdateList}
-              />
-            </div>
-          </div>
-
-          <main
-            className={`flex-1 p-5 md:p-8 overflow-y-auto overflow-x-hidden max-h-[calc(100vh-73px-68px)] bg-gray-50 dark:bg-gray-900 transition-all duration-300 ease-in-out ${
-              showDesktopSidebar ? '' : 'md:px-20'
-            }`}
-          >
-            <div className="max-w-3xl mx-auto">
-              <TaskListHeader
-                title={
-                  activeListId === null
-                    ? 'All Tasks'
-                    : activeListId === 'today'
-                    ? 'Today'
-                    : activeListId === 'important'
-                    ? 'Important'
-                    : lists.find(l => l.id === activeListId)?.name || 'Tasks'
-                }
-                totalTasks={totalTasks}
-                completedTasks={completedTasks}
-                currentFilter={currentFilter}
-                onFilterChange={handleFilterChange}
-                onSortChange={option => {
-                  setSortOption(option);
-                }}
-                onShare={
-                  activeListId && activeListId !== 'today' && activeListId !== 'important'
-                    ? handleShareCurrentList
-                    : undefined
-                }
-                isShared={
-                  activeListId && activeListId !== 'today' && activeListId !== 'important'
-                    ? lists.find(l => l.id === activeListId)?.isShared || false
-                    : false
-                }
-              />
-
-              {/* Task list with conditional rendering when modal is open */}
-              <div>
-                <TaskList
-                  tasks={sortedTasks}
-                  listId={getTaskListId()}
-                  listName={
-                    activeListId === null
-                      ? 'All Tasks'
-                      : lists.find(l => l.id === activeListId)?.name
-                  }
-                  onEditTask={handleEditTask}
-                  onAddTask={handleAddTask}
-                  onUpdateTask={handleUpdateTask}
-                  onDeleteTask={handleDeleteTask}
-                  onStarTask={handleStarTask}
+            {showCreateListModal && (
+                <CreateListModal
+                    onClose={() => setShowCreateListModal(false)}
+                    onCreateList={handleCreateList}
                 />
-              </div>
+            )}
+
+            {selectedListForShare && (
+                <ShareListModal
+                    list={selectedListForShare}
+                    onClose={() => setSelectedListForShare(null)}
+                    onShare={shareList}
+                    onUpdatePermission={updateListPermission}
+                    onRemoveUser={removeListUser}
+                />
+            )}
+
+            <div className="bottom-0 fix">
+                <Footer />
             </div>
-          </main>
         </div>
-
-        {showTaskDetail && selectedTask && (
-          <TaskDetailModal
-            task={selectedTask}
-            lists={lists}
-            currentUserId={currentUser?.id || ''}
-            currentUserName={currentUser?.name || 'User'}
-            currentUserPhoto={currentUser?.photoUrl}
-            onClose={() => {
-              setShowTaskDetail(false);
-              setSelectedTask(null);
-            }}
-            onSave={handleSaveTask}
-            onDelete={handleDeleteTask}
-            onShareTask={handleShareTask}
-            onUpdatePermission={handleUpdatePermission}
-            onRemoveUser={handleRemoveUser}
-            onAddComment={handleAddComment}
-            onDeleteComment={handleDeleteComment}
-          />
-        )}
-
-        {showCreateListModal && (
-          <CreateListModal
-            onClose={() => setShowCreateListModal(false)}
-            onCreateList={handleCreateList}
-          />
-        )}
-
-        {selectedListForShare && (
-          <ShareListModal
-            list={selectedListForShare}
-            onClose={() => setSelectedListForShare(null)}
-            onShare={shareList}
-            onUpdatePermission={updateListPermission}
-            onRemoveUser={removeListUser}
-          />
-        )}
-
-        <div className="bottom-0 z-50 fix">
-          <Footer />
-        </div>
-      </div>
     );
 }

@@ -23,6 +23,16 @@ export interface SharedUser {
   role: 'viewer' | 'editor' | 'admin';
 }
 
+export interface Attachment {
+  id: string;
+  taskId: string;
+  fileName: string;
+  fileSize: number;
+  fileType: string;
+  url: string;
+  uploadedAt: string;
+  uploadedBy: string;
+}
 
 export interface Task {
   id: string;
@@ -39,6 +49,7 @@ export interface Task {
   assignedTo?: string; // UserID of person assigned to task
   sharedWith?: SharedUser[]; // Users that have access to this task
   comments?: Comment[]; // Comments on the task
+  attachments?: Attachment[]; // Files attached to the task
 }
 
 export interface TaskList {

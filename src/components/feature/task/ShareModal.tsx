@@ -1,4 +1,4 @@
-import { SharedUser, Task, TaskList } from '@/types/task';
+import { Task, TaskList } from '@/types/task';
 import { Check, Copy, UserPlus, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '../../ui/avatar';
@@ -33,7 +33,6 @@ export function ShareModal({
     const [email, setEmail] = useState('');
     const [role, setRole] = useState<'viewer' | 'editor' | 'admin'>('viewer');
     const [copySuccess, setCopySuccess] = useState(false);
-    const [sharedUsers, setSharedUsers] = useState<SharedUser[]>(item.sharedWith || []);
 
     // Reset copied message after 2 seconds
     useEffect(() => {
@@ -57,18 +56,9 @@ export function ShareModal({
         setCopySuccess(true);
     };
 
-    const getRoleName = (role: string) => {
-        switch (role) {
-            case 'viewer': return 'Viewer';
-            case 'editor': return 'Editor';
-            case 'admin': return 'Admin';
-            default: return 'Unknown role';
-        }
-    };
-
     return (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-[100]">
-            <Card className="w-full max-w-md relative overflow-hidden shadow-lg">
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-[100]" onClick={onClose}>
+            <Card className="w-full max-w-md relative overflow-hidden shadow-lg" onClick={(e) => e.stopPropagation()}>
                 <div className="p-6">
                     <div className="flex justify-between items-center mb-6">
                         <h2 className="text-xl font-medium">Share {itemType}</h2>
@@ -161,7 +151,7 @@ export function ShareModal({
                                 </div>
 
                                 {/* Shared users */}
-                                {sharedUsers.map(user => (
+                                {item.sharedWith?.map(user => (
                                     <div key={user.id} className="flex items-center justify-between py-2 group">
                                         <div className="flex items-center gap-3">
                                             <Avatar className="h-8 w-8 bg-gray-100 border border-gray-200">
@@ -201,7 +191,7 @@ export function ShareModal({
                                     </div>
                                 ))}
 
-                                {sharedUsers.length === 0 && (
+                                {(!item.sharedWith || item.sharedWith.length === 0) && (
                                     <div className="text-sm text-gray-500 py-2 text-center">
                                         No one has been added yet
                                     </div>
