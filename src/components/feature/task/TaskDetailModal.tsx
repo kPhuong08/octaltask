@@ -11,6 +11,7 @@ import {
     Paperclip,
     FileText,
     Download,
+    Trash,
 } from 'lucide-react';
 import { useState, useRef } from 'react';
 import { Button } from '../../ui/button';
@@ -393,7 +394,7 @@ export function TaskDetailModal({
                                     </div>
                                   </div>
                                 </div>
-                                <div className="flex gap-1">
+                                <div className="flex gap-2 items-center">
                                   <a
                                     href={attachment.url}
                                     download={attachment.fileName}
@@ -404,10 +405,10 @@ export function TaskDetailModal({
                                   <Button
                                     size="sm"
                                     variant="ghost"
-                                    className="h-6 w-6 p-0 rounded-full text-gray-500 hover:text-red-500 hover:bg-gray-100 dark:hover:bg-gray-700 opacity-0 group-hover:opacity-100 transition-opacity"
+                                    className="h-6 w-6 p-0 rounded-full text-gray-500 hover:text-red-500 hover:bg-gray-100 dark:hover:bg-gray-700"
                                     onClick={() => handleDeleteAttachment(attachment.id)}
                                   >
-                                    <Trash2 className="h-3.5 w-3.5" />
+                                    <Trash className="h-3.5 w-3.5" />
                                   </Button>
                                 </div>
                               </div>
@@ -535,7 +536,7 @@ export function TaskDetailModal({
                   className="text-red-600 hover:text-red-700 hover:bg-red-50 h-9"
                   size="sm"
                 >
-                  <Trash2 className="h-4 w-4 mr-2" />
+                  <X className="h-4 w-4 mr-2" />
                   Delete
                 </Button>
               )}
