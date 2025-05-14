@@ -398,7 +398,7 @@ export function TaskDetailModal({
                                   <a
                                     href={attachment.url}
                                     download={attachment.fileName}
-                                    className="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"
+                                    className="text-gray-500 hover:text-blue-700 hover:bg-gray-100 rounded-2xl dark:hover:text-gray-300"
                                   >
                                     <Download className="h-3.5 w-3.5" />
                                   </a>
@@ -408,7 +408,7 @@ export function TaskDetailModal({
                                     className="h-6 w-6 p-0 rounded-full text-gray-500 hover:text-red-500 hover:bg-gray-100 dark:hover:bg-gray-700"
                                     onClick={() => handleDeleteAttachment(attachment.id)}
                                   >
-                                    <Trash className="h-3.5 w-3.5" />
+                                    <X className="h-3.5 w-3.5" />
                                   </Button>
                                 </div>
                               </div>

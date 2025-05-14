@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { Task, TaskList, Comment, Question, SharedUser, Attachment } from '@/types/task';
+import { Task, TaskList, Comment, Attachment } from '@/types/task';
 import { useUser } from './UserContext';
 
 interface TaskContextType {
@@ -469,6 +469,91 @@ export function TaskProvider({ children }: { children: ReactNode }) {
         }
     };
 
+    const addAttachment = async (taskId: string, file: File): Promise<Attachment> => {
+      try {
+        // Find the task
+        const task = tasks.find(t => t.id === taskId);
+        if (!task) {
+          throw new Error('Task not found');
+        }
+
+        // Attach small files only
+        const reader = new FileReader();
+        const fileDataPromise = new Promise<string>(resolve => {
+          reader.onload = () => resolve(reader.result as string);
+          reader.readAsDataURL(file);
+        });
+
+        const fileData = await fileDataPromise;
+
+        const newAttachment: Attachment = {
+          id: `attachment-${Date.now()}`,
+          taskId,
+          fileName: file.name,
+          fileSize: file.size,
+          fileType: file.type,
+          url: fileData,
+          uploadedAt: new Date().toISOString(),
+          uploadedBy: currentUser?.id || 'anonymous',
+        };
+
+        // Update the task with the new attachment
+        const updatedTask = {
+          ...task,
+          attachments: [...(task.attachments || []), newAttachment],
+        };
+
+        // Update the tasks array
+        const updatedTasks = tasks.map(t => (t.id === taskId ? updatedTask : t));
+        setTasks(updatedTasks);
+
+        // Save to localStorage immediately
+        localStorage.setItem('octalTasks', JSON.stringify(updatedTasks));
+
+        return newAttachment;
+      } catch (error) {
+        console.error('Error adding attachment:', error);
+        throw error;
+      }
+    }
+
+
+    const deleteAttachment = async (attachmentId: string): Promise<void> => {
+      try {
+        const taskWithAttachment = tasks.find(
+          task =>
+            task.attachments && task.attachments.some(attachment => attachment.id === attachmentId)
+        );
+
+        if (!taskWithAttachment) {
+          console.error(`No task found with attachment ID: ${attachmentId}`);
+          return;
+        }
+
+        const updatedTasks = tasks.map(task => {
+          if (task.id === taskWithAttachment.id) {
+            return {
+              ...task,
+              attachments: (task.attachments || []).filter(
+                attachment => attachment.id !== attachmentId
+              ),
+            };
+          }
+          return task;
+        });
+
+        setTasks(updatedTasks);
+
+        localStorage.setItem('octalTasks', JSON.stringify(updatedTasks));
+        console.log(`Attachment ${attachmentId} deleted successfully`);
+      } catch (error) {
+        console.error('Error deleting attachment:', error);
+        throw error;
+      }
+
+    }
+
+
     return (
         <TaskContext.Provider
             value={{
@@ -501,6 +586,10 @@ export function TaskProvider({ children }: { children: ReactNode }) {
                 // Comments & Questions
                 addComment,
                 deleteComment,
+
+                // Attachments
+                addAttachment,
+                deleteAttachment
             }}
         >
             {children}
