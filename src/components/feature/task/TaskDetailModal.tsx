@@ -395,13 +395,22 @@ export function TaskDetailModal({
                                   </div>
                                 </div>
                                 <div className="flex gap-2 items-center">
-                                  <a
-                                    href={attachment.url}
-                                    download={attachment.fileName}
-                                    className="text-gray-500 hover:text-blue-700 hover:bg-gray-100 rounded-2xl dark:hover:text-gray-300"
+                                  <Button
+                                    size="sm"
+                                    variant="ghost"
+                                    className="h-6 w-6 p-0 rounded-full text-gray-500 hover:text-blue-900 hover:bg-gray-100 dark:hover:text-gray-300"
+                                    onClick={() => {
+                                      const a = document.createElement('a');
+                                      a.href = attachment.url;
+                                      a.download = attachment.fileName; 
+                                      document.body.appendChild(a);
+                                      a.click();
+                                      document.body.removeChild(a);
+                                    }}
+                                    aria-label={`Download ${attachment.fileName}`}
                                   >
                                     <Download className="h-3.5 w-3.5" />
-                                  </a>
+                                  </Button>
                                   <Button
                                     size="sm"
                                     variant="ghost"
