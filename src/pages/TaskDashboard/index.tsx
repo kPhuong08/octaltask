@@ -549,9 +549,7 @@ export default function TaskDashboard() {
                 />
             )}
 
-            <div className="bottom-0 fix">
-                <Footer />
-            </div>
+              <Footer />
         </div>
     );
 }

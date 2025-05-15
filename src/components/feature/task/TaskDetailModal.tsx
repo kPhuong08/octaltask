@@ -329,7 +329,7 @@ export function TaskDetailModal({
                           type="date"
                           value={editedTask.dueDate || ''}
                           onChange={e => setEditedTask({ ...editedTask, dueDate: e.target.value })}
-                          className="border-0 p-2 h-10 text-sm bg-transparent text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:ring-offset-0 rounded-lg transition-all cursor-pointer"
+                          className="border-0 p-2 h-10 text-sm bg-transparent text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-600 focus:ring-2 focus:ring-blue-500 focus:ring-offset-0 rounded-lg transition-all cursor-pointer"
                         />
                       </div>
                     </div>

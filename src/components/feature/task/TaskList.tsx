@@ -1,8 +1,6 @@
-import { GripVertical } from "lucide-react";
-
 import { Task } from '@/types/task';
 import { formatDistanceToNow } from 'date-fns';
-import { Calendar, Edit2, Plus, Trash2, Star } from 'lucide-react';
+import { Calendar, Edit2, Plus, Trash2, Star, GripVertical } from 'lucide-react';
 import { useRef, useState } from 'react';
 import { Button } from '../../ui/button';
 import { Checkbox } from '../../ui/checkbox';
@@ -276,7 +274,7 @@ export function TaskList({
                         activeTaskId === task.id ? 'opacity-100' : 'opacity-0'
                       }`}
                     >
-                      <Trash2 className="h-4 w-4" />
+                      <Trash2 className="h-4 w-4 text-gray-500 dark:text-gray-400" />
                     </Button>
                     <Button
                       variant="ghost"
