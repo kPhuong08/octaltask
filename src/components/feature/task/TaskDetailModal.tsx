@@ -356,7 +356,7 @@ export function TaskDetailModal({
                             sideOffset={10}
                             className="z-[200] px-3 py-2 text-xs font-medium bg-gray-800 text-white border border-gray-200 rounded-md shadow-lg dark:bg-blue-100 dark:text-black"
                           >
-                            Attach a file
+                            Attach files
                           </TooltipContent>
                         </Tooltip>
                         <input
@@ -402,7 +402,7 @@ export function TaskDetailModal({
                                     onClick={() => {
                                       const a = document.createElement('a');
                                       a.href = attachment.url;
-                                      a.download = attachment.fileName; 
+                                      a.download = attachment.fileName;
                                       document.body.appendChild(a);
                                       a.click();
                                       document.body.removeChild(a);
