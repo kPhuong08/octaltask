@@ -3,9 +3,11 @@ import { Button } from '@/components/ui/button';
 import { Home, Search } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Logo } from '@/components/common/Logo'
+import { useTheme } from '@/contexts/ThemeContext';
 
 export default function NotFound() {
   const navigate = useNavigate();
+  const { darkMode } = useTheme();
 
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900 flex flex-col">
@@ -13,8 +15,9 @@ export default function NotFound() {
         <div className="px-4 py-2.5 flex justify-between items-center">
           <div className="flex items-center gap-3 ">
             <Logo
-              size="lg"
-              className="font-sans"
+                size="md"
+                color={darkMode ? 'text-blue-400' : 'text-blue-600'}
+                className="font-sans"
             />
           </div>
 
