@@ -5,7 +5,7 @@ import { ShareListModal } from '@/components/feature/list/ShareListModal';
 import { TaskDetailModal } from '@/components/feature/task/TaskDetailModal';
 import { TaskList } from '@/components/feature/task/TaskList';
 import { TaskListHeader } from '@/components/feature/task/TaskListHeader';
-import { Footer } from '@/components/layout/Footer';
+import { Footer } from '@/components/common/Footer';
 import { TaskListSidebar } from '@/components/layout/TaskListSidebar';
 import { UserMenu } from '@/components/layout/UserMenu';
 import { useTask } from '@/contexts/TaskContext';

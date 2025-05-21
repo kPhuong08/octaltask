@@ -1,4 +1,4 @@
-import { Footer } from '@/components/layout/Footer';
+import { Footer } from '@/components/common/Footer';
 import { Button } from '@/components/ui/button';
 import { Home, Search } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';

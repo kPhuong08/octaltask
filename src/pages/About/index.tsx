@@ -1,4 +1,4 @@
-import { Footer } from '@/components/layout/Footer';
+import { Footer } from '@/components/common/Footer';
 import { Card, CardContent } from '@/components/ui/card';
 import { ArrowLeft, Code, Rocket, User, Users, CodeXml } from 'lucide-react';
 import { Link } from 'react-router-dom';

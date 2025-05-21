@@ -6,12 +6,10 @@ import {
     MessageSquare,
     Plus,
     MessageSquareShare,
-    Trash2,
     X,
     Paperclip,
     FileText,
     Download,
-    Trash,
 } from 'lucide-react';
 import { useState, useRef } from 'react';
 import { Button } from '../../ui/button';
@@ -19,7 +17,7 @@ import { Checkbox } from '../../ui/checkbox';
 import { Input } from '../../ui/input';
 import { ShareModal } from './ShareModal';
 import { TaskComments } from './TaskComments';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 
 
 interface SubTask {
