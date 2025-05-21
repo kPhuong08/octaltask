@@ -3,7 +3,11 @@ import { Link } from 'react-router-dom';
 interface LogoProps {
   size?: 'sm' | 'md' | 'lg';
   showText?: boolean;
+<<<<<<< HEAD
   color?: 'blueLight' | 'blueDark' | 'white';
+=======
+  color?: 'blue' | 'white';
+>>>>>>> 241ebfa978494c50d98c3e1f637c6914ce2caac4
   className?: string;
   fontWeight?: 'semibold' | 'bold';
 }
@@ -23,8 +27,12 @@ export function Logo({ size = 'md', showText = true, color = 'blue', className =
   };
 
   const colorClasses = {
+<<<<<<< HEAD
     blueLight: 'text-blue-600',
     blueDark: 'text-blue-400',
+=======
+    blue: 'text-blue-400',
+>>>>>>> 241ebfa978494c50d98c3e1f637c6914ce2caac4
     white: 'text-white'
   };
 
