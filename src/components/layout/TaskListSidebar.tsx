@@ -156,7 +156,7 @@ export function TaskListSidebar({
           </Button>
         </div>
 
-        <div className="mb-6 ">
+        <div className="mb-6">
           <div className="flex items-center justify-between px-3 mb-2">
             <h2 className="text-xs font-medium tracking-wide text-gray-500 uppercase dark:text-gray-400">
               Lists
@@ -189,7 +189,7 @@ export function TaskListSidebar({
                   {list.isShared && (
                     <div className="ml-2 bg-blue-50 dark:bg-blue-900/30 px-1.5 py-0.5 rounded-full text-xs text-blue-600 dark:text-blue-400 flex items-center">
                       <Share2 className="h-2.5 w-2.5 mr-0.5" />
-                      <span className="truncate">Shared</span>      
+                      <span className="truncate">Shared</span>
                     </div>
                   )}
                 </Button>

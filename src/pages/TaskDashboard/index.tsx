@@ -5,7 +5,6 @@ import { ShareListModal } from '@/components/feature/list/ShareListModal';
 import { TaskDetailModal } from '@/components/feature/task/TaskDetailModal';
 import { TaskList } from '@/components/feature/task/TaskList';
 import { TaskListHeader } from '@/components/feature/task/TaskListHeader';
-import { Footer } from '@/components/common/Footer';
 import { TaskListSidebar } from '@/components/layout/TaskListSidebar';
 import { UserMenu } from '@/components/layout/UserMenu';
 import { useTask } from '@/contexts/TaskContext';
@@ -400,7 +399,7 @@ export default function TaskDashboard() {
 
                         <Logo
                             size="md"
-                            color={darkMode ? 'text-blue-400' : 'text-blue-600'}
+                            color={darkMode ? 'blueDark' : 'blueLight'}
                             className="font-sans"
                         />
                     </div>
@@ -412,7 +411,7 @@ export default function TaskDashboard() {
                 </div>
             </header>
 
-            <div className={`flex-1 flex ${showTaskDetail ? 'relative' : ''}`}>
+            <div className={`flex ${showTaskDetail ? 'relative' : ''}`}>
                 {/* Mobile Sidebar */}
                 {showMobileSidebar && (
                     <div
@@ -549,7 +548,7 @@ export default function TaskDashboard() {
                 />
             )}
 
-              <Footer />
+
         </div>
     );
 }
