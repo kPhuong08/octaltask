@@ -1,7 +1,8 @@
 import { MapPin, Github, Linkedin, Mail, Phone } from "lucide-react";
 import { Logo } from "../common/Logo";
-
+import { useTheme } from "../../contexts/ThemeContext";
 export function Footer() {
+    const darkMode = useTheme();
     return (
         <footer className="bg-gradient-to-br from-gray-900 to-gray-800 text-white">
             <div className="max-w-7xl mx-auto px-6 py-16">
@@ -10,7 +11,7 @@ export function Footer() {
                     {/* Brand Column */}
                     <div className="col-span-1 md:col-span-1 space-y-6">
                         <div className="flex items-center space-x-2">
-                            <Logo size="md" color="blue" fontWeight="semibold" className="font-sans" />
+                            <Logo size="md" color={darkMode ? "blueDark" : "blueLight"} fontWeight="semibold" className="font-sans" />
                         </div>
 
                         <p className="text-gray-300 text-sm leading-relaxed">

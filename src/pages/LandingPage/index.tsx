@@ -9,6 +9,7 @@ import Navbar from '@/components/common/Navbar';
 export default function LandingPage() {
     const navigate = useNavigate();
     const [visibleFAQ, setVisibleFAQ] = useState<number | null>(null);
+    const [activeSection, setActiveSection] = useState('hero');
 
     const toggleFAQ = (index: number) => {
         setVisibleFAQ(visibleFAQ === index ? null : index);
@@ -39,10 +40,49 @@ export default function LandingPage() {
         return () => window.removeEventListener('scroll', animateOnScroll);
     }, []);
 
+    // Section tracking for navbar
+    useEffect(() => {
+        // Define the sections to track
+        const sections = ['hero', 'features', 'about', 'testimonials', 'faq'];
+
+        // Create IntersectionObserver to track which section is in view
+        const observerOptions = {
+            root: null, // viewport
+            rootMargin: '-10% 0px -70% 0px', // trigger when section is approximately in the middle of viewport
+            threshold: 0 // trigger as soon as even 1px is visible
+        };
+
+        const sectionObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    setActiveSection(entry.target.id);
+                }
+            });
+        }, observerOptions);
+
+        // Observe all sections
+        sections.forEach(sectionId => {
+            const sectionElement = document.getElementById(sectionId);
+            if (sectionElement) {
+                sectionObserver.observe(sectionElement);
+            }
+        });
+
+        // Clean up
+        return () => {
+            sections.forEach(sectionId => {
+                const sectionElement = document.getElementById(sectionId);
+                if (sectionElement) {
+                    sectionObserver.unobserve(sectionElement);
+                }
+            });
+        };
+    }, []);
+
     return (
         <div className="flex flex-col min-h-screen bg-gray-50 dark:bg-gray-900">
             <div className="sticky top-0 z-100">
-                <Navbar />
+                <Navbar activeSection={activeSection} />
             </div>
             {/* Hero Section */}
             <main className="flex-grow">

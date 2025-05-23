@@ -6,43 +6,47 @@ import { ThemeToggle } from '@/components/common/ThemeToggle';
 import { useState } from 'react';
 import { Menu, X } from 'lucide-react';
 
-export default function Navbar() {
+interface NavbarProps {
+    activeSection?: string;
+}
+
+export default function Navbar({ activeSection = '' }: NavbarProps) {
     const darkMode = useTheme();
     const navigate = useNavigate();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+    // Define navigation items
+    const navItems = [
+        { id: 'hero', label: 'Home', href: '#' },
+        { id: 'features', label: 'Features', href: '#features' },
+        { id: 'about', label: 'About', href: '#about' },
+        { id: 'testimonials', label: 'Testimonials', href: '#testimonials' },
+        { id: 'faq', label: 'FAQ', href: '#faq' },
+    ];
+
     return (
         <div>
-            <header className="sticky top-0 z-50 bg-white/90 backdrop-blur-sm border-b border-gray-200 dark:bg-gray-800/90 dark:border-gray-700">
-                <div className="px-4 py-2.5 flex justify-between items-center max-w-7xl mx-auto">
+            <header className="fixed w-full transition-all duration-500 z-50 sticky top-2">
+                <div className="max-w-7xl mx-auto px-4">
+                    <div className="bg-white/95 dark:bg-gray-800/95 backdrop-blur-xl rounded-2xl shadow-2xl shadow-blue-500/10 border border-blue-200 dark:border-blue-700 hover:shadow-blue-500/20 hover:scale-[1.02] transition-all duration-300">
+                        <div className="px-6 py-4 flex justify-between items-center">
                     <Logo size="md" color={darkMode ? 'blueLight' : 'blueDark'} className="font-sans" />
 
                     {/* Desktop Navigation */}
                     <nav className="hidden md:flex items-center gap-6">
-                        <a
-                            href="#features"
-                            className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium"
-                        >
-                            Features
-                        </a>
-                        <a
-                            href="#about"
-                            className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium"
-                        >
-                            About
-                        </a>
-                        <a
-                            href="#testimonials"
-                            className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium"
-                        >
-                            Testimonials
-                        </a>
-                        <a
-                            href="#faq"
-                            className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium"
-                        >
-                            FAQ
-                        </a>
+                        {navItems.map((item) => (
+                            <a
+                                key={item.id}
+                                href={item.href}
+                                className={`font-medium px-3 py-2 relative transition-all duration-300 hover:scale-105 ${activeSection === item.id
+                                        ? 'text-blue-600 dark:text-blue-400'
+                                        : 'text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400'
+                                    } before:absolute before:bottom-0 before:left-0 before:w-full before:h-0.5 before:bg-gradient-to-r before:from-blue-400 before:to-blue-600 before:transform before:scale-x-0 before:origin-left before:transition-transform before:duration-300 hover:before:scale-x-100 ${activeSection === item.id ? 'before:scale-x-100' : ''
+                                    }`}
+                            >
+                                {item.label}
+                            </a>
+                        ))}
                     </nav>
 
                     <div className="flex items-center gap-4">
@@ -79,34 +83,19 @@ export default function Navbar() {
                 {isMenuOpen && (
                     <div className="md:hidden bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
                         <nav className="flex flex-col py-3 px-4 space-y-3">
-                            <a
-                                href="#features"
-                                className="text-gray-700 dark:text-gray-300 py-2 hover:text-blue-600 dark:hover:text-blue-400"
-                                onClick={() => setIsMenuOpen(false)}
-                            >
-                                Features
-                            </a>
-                            <a
-                                href="#about"
-                                className="text-gray-700 dark:text-gray-300 py-2 hover:text-blue-600 dark:hover:text-blue-400"
-                                onClick={() => setIsMenuOpen(false)}
-                            >
-                                About
-                            </a>
-                            <a
-                                href="#testimonials"
-                                className="text-gray-700 dark:text-gray-300 py-2 hover:text-blue-600 dark:hover:text-blue-400"
-                                onClick={() => setIsMenuOpen(false)}
-                            >
-                                Testimonials
-                            </a>
-                            <a
-                                href="#faq"
-                                className="text-gray-700 dark:text-gray-300 py-2 hover:text-blue-600 dark:hover:text-blue-400"
-                                onClick={() => setIsMenuOpen(false)}
-                            >
-                                FAQ
-                            </a>
+                            {navItems.map((item) => (
+                                <a
+                                    key={item.id}
+                                    href={item.href}
+                                    className={`py-2 transition-colors duration-200 ${activeSection === item.id
+                                        ? 'text-blue-600 dark:text-blue-400'
+                                        : 'text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400'
+                                        }`}
+                                    onClick={() => setIsMenuOpen(false)}
+                                >
+                                    {item.label}
+                                </a>
+                            ))}
                             <hr className="border-gray-200 dark:border-gray-700" />
                             <div className="flex gap-3 pt-2">
                                 <Button
@@ -131,7 +120,9 @@ export default function Navbar() {
                             </div>
                         </nav>
                     </div>
-                )}
+                    )}
+                </div>
+                </div>
             </header>
         </div>
     );

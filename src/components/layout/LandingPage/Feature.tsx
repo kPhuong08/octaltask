@@ -98,6 +98,11 @@ export default function Feature() {
 
     return (
         <section id="features" className="py-20 bg-white dark:bg-gray-800 px-4 overflow-hidden">
+            <div className="absolute inset-0 pointer-events-none">
+                <div className="absolute top-20 left-10 w-2 h-2 bg-blue-400 rounded-full animate-pulse"></div>
+                <div className="absolute bottom-32 right-16 w-3 h-3 bg-blue-300 rounded-full animate-bounce"></div>
+                <div className="absolute top-1/2 left-1/4 w-1.5 h-1.5 bg-blue-500 rounded-full animate-ping"></div>
+            </div>
             <div className="max-w-7xl mx-auto">
                 <div
                     id="features-header"
