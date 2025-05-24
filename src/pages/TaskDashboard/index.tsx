@@ -441,7 +441,7 @@ export default function TaskDashboard() {
                     className={`hidden md:block w-0 transition-all duration-300 ease-in-out ${showDesktopSidebar ? 'w-64' : 'w-0'
                         }  shrink-0 overflow-hidden border-r pt-3 border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800`}
                 >
-                    <div className="sticky top-[73px] h-[calc(100vh-73px-73px)] overflow-y-auto">
+                    <div className="sticky top-0 h-screen overflow-y-hidden">
                         <TaskListSidebar
                             lists={lists}
                             activeListId={activeListId}
@@ -454,7 +454,7 @@ export default function TaskDashboard() {
                 </div>
 
                 <main
-                    className={`flex-1 p-5 md:p-8 overflow-y-auto overflow-x-hidden max-h-[calc(100vh-73px-68px)] bg-gray-50 dark:bg-gray-900 transition-all duration-300 ease-in-out ${showDesktopSidebar ? '' : 'md:px-20'
+                    className={`flex-1 p-5 md:p-8 overflow-y-auto overflow-x-hidden max-h-screen bg-gray-50 dark:bg-gray-900 transition-all duration-300 ease-in-out ${showDesktopSidebar ? '' : 'md:px-20'
                         }`}
                 >
                     <div className="max-w-3xl mx-auto">

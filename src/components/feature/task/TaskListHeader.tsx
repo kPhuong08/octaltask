@@ -103,7 +103,7 @@ export function TaskListHeader({
                         <Button
                             variant="ghost"
                             size="sm"
-                            className="h-9 px-3 rounded-full text-gray-600 dark:text-gray-300 border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 hover:border-gray-300 dark:hover:border-gray-600"
+                            className="z-0 h-9 px-3 rounded-full text-gray-600 dark:text-gray-300 border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 hover:border-gray-300 dark:hover:border-gray-600 shadow-none"
                             onClick={() => setSortMenuOpen(!sortMenuOpen)}
                         >
                             <ArrowUpDown className="h-3.5 w-3.5 mr-1.5" />

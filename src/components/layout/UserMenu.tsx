@@ -64,7 +64,7 @@ export function UserMenu({ user, onLogout }: UserMenuProps) {
 
             <div
                 className={cn(
-                    'absolute right-0 top-full mt-2 w-80 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden transition-all duration-150 transform origin-top-right z-[100]',
+                    'absolute right-0 top-full mt-2 w-80 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 transition-all duration-150 transform origin-top-right z-50',
                     isOpen
                         ? 'scale-100 opacity-100 translate-y-0'
                         : 'scale-95 opacity-0 translate-y-1 pointer-events-none'

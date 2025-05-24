@@ -270,17 +270,17 @@ export function TaskList({
                       variant="ghost"
                       size="sm"
                       onClick={() => deleteTask(task.id)}
-                      className={`h-8 w-8 p-0 rounded-full hover:bg-red-50 dark:hover:bg-red-900/30 hover:text-red-500 ${
+                      className={`h-8 w-8 p-0 rounded-full hover:bg-red-100 dark:hover:bg-red-900/30 ${
                         activeTaskId === task.id ? 'opacity-100' : 'opacity-0'
                       }`}
                     >
-                      <Trash2 className="h-4 w-4 text-gray-500 dark:text-gray-400" />
+                      <Trash2 className="h-4 w-4 text-gray-500 dark:text-gray-400  " />
                     </Button>
                     <Button
                       variant="ghost"
                       size="sm"
                       onClick={e => toggleTaskStar(task.id, e)}
-                      className="h-8 w-8 p-0 rounded-full hover:bg-yellow-50 dark:hover:bg-yellow-900/30 hover:text-yellow-500"
+                      className="h-8 w-8 p-0 rounded-full hover:bg-yellow-100 dark:hover:bg-yellow-900/30 hover:text-yellow-500"
                     >
                       <Star
                         className={`h-4 w-4 ${
