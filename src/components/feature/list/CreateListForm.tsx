@@ -3,7 +3,7 @@ import { ReactNode, useState } from 'react';
 import { Button } from '../../ui/button';
 import { Input } from '../../ui/input';
 
-type ListColor = 'blue' | 'green' | 'red' | 'purple' | 'amber' |'black';
+type ListColor = 'blue' | 'green' | 'red' | 'purple' | 'amber' | 'black';
 type ListIcon = 'personal' | 'work' | 'home' | 'study' | 'default';
 
 interface CreateListFormProps {

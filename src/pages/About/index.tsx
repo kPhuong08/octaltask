@@ -16,8 +16,9 @@ export default function About() {
       {/* Header */}
       <header className="bg-transparent py-5 sticky top-0 z-10">
         <div className="max-w-5xl mx-auto px-6 flex items-center">
+          {/* better logic here */}
           <Link
-            to="/"
+            to="/tasks"
             className="text-gray-500 hover:text-blue-600 dark:hover:text-blue-400 p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition"
           >
             <ArrowLeft className="h-5 w-5" />

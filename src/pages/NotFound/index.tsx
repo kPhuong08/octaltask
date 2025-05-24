@@ -16,7 +16,7 @@ export default function NotFound() {
           <div className="flex items-center gap-3 ">
             <Logo
                 size="md"
-                color={darkMode ? 'text-blue-400' : 'text-blue-600'}
+                color={darkMode ? 'blueDark' : 'blueLight'}
                 className="font-sans"
             />
           </div>
@@ -24,7 +24,7 @@ export default function NotFound() {
 
         </div>
       </header>
-      <main className="flex-1 flex flex-col items-center justify-center px-6 py-20">
+      <main className="flex-1 flex flex-col items-center justify-center px-6 py-20 min-h-screen">
         <div className="text-center space-y-6">
           {/* 404 Graphic */}
           <div className="inline-flex items-center text-6xl font-bold tracking-tight text-blue-600 dark:text-blue-400">
@@ -58,6 +58,7 @@ export default function NotFound() {
               Go Back
             </Button>
 
+            {/* need to fix logic here */}
             <Link to="/" className="w-full sm:w-auto">
               <Button className="flex items-center gap-2 w-full justify-center bg-blue-600 hover:bg-blue-700 text-white">
                 <Home className="h-4 w-4" />

@@ -38,8 +38,9 @@ export default function Settings() {
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col">
       <header className="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700 py-4 shadow-sm sticky top-0 z-10">
         <div className="max-w-5xl mx-auto px-6 flex items-center">
+          {/* better logic here */}
           <Link
-            to="/"
+            to="/tasks"
             className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 mr-4 rounded-full p-1 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
           >
             <ArrowLeft className="h-5 w-5" />
