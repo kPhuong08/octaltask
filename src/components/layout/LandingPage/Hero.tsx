@@ -7,7 +7,7 @@ export default function Hero() {
     return (
       <section
         id="hero"
-        className="py-16 md:py-24 px-4 overflow-hidden relative bg-gradient-to-br from-gray-50 to-blue-50 dark:from-gray-900 dark:to-blue-900/20"
+        className="py-16 md:py-24 px-4 overflow-hidden relative bg-gradient-to-br from-gray-50 to-blue-300 dark:from-gray-900 dark:to-blue-900/20"
       >
         {/* Dot pattern overlay */}
         <div
