@@ -18,6 +18,7 @@ export function UserMenu({ user, onLogout }: UserMenuProps) {
     const menuRef = useRef<HTMLDivElement>(null);
     const { darkMode, toggleDarkMode } = useTheme();
     const navigate = useNavigate();
+    
 
     useEffect(() => {
         function handleClickOutside(event: MouseEvent) {
@@ -53,10 +54,10 @@ export function UserMenu({ user, onLogout }: UserMenuProps) {
                     <img
                         src={user.photoUrl}
                         alt={user.name}
-                        className="w-9 h-9 md:w-10 md:h-10 rounded-full object-cover ring-2 ring-white dark:ring-gray-800"
+                        className="object-cover rounded-full w-9 h-9 md:w-10 md:h-10 ring-2 ring-white dark:ring-gray-800"
                     />
                 ) : (
-                    <div className="w-9 h-9 md:w-10 md:h-10 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center text-blue-600 dark:text-blue-300 ring-2 ring-white dark:ring-gray-800">
+                    <div className="flex items-center justify-center text-blue-600 bg-blue-100 rounded-full w-9 h-9 md:w-10 md:h-10 dark:bg-blue-900 dark:text-blue-300 ring-2 ring-white dark:ring-gray-800">
                         {user.name.substring(0, 1).toUpperCase()}
                     </div>
                 )}
@@ -76,16 +77,16 @@ export function UserMenu({ user, onLogout }: UserMenuProps) {
                             <img
                                 src={user.photoUrl}
                                 alt={user.name}
-                                className="w-12 h-12 rounded-full object-cover ring-2 ring-white dark:ring-gray-800"
+                                className="object-cover w-12 h-12 rounded-full ring-2 ring-white dark:ring-gray-800"
                             />
                         ) : (
-                            <div className="w-12 h-12 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center text-blue-600 dark:text-blue-300 ring-2 ring-white dark:ring-gray-800">
+                            <div className="flex items-center justify-center w-12 h-12 text-blue-600 bg-blue-100 rounded-full dark:bg-blue-900 dark:text-blue-300 ring-2 ring-white dark:ring-gray-800">
                                 {user.name.substring(0, 1).toUpperCase()}
                             </div>
                         )}
                         <div className="flex flex-col">
                             <p className="font-medium text-gray-800 dark:text-gray-200">{user.name}</p>
-                            <p className="text-sm text-gray-500 dark:text-gray-400 truncate">{user.email}</p>
+                            <p className="text-sm text-gray-500 truncate dark:text-gray-400">{user.email}</p>
                         </div>
                     </div>
                 </div>
@@ -93,36 +94,36 @@ export function UserMenu({ user, onLogout }: UserMenuProps) {
                 <div className="py-1">
                     <button
                         onClick={() => handleNavigation('/profile')}
-                        className="flex items-center w-full px-6 py-3 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700/50 text-left cursor-pointer"
+                        className="flex items-center w-full px-6 py-3 text-sm text-left text-gray-700 cursor-pointer dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700/50"
                     >
-                        <User className="h-5 w-5 mr-3 text-gray-500 dark:text-gray-400" />
+                        <User className="w-5 h-5 mr-3 text-gray-500 dark:text-gray-400" />
                         <span>Your Profile</span>
                     </button>
                     <button
                         onClick={() => handleNavigation('/settings')}
-                        className="flex items-center w-full px-6 py-3 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700/50 text-left cursor-pointer"
+                        className="flex items-center w-full px-6 py-3 text-sm text-left text-gray-700 cursor-pointer dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700/50"
                     >
-                        <Settings className="h-5 w-5 mr-3 text-gray-500 dark:text-gray-400" />
+                        <Settings className="w-5 h-5 mr-3 text-gray-500 dark:text-gray-400" />
                         <span>Settings</span>
                     </button>
                     <button
                         onClick={() => handleNavigation('/about')}
-                        className="flex items-center w-full px-6 py-3 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700/50 text-left cursor-pointer"
+                        className="flex items-center w-full px-6 py-3 text-sm text-left text-gray-700 cursor-pointer dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700/50"
                     >
-                        <Info className="h-5 w-5 mr-3 text-gray-500 dark:text-gray-400" />
+                        <Info className="w-5 h-5 mr-3 text-gray-500 dark:text-gray-400" />
                         <span>About OctalTask</span>
                     </button>
                     <button
-                        className="flex items-center w-full px-6 py-3 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700/50 text-left cursor-pointer "
+                        className="flex items-center w-full px-6 py-3 text-sm text-left text-gray-700 cursor-pointer dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700/50 "
                         onClick={() => {
                             toggleDarkMode();
                             setIsOpen(false);
                         }}
                     >
                         {darkMode ? (
-                            <Sun className="h-5 w-5 mr-3 text-yellow-500" />
+                            <Sun className="w-5 h-5 mr-3 text-yellow-500" />
                         ) : (
-                            <Moon className="h-5 w-5 mr-3 text-gray-500 dark:text-gray-400" />
+                            <Moon className="w-5 h-5 mr-3 text-gray-500 dark:text-gray-400" />
                         )}
                         <span className="flex items-center justify-between w-full">
                             <span>{darkMode ? 'Light Mode' : 'Dark Mode'}</span>
@@ -139,15 +140,15 @@ export function UserMenu({ user, onLogout }: UserMenuProps) {
                     </button>
                 </div>
 
-                <div className="border-t border-gray-100 dark:border-gray-700 py-1">
+                <div className="py-1 border-t border-gray-100 dark:border-gray-700">
                     <button
-                        className="flex items-center w-full px-6 py-3 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700/50 text-left cursor-pointer"
+                        className="flex items-center w-full px-6 py-3 text-sm text-left text-gray-700 cursor-pointer dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700/50"
                         onClick={() => {
                             setIsOpen(false);
                             onLogout();
                         }}
                     >
-                        <LogOut className="h-5 w-5 mr-3 text-gray-500 dark:text-gray-400" />
+                        <LogOut className="w-5 h-5 mr-3 text-gray-500 dark:text-gray-400" />
                         <span>Sign out</span>
                     </button>
                 </div>
