@@ -45,6 +45,7 @@ export default function ResetPasswordPage() {
         }
     }
 
+    
     return (
         <div className="flex min-h-screen bg-gray-50 dark:bg-gray-900">
             {/* Left side illustration */}

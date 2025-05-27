@@ -382,7 +382,7 @@ export default function TaskDashboard() {
 
     return (
         <div className="flex flex-col min-h-screen bg-gray-50 dark:bg-gray-900">
-            <header className="sticky top-0 bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
+            <header className="top-0 bg-white border-b border-gray-200  dark:bg-gray-800 dark:border-gray-700">
                 <div className="px-4 py-2.5 flex justify-between items-center">
                     <div className="flex items-center gap-3 ">
                         <button
@@ -404,7 +404,7 @@ export default function TaskDashboard() {
                         />
                     </div>
 
-                    <div className="flex items-center gap-3 ">
+                    <div className="flex items-center gap-3">
                         <ThemeToggle />
                         {currentUser && <UserMenu user={currentUser} onLogout={handleLogout} />}
                     </div>
