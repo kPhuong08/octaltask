@@ -10,6 +10,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { z } from 'zod';
+import Cookies from 'js-cookie';
 
 // Form validation schema
 const loginSchema = z.object({
@@ -43,8 +44,10 @@ const Login = () => {
             const res = await login(data.email, data.password);
             console.log('Login success:', res);
             if (res.accessToken) {
-                localStorage.setItem('token', res.accessToken);
-                navigate('/');
+                Cookies.set('token', res.accessToken, {
+                expires: 1, // số ngày hết hạn
+            });
+                navigate('/tasks');
             } else {
                 setLoginError('An unexpected error occurred');
             }
@@ -57,10 +60,10 @@ const Login = () => {
     return (
         <div className="flex min-h-screen bg-gray-50 dark:bg-gray-900">
             {/* Left side illustration */}
-            <div className="hidden lg:flex lg:w-1/2 bg-blue-50 dark:bg-gray-800 items-center justify-center p-12">
+            <div className="items-center justify-center hidden p-12 lg:flex lg:w-1/2 bg-blue-50 dark:bg-gray-800">
                 <div className="max-w-md">
                     <div className="mb-8 text-center lg:text-left">
-                        <h1 className="text-4xl font-normal mb-2">
+                        <h1 className="mb-2 text-4xl font-normal">
                             <span className="font-medium text-blue-600 dark:text-blue-400">Octal</span>
                             <span className="font-normal text-gray-800 dark:text-gray-200">Task</span>
                         </h1>
@@ -137,32 +140,32 @@ const Login = () => {
             </div>
 
             {/* Right side login form */}
-            <div className="w-full lg:w-1/2 flex items-center justify-center px-6 py-12">
+            <div className="flex items-center justify-center w-full px-6 py-12 lg:w-1/2">
                 <div className="w-full max-w-md space-y-8">
                     <div className="text-center lg:hidden">
-                        <h1 className="text-4xl font-normal mb-2">
+                        <h1 className="mb-2 text-4xl font-normal">
                             <span className="font-medium text-blue-600 dark:text-blue-400">Octal</span>
                             <span className="font-normal text-gray-800 dark:text-gray-200">Task</span>
                         </h1>
                         <h2 className="text-2xl font-normal text-gray-700 dark:text-gray-300">Sign in</h2>
-                        <p className="text-sm mt-2 text-gray-600 dark:text-gray-400">
+                        <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
                             to continue to OctalTask
                         </p>
                     </div>
 
                     <div className="hidden lg:block lg:text-left">
                         <h2 className="text-3xl font-normal text-gray-700 dark:text-gray-300">Sign in</h2>
-                        <p className="text-sm mt-2 text-gray-600 dark:text-gray-400">
+                        <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
                             to continue to OctalTask
                         </p>
                     </div>
 
-                    <Card className="border border-gray-200 dark:border-gray-700 shadow-sm rounded-2xl bg-white dark:bg-gray-800">
-                        <CardContent className="pt-6 px-6 sm:px-8">
+                    <Card className="bg-white border border-gray-200 shadow-sm dark:border-gray-700 rounded-2xl dark:bg-gray-800">
+                        <CardContent className="px-6 pt-6 sm:px-8">
                             {loginError && (
                                 <Alert
                                     variant="destructive"
-                                    className="mb-4 py-2 bg-red-50 dark:bg-red-900/20 border-red-100 dark:border-red-800/30 text-red-800 dark:text-red-300 rounded-lg"
+                                    className="py-2 mb-4 text-red-800 border-red-100 rounded-lg bg-red-50 dark:bg-red-900/20 dark:border-red-800/30 dark:text-red-300"
                                 >
                                     <AlertDescription className="text-sm">{loginError}</AlertDescription>
                                 </Alert>
@@ -174,12 +177,12 @@ const Login = () => {
                                         id="email"
                                         type="email"
                                         placeholder="Email address"
-                                        className="h-12 rounded-lg border-gray-300 dark:border-gray-600 focus:border-blue-500 focus:ring focus:ring-blue-200 dark:focus:ring-blue-800 dark:focus:ring-opacity-30 bg-white dark:bg-gray-700 px-4"
+                                        className="h-12 px-4 bg-white border-gray-300 rounded-lg dark:border-gray-600 focus:border-blue-500 focus:ring focus:ring-blue-200 dark:focus:ring-blue-800 dark:focus:ring-opacity-30 dark:bg-gray-700"
                                         {...register('email')}
                                         aria-invalid={errors.email ? 'true' : 'false'}
                                     />
                                     {errors.email && (
-                                        <p className="text-sm text-red-500 mt-1">{errors.email.message}</p>
+                                        <p className="mt-1 text-sm text-red-500">{errors.email.message}</p>
                                     )}
                                 </div>
 
@@ -188,12 +191,12 @@ const Login = () => {
                                         id="password"
                                         type="password"
                                         placeholder="Password"
-                                        className="h-12 rounded-lg border-gray-300 dark:border-gray-600 focus:border-blue-500 focus:ring focus:ring-blue-200 dark:focus:ring-blue-800 dark:focus:ring-opacity-30 bg-white dark:bg-gray-700 px-4"
+                                        className="h-12 px-4 bg-white border-gray-300 rounded-lg dark:border-gray-600 focus:border-blue-500 focus:ring focus:ring-blue-200 dark:focus:ring-blue-800 dark:focus:ring-opacity-30 dark:bg-gray-700"
                                         {...register('password')}
                                         aria-invalid={errors.password ? 'true' : 'false'}
                                     />
                                     {errors.password && (
-                                        <p className="text-sm text-red-500 mt-1">{errors.password.message}</p>
+                                        <p className="mt-1 text-sm text-red-500">{errors.password.message}</p>
                                     )}
                                 </div>
 
@@ -236,7 +239,7 @@ const Login = () => {
                                 Don't have an account?{' '}
                                 <a
                                     href="/signup"
-                                    className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 font-medium"
+                                    className="font-medium text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300"
                                 >
                                     Create account
                                 </a>
