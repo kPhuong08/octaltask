@@ -1,8 +1,10 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
+import { CardTitle } from '@/components/ui/card';
 
 const API_BASE = import.meta.env.VITE_API_BASE; 
 
+// List handle 
 export const createList = async (name: string, icon: string, color: string) => {
   try {
     const token = Cookies.get('token');
@@ -50,7 +52,7 @@ export const getLists = async () => {
   }
 };
 
-export const getListsId = async (id: string) => {
+export const getListsById = async (id: string) => {
   try {
     const token = Cookies.get('token');
     if (!token) throw new Error('No token found');
@@ -112,3 +114,112 @@ export const updateListById = async (
     throw err.response?.data || err;
   }
 };
+
+// Task handle
+export const createTask = async (title: string, description: string, dueDate: string) => {
+  try {
+    const token = Cookies.get('token');
+    if (!token) throw new Error('No token found');
+
+    const res = await axios.post(
+      `${API_BASE}/tasks`, // endpoint 
+      {
+        title,
+        description,
+        dueDate,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    return res.data;
+  } catch (err: any) {
+    throw err.response?.data || err;
+  }
+};
+
+export const getTasks = async () => {
+  try {
+    const token = Cookies.get('token');
+    if (!token) throw new Error('No token found');
+
+    console.log(token);
+    const res = await axios.get(`${API_BASE}/tasks`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return res.data;
+  } catch (err: any) {
+    throw err.response?.data || err;
+  }
+};
+
+export const getTaskById = async (id: string) => {
+  try {
+    const token = Cookies.get('token');
+    if (!token) throw new Error('No token found');
+
+    console.log(token);
+    const res = await axios.get(`${API_BASE}/tasks/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return res.data;
+  } catch (err: any) {
+    throw err.response?.data || err;
+  }
+};
+
+export const deleteTaskById = async (id: string | number) => {
+  try {
+    const token = Cookies.get('token');
+    if (!token) throw new Error('No token found');
+
+    const res = await axios.delete(`${API_BASE}/tasks/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return res.data;
+  } catch (err: any) {
+    throw err.response?.data || err;
+  }
+};
+
+export const updateTaskById = async (
+  id: string | number,
+  updates: {
+    name?: string;
+    icon?: string;
+    color?: string;
+  }
+) => {
+  try {
+    const token = Cookies.get('token');
+    if (!token) throw new Error('No token found');
+
+    const res = await axios.patch(
+      `${API_BASE}/tasks/${id}`,
+      updates,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    return res.data;
+  } catch (err: any) {
+    throw err.response?.data || err;
+  }
+};
+
+// Subtask handle

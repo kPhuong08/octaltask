@@ -1,7 +1,8 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { Task, TaskList, Comment, Attachment } from '@/types/task';
 import { useUser } from './UserContext';
-import {createList, getLists, getListsId,  updateListById, deleteListById} from '@/lib/api/tasks';
+import {createList, getLists, getListsById,  updateListById, deleteListById} from '@/lib/api/tasks';
+import { createTask, getTasks, getTaskById, updateTaskById, deleteTaskById } from '@/lib/api/tasks';
 
 interface TaskContextType {
     tasks: Task[];
@@ -142,9 +143,30 @@ export function TaskProvider({ children }: { children: ReactNode }) {
     useEffect(() => {
     const loadData = async () => {
         try {
+            // get tasks
+            const fectchedTasks = await getTasks();
+            const mappedTasks = fectchedTasks.tasks.map((tasks: any) => ({
+                id: tasks.id.toString(),
+                title: tasks.title,
+                completed: tasks.isCompleted,
+                dueDate: tasks.dueDate,
+                notes: [],
+                isSharred: false,
+                listId: tasks.listID,  // For organizing into lists
+                position: [], // For ordering tasks in a list
+                subtasks: [], // For adding subtasks
+                createdAt: [],
+                updatedAt: [],
+                assignedTo: [], // UserID of person assigned to task
+                sharedWith:[], // Users that have access to this task
+                comments: [], // Comments on the task
+                attachments: [], // Files attached to the task
+            }));
+            setTasks(mappedTasks);
+            // get subtask
 
-
-            //get lists
+            
+            // get lists
             const fetchedLists = await getLists();
             const mappedLists = fetchedLists.lists.map((list: any) => ({
                 id: list.id.toString(),
@@ -240,7 +262,7 @@ export function TaskProvider({ children }: { children: ReactNode }) {
         // Toggle the isStarred status
         const updatedTask = {
             ...task,
-            isStarred: !task.isStarred,
+            isStarred: !task.isSharred,
             updatedAt: new Date().toISOString()
         };
 
@@ -311,7 +333,7 @@ export function TaskProvider({ children }: { children: ReactNode }) {
 
     //     return updatedList;
     // };
-    
+
     const updateList = async (listId: string, updates: Partial<TaskList>): Promise<TaskList> => {
     try {
         const updatedData = await updateListById(listId, updates); // Gọi API PATCH
