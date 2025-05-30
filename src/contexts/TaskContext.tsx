@@ -150,7 +150,7 @@ export function TaskProvider({ children }: { children: ReactNode }) {
                 id: task.id.toString(),
                 title: task.title,
                 completed: task.isCompleted,
-                dueDate: task.dueDate || undefined,
+                dueDate: task.dueDate   ? new Date(task.dueDate).toISOString().split('T')[0]: undefined,
                 notes: task.description || '',
                 isSharred: false,
                 listId: task.listId?.toString(),  // cần đúng tên listId

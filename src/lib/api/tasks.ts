@@ -116,6 +116,13 @@ export const updateListById = async (
 };
 
 // Task handle
+
+const formatDueDate = (dateStr: string): string => {
+  const date = new Date(`${dateStr}T23:59:59+07:00`);
+  return date.toISOString(); // 2025-06-01T16:59:59.000Z
+};
+
+
 export const createTask = async (
   title: string,
   listId: string,
@@ -126,13 +133,15 @@ export const createTask = async (
     const token = Cookies.get('token');
     if (!token) throw new Error('No token found');
 
+    const formattedDueDate = dueDate ? formatDueDate(dueDate) : null;
+
     const res = await axios.post(
       `${API_BASE}/tasks`,
       {
         title,
         description,
         isCompleted: false,
-        dueDate: dueDate || null,
+        dueDate: formattedDueDate || null,
         listId: parseInt(listId),
       },
       {
@@ -207,9 +216,15 @@ export const updateTaskById = async (
     const token = Cookies.get('token');
     if (!token) throw new Error('No token found');
 
+    const formattedUpdates = {
+      ...updates,
+      dueDate: updates.dueDate ? formatDueDate(updates.dueDate) : undefined,
+    };
+
+
     const res = await axios.patch(
       `${API_BASE}/tasks/${id}`,
-      updates,
+       formattedUpdates,
       {
         headers: {
           Authorization: `Bearer ${token}`,
