@@ -40,12 +40,12 @@ export interface Task {
   completed: boolean;
   dueDate?: string;
   notes?: string;
-  isSharred?: boolean;
+  isStarred?: boolean;
   listId?: string;  // For organizing into lists
-  position?: number; // For ordering tasks in a list
+  // position?: number; // For ordering tasks in a list
   subtasks?: SubTask[]; // For adding subtasks
-  createdAt: string;
-  updatedAt: string;
+  // createdAt: string;
+  // updatedAt: string;
   assignedTo?: string; // UserID of person assigned to task
   sharedWith?: SharedUser[]; // Users that have access to this task
   comments?: Comment[]; // Comments on the task

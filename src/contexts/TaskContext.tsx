@@ -144,25 +144,24 @@ export function TaskProvider({ children }: { children: ReactNode }) {
     const loadData = async () => {
         try {
             // get tasks
-            const fectchedTasks = await getTasks();
-            const mappedTasks = fectchedTasks.tasks.map((tasks: any) => ({
-                id: tasks.id.toString(),
-                title: tasks.title,
-                completed: tasks.isCompleted,
-                dueDate: tasks.dueDate,
-                notes: [],
+            const fetchedTasks = await getTasks();
+
+            const mappedTasks = fetchedTasks.tasks.map((task: any) => ({
+                id: task.id.toString(),
+                title: task.title,
+                completed: task.isCompleted,
+                dueDate: task.dueDate || undefined,
+                notes: task.description || '',
                 isSharred: false,
-                listId: tasks.listID,  // For organizing into lists
-                position: [], // For ordering tasks in a list
-                subtasks: [], // For adding subtasks
-                createdAt: [],
-                updatedAt: [],
-                assignedTo: [], // UserID of person assigned to task
-                sharedWith:[], // Users that have access to this task
-                comments: [], // Comments on the task
-                attachments: [], // Files attached to the task
+                listId: task.listId?.toString(),  // cần đúng tên listId
+                subtasks: [],
+                assignedTo: undefined,
+                sharedWith: [],
+                comments: [],
+                attachments: [],
             }));
-            setTasks(mappedTasks);
+
+      setTasks(mappedTasks);
             // get subtask
 
             
@@ -190,63 +189,89 @@ export function TaskProvider({ children }: { children: ReactNode }) {
 }, []);
 
 
-    // Save data to localStorage whenever it changes
-    useEffect(() => {
-        if (!loading && tasks.length > 0) {
-            localStorage.setItem('octalTasks', JSON.stringify(tasks));
-        }
-    }, [tasks, loading]);
+    // // Save data to localStorage whenever it changes
+    // useEffect(() => {
+    //     if (!loading && tasks.length > 0) {
+    //         localStorage.setItem('octalTasks', JSON.stringify(tasks));
+    //     }
+    // }, [tasks, loading]);
 
-    useEffect(() => {
-        if (!loading && lists.length > 0) {
-            localStorage.setItem('octalLists', JSON.stringify(lists));
-        }
-    }, [lists, loading]);
+    // useEffect(() => {
+    //     if (!loading && lists.length > 0) {
+    //         localStorage.setItem('octalLists', JSON.stringify(lists));
+    //     }
+    // }, [lists, loading]);
 
     // Task operations
     const addTask = async (taskData: Partial<Task>): Promise<Task> => {
-        // Commenting out the auth check for now
-        // if (!currentUser) throw new Error('User must be logged in');
+        if (!taskData.title || !taskData.listId) {
+            throw new Error('Missing task title or listId');
+        }
+
+        const createdTask = await createTask(
+            taskData.title,
+            taskData.listId,
+            taskData.notes || '',      // use notes as description
+            taskData.dueDate           // may undefined
+        );
 
         const newTask: Task = {
-            id: Date.now().toString(),
-            title: taskData.title || 'New Task',
-            completed: taskData.completed || false,
-            listId: taskData.listId,
-            dueDate: taskData.dueDate,
-            notes: taskData.notes,
-            subtasks: taskData.subtasks || [],
-            createdAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString(),
-            assignedTo: taskData.assignedTo,
-            sharedWith: taskData.sharedWith || [],
+            id: createdTask.id.toString(),
+            title: createdTask.title,
+            completed: createdTask.isCompleted || false,
+            listId: createdTask.listId.toString(),
+            dueDate: createdTask.dueDate || undefined,
+            notes: createdTask.description || '',
+            isStarred: false,
+            assignedTo: undefined,
+            subtasks: [],
             comments: [],
+            sharedWith: [],
         };
 
         setTasks(prevTasks => [...prevTasks, newTask]);
         return newTask;
-    };
+        };
+
 
     const updateTask = async (taskId: string, updates: Partial<Task>): Promise<Task> => {
-        const updatedTasks = tasks.map(task =>
-            task.id === taskId
-                ? { ...task, ...updates, updatedAt: new Date().toISOString() }
-                : task
+        const updatePayload = {
+            title: updates.title,
+            description: updates.notes,
+            isCompleted: updates.completed,
+            dueDate: updates.dueDate,
+            listId: updates.listId ? parseInt(updates.listId) : undefined,
+        };
+
+        const updatedData = await updateTaskById(taskId, updatePayload);
+
+        const updatedTask: Task = {
+            id: updatedData.id.toString(),
+            title: updatedData.title,
+            completed: updatedData.isCompleted,
+            listId: updatedData.listId.toString(),
+            dueDate: updatedData.dueDate || undefined,
+            notes: updatedData.description || '',
+            isStarred: false,
+            assignedTo: undefined,
+            subtasks: [],
+            comments: [],
+            sharedWith: [],
+        };
+
+        setTasks(prev =>
+            prev.map(task => (task.id === taskId ? updatedTask : task))
         );
 
-        setTasks(updatedTasks);
-        const updatedTask = updatedTasks.find(t => t.id === taskId);
-
-        if (!updatedTask) {
-            throw new Error('Task not found');
-        }
-
         return updatedTask;
-    };
+        };
 
-    const deleteTask = async (taskId: string): Promise<void> => {
-        setTasks(tasks.filter(task => task.id !== taskId));
-    };
+
+   const deleteTask = async (taskId: string): Promise<void> => {
+        await deleteTaskById(taskId);
+        setTasks(prev => prev.filter(task => task.id !== taskId));
+        };
+
 
     const getTasksByList = (listId: string): Task[] => {
         return tasks.filter(task => task.listId === listId);
@@ -262,7 +287,7 @@ export function TaskProvider({ children }: { children: ReactNode }) {
         // Toggle the isStarred status
         const updatedTask = {
             ...task,
-            isStarred: !task.isSharred,
+            isStarred: !task.isStarred,
             updatedAt: new Date().toISOString()
         };
 

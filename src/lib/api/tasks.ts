@@ -116,17 +116,24 @@ export const updateListById = async (
 };
 
 // Task handle
-export const createTask = async (title: string, description: string, dueDate: string) => {
+export const createTask = async (
+  title: string,
+  listId: string,
+  description: string = '',
+  dueDate?: string
+) => {
   try {
     const token = Cookies.get('token');
     if (!token) throw new Error('No token found');
 
     const res = await axios.post(
-      `${API_BASE}/tasks`, // endpoint 
+      `${API_BASE}/tasks`,
       {
         title,
         description,
-        dueDate,
+        isCompleted: false,
+        dueDate: dueDate || null,
+        listId: parseInt(listId),
       },
       {
         headers: {
@@ -146,11 +153,8 @@ export const getTasks = async () => {
     const token = Cookies.get('token');
     if (!token) throw new Error('No token found');
 
-    console.log(token);
     const res = await axios.get(`${API_BASE}/tasks`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+      headers: { Authorization: `Bearer ${token}` },
     });
 
     return res.data;
@@ -164,11 +168,8 @@ export const getTaskById = async (id: string) => {
     const token = Cookies.get('token');
     if (!token) throw new Error('No token found');
 
-    console.log(token);
     const res = await axios.get(`${API_BASE}/tasks/${id}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+      headers: { Authorization: `Bearer ${token}` },
     });
 
     return res.data;
@@ -183,9 +184,7 @@ export const deleteTaskById = async (id: string | number) => {
     if (!token) throw new Error('No token found');
 
     const res = await axios.delete(`${API_BASE}/tasks/${id}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+      headers: { Authorization: `Bearer ${token}` },
     });
 
     return res.data;
@@ -197,9 +196,11 @@ export const deleteTaskById = async (id: string | number) => {
 export const updateTaskById = async (
   id: string | number,
   updates: {
-    name?: string;
-    icon?: string;
-    color?: string;
+    title?: string;
+    description?: string;
+    isCompleted?: boolean;
+    dueDate?: string;
+    listId?: string | number;
   }
 ) => {
   try {
