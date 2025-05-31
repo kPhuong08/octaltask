@@ -1,5 +1,5 @@
 import { Task } from '@/types/task';
-import { formatDistanceToNow } from 'date-fns';
+import { formatDistanceToNow, isValid, parseISO, differenceInDays, differenceInHours, differenceInMinutes, isToday, isTomorrow, isYesterday, isPast } from 'date-fns';
 import { Calendar, Edit2, Plus, Trash2, Star, GripVertical } from 'lucide-react';
 import { useRef, useState } from 'react';
 import { Button } from '../../ui/button';
@@ -22,15 +22,63 @@ interface TaskListProps {
     onReorderTasks?: (startIndex: number, endIndex: number) => void;
 }
 
-
 const formatDueDate = (dateString: string) => {
-    try {
-        const date = new Date(dateString);
-        return formatDistanceToNow(date, { addSuffix: true });
-    } catch (e) {
-        return dateString;
+  if (!dateString) {
+    return 'No due date';
+  }
+
+  let date = parseISO(dateString);
+  if (!isValid(date)) {
+    date = new Date(dateString);
+  }
+
+  if (!isValid(date)) {
+    return 'Invalid date';
+  }
+
+  const now = new Date();
+
+  // Handle overdue tasks
+  if (isPast(date) && !isToday(date)) {
+    if (isYesterday(date)) {
+      return 'Due yesterday';
     }
+    const daysOverdue = Math.abs(differenceInDays(now, date));
+    return `${daysOverdue} day${daysOverdue > 1 ? 's' : ''} overdue`;
+  }
+
+  // Handle today's tasks
+  if (isToday(date)) {
+    const hoursLeft = differenceInHours(date, now);
+    const minutesLeft = differenceInMinutes(date, now);
+
+    if (minutesLeft < 0) {
+      return 'Overdue today';
+    } else if (minutesLeft < 60) {
+      return `Due in ${minutesLeft} min${minutesLeft !== 1 ? 's' : ''}`;
+    } else if (hoursLeft < 24) {
+      return `Due in ${hoursLeft} hour${hoursLeft !== 1 ? 's' : ''}`;
+    } else {
+      return 'Due today';
+    }
+  }
+
+  // Handle tomorrow's tasks
+  if (isTomorrow(date)) {
+    return 'Due tomorrow';
+  }
+
+  // Handle upcoming tasks
+  const daysUntil = differenceInDays(date, now);
+
+  if (daysUntil <= 7) {
+    return `Due in ${daysUntil} day${daysUntil !== 1 ? 's' : ''}`;
+  }
+
+  // For distant dates, use the standard format
+  return formatDistanceToNow(date, { addSuffix: true });
 };
+
 
 const isTaskDue = (dateString: string) => {
     try {
