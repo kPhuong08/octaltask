@@ -238,4 +238,26 @@ export const updateTaskById = async (
   }
 };
 
-// Subtask handle
+// Subtasks handle
+export const getSubtasksByTaskId = async (taskId: number | string) => {
+  const token = Cookies.get('token');
+  if (!token) throw new Error('No token found');
+
+  const res = await axios.get(`${API_BASE}/tasks/${taskId}/subtasks`, {
+    headers: { Authorization: `Bearer ${token}` }
+  });
+
+  return res.data;
+};
+
+// Comments handle
+export const getCommentsByTaskId = async (taskId: number | string) => {
+  const token = Cookies.get('token');
+  if (!token) throw new Error('No token found');
+
+  const res = await axios.get(`${API_BASE}/tasks/${taskId}/comments`, {
+    headers: { Authorization: `Bearer ${token}` }
+  });
+
+  return res.data;
+};

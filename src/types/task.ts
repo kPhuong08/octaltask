@@ -9,10 +9,9 @@ export interface Comment {
   taskId: string;
   userId: string;
   userName: string;
-  userPhotoUrl?: string;
+  //userPhotoUrl?: string;
   content: string;
   createdAt: string;
-  updatedAt?: string;
 }
 
 export interface SharedUser {

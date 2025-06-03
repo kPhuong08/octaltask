@@ -3,7 +3,8 @@ import { Task, TaskList, Comment, Attachment } from '@/types/task';
 import { useUser } from './UserContext';
 import {createList, getLists, getListsById,  updateListById, deleteListById} from '@/lib/api/tasks';
 import { createTask, getTasks, getTaskById, updateTaskById, deleteTaskById } from '@/lib/api/tasks';
-
+import { getSubtasksByTaskId } from '@/lib/api/tasks';
+import { getCommentsByTaskId } from '@/lib/api/tasks';
 interface TaskContextType {
     tasks: Task[];
     lists: TaskList[];
@@ -146,23 +147,70 @@ export function TaskProvider({ children }: { children: ReactNode }) {
             // get tasks
             const fetchedTasks = await getTasks();
 
-            const mappedTasks = fetchedTasks.tasks.map((task: any) => ({
-                id: task.id.toString(),
-                title: task.title,
-                completed: task.isCompleted,
-                dueDate: task.dueDate   ? new Date(task.dueDate).toISOString().split('T')[0]: undefined,
-                notes: task.description || '',
-                isSharred: false,
-                listId: task.listId?.toString(),  // cần đúng tên listId
-                subtasks: [],
-                assignedTo: undefined,
-                sharedWith: [],
-                comments: [],
-                attachments: [],
-            }));
+            
+    //         const mappedTasks = fetchedTasks.tasks.map((task: any) => ({
+    //             id: task.id.toString(),
+    //             title: task.title,
+    //             completed: task.isCompleted,
+    //             dueDate: task.dueDate   ? new Date(task.dueDate).toISOString().split('T')[0]: undefined,
+    //             notes: task.description || '',
+    //             isStarred: task.isStarred,
+    //             listId: task.listId?.toString(),  // cần đúng tên listId
+    //             subtasks: [],
+    //             assignedTo: undefined,
+    //             sharedWith: [],
+    //             comments: [],
+    //             attachments: [],
+    //         }));
 
-      setTasks(mappedTasks);
-            // get subtask
+    //   setTasks(mappedTasks);
+            
+            const mappedTasks = await Promise.all(fetchedTasks.tasks.map(async (task: any) => {
+                    let subtasksData: any = {};
+                    let commentsData: any = {};
+
+                    try {
+                        subtasksData = await getSubtasksByTaskId(task.id);
+                    } catch (err) {
+                        console.error(`Failed to fetch subtasks for task ${task.id}`, err);
+                    }
+
+                    try {
+                        commentsData = await getCommentsByTaskId(task.id);
+                    } catch (err) {
+                        console.error(`Failed to fetch comments for task ${task.id}`, err);
+                    }
+
+                    return {
+                        id: task.id.toString(),
+                        title: task.title,
+                        completed: task.isCompleted,
+                        dueDate: task.dueDate ? new Date(task.dueDate).toISOString().split('T')[0] : undefined,
+                        notes: task.description || '',
+                        isStarred: task.isStarred,
+                        listId: task.listId?.toString(),
+                        subtasks: Array.isArray(subtasksData?.subtasks) ? subtasksData.subtasks.map((subtask: any) => ({
+                            id: subtask.id.toString(),
+                            title: subtask.content,
+                            isCompleted: subtask.isCompleted,
+                        })) : [],
+                        comments: Array.isArray(commentsData?.comments) ? commentsData.comments.map((comment: any) => ({
+                            id: comment.id.toString(),
+                            content: comment.content,
+                            taskId: task.id.toString(),
+                            userId: comment.user?.userId?.toString(),
+                            createdAt: comment.createdAt,
+                            userName: comment.user?.email || 'Unknown',  
+                            //userPhotoUrl: comment.user?.photoUrl || '',  
+                        })) : [],
+                        assignedTo: undefined,
+                        sharedWith: [],
+                        attachments: [],
+                    };
+                }));
+
+
+            setTasks(mappedTasks);
 
             
             // get lists
@@ -550,10 +598,9 @@ export function TaskProvider({ children }: { children: ReactNode }) {
                 id: `comment-${Date.now()}`,
                 taskId,
                 userId: currentUser?.id || 'anonymous',
-                userName: currentUser?.name || 'Anonymous User',
-                userPhotoUrl: currentUser?.photoUrl,
                 content,
-                createdAt: new Date().toISOString()
+                createdAt: new Date().toISOString(),
+                userName: '',
             };
 
             // Update the task with the new comment
