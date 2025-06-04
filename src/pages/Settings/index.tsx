@@ -1,4 +1,4 @@
-import { Footer } from '@/components/layout/Footer';
+import { Footer } from '@/components/common/Footer';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useTheme } from '@/contexts/ThemeContext';
@@ -34,15 +34,17 @@ export default function Settings() {
     });
   };
 
+
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col">
-      <header className="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700 py-4 shadow-sm sticky top-0 z-10">
-        <div className="max-w-5xl mx-auto px-6 flex items-center">
+    <div className="flex flex-col min-h-screen bg-gray-50 dark:bg-gray-900">
+      <header className="sticky top-0 z-10 py-4 bg-white border-b border-gray-100 shadow-sm dark:bg-gray-800 dark:border-gray-700">
+        <div className="flex items-center max-w-5xl px-6 mx-auto">
+          {/* better logic here */}
           <Link
-            to="/"
-            className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 mr-4 rounded-full p-1 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+            to="/tasks"
+            className="p-1 mr-4 text-gray-500 transition-colors rounded-full hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
           >
-            <ArrowLeft className="h-5 w-5" />
+            <ArrowLeft className="w-5 h-5" />
           </Link>
           <h1 className="text-xl font-normal tracking-tight text-gray-800 dark:text-gray-200">
             Settings
@@ -50,12 +52,12 @@ export default function Settings() {
         </div>
       </header>
 
-      <main className="flex-1 max-w-5xl mx-auto px-6 py-16 w-full">
+      <main className="flex-1 w-full max-w-5xl px-6 py-16 mx-auto">
         <div className="max-w-2xl mx-auto space-y-8">
-          <Card className="bg-white dark:bg-gray-800 shadow-sm border-none overflow-hidden">
+          <Card className="overflow-hidden bg-white border-none shadow-sm dark:bg-gray-800">
             <CardHeader className="p-6 pb-2">
-              <CardTitle className="text-lg font-normal flex items-center text-gray-800 dark:text-gray-200">
-                <Moon className="h-5 w-5 mr-3 text-gray-400 dark:text-gray-500" />
+              <CardTitle className="flex items-center text-lg font-normal text-gray-800 dark:text-gray-200">
+                <Moon className="w-5 h-5 mr-3 text-gray-400 dark:text-gray-500" />
                 Appearance
               </CardTitle>
             </CardHeader>
@@ -83,10 +85,10 @@ export default function Settings() {
             </CardContent>
           </Card>
 
-          <Card className="bg-white dark:bg-gray-800 shadow-sm border-none overflow-hidden">
+          <Card className="overflow-hidden bg-white border-none shadow-sm dark:bg-gray-800">
             <CardHeader className="p-6 pb-2">
-              <CardTitle className="text-lg font-normal flex items-center text-gray-800 dark:text-gray-200">
-                <Bell className="h-5 w-5 mr-3 text-gray-400 dark:text-gray-500" />
+              <CardTitle className="flex items-center text-lg font-normal text-gray-800 dark:text-gray-200">
+                <Bell className="w-5 h-5 mr-3 text-gray-400 dark:text-gray-500" />
                 Notifications
               </CardTitle>
             </CardHeader>
@@ -143,10 +145,10 @@ export default function Settings() {
             </CardContent>
           </Card>
 
-          <Card className="bg-white dark:bg-gray-800 shadow-sm border-none overflow-hidden">
+          <Card className="overflow-hidden bg-white border-none shadow-sm dark:bg-gray-800">
             <CardHeader className="p-6 pb-2">
-              <CardTitle className="text-lg font-normal flex items-center text-gray-800 dark:text-gray-200">
-                <Globe className="h-5 w-5 mr-3 text-gray-400 dark:text-gray-500" />
+              <CardTitle className="flex items-center text-lg font-normal text-gray-800 dark:text-gray-200">
+                <Globe className="w-5 h-5 mr-3 text-gray-400 dark:text-gray-500" />
                 Language & Region
               </CardTitle>
             </CardHeader>
@@ -160,7 +162,7 @@ export default function Settings() {
                 </div>
                 <div>
                   <select
-                    className="rounded-md border border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 py-2 px-3"
+                    className="px-3 py-2 border border-gray-200 rounded-md shadow-sm dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
                     value={settings.language}
                     onChange={e => setSettings({ ...settings, language: e.target.value })}
                   >
@@ -175,10 +177,10 @@ export default function Settings() {
             </CardContent>
           </Card>
 
-          <Card className="bg-white dark:bg-gray-800 shadow-sm border-none overflow-hidden">
+          <Card className="overflow-hidden bg-white border-none shadow-sm dark:bg-gray-800">
             <CardHeader className="p-6 pb-2">
-              <CardTitle className="text-lg font-normal flex items-center text-gray-800 dark:text-gray-200">
-                <EyeOff className="h-5 w-5 mr-3 text-gray-400 dark:text-gray-500" />
+              <CardTitle className="flex items-center text-lg font-normal text-gray-800 dark:text-gray-200">
+                <EyeOff className="w-5 h-5 mr-3 text-gray-400 dark:text-gray-500" />
                 Privacy
               </CardTitle>
             </CardHeader>
@@ -239,19 +241,19 @@ export default function Settings() {
             </CardContent>
           </Card>
 
-          <Card className="bg-white dark:bg-gray-800 shadow-sm border-none overflow-hidden">
+          <Card className="overflow-hidden bg-white border-none shadow-sm dark:bg-gray-800">
             <CardHeader className="p-6 pb-2">
-              <CardTitle className="text-lg font-normal flex items-center text-gray-800 dark:text-gray-200">
-                <Smartphone className="h-5 w-5 mr-3 text-gray-400 dark:text-gray-500" />
+              <CardTitle className="flex items-center text-lg font-normal text-gray-800 dark:text-gray-200">
+                <Smartphone className="w-5 h-5 mr-3 text-gray-400 dark:text-gray-500" />
                 Connected Devices
               </CardTitle>
             </CardHeader>
             <CardContent className="p-6 pt-4">
               <div className="py-2">
-                <div className="font-medium text-gray-800 dark:text-gray-200 mb-1">
+                <div className="mb-1 font-medium text-gray-800 dark:text-gray-200">
                   No devices connected
                 </div>
-                <div className="text-sm text-gray-500 dark:text-gray-400 mb-6">
+                <div className="mb-6 text-sm text-gray-500 dark:text-gray-400">
                   Connect your mobile devices to sync tasks
                 </div>
                 <Button className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-700 dark:text-white">

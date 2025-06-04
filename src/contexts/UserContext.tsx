@@ -1,5 +1,7 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { SharedUser } from '@/types/task';
+import Cookies from 'js-cookie'; 
+import { authInformation } from '@/lib/api/auth'; 
 
 type UserRole = 'viewer' | 'editor' | 'admin';
 
@@ -27,22 +29,36 @@ const UserContext = createContext<UserContextType | undefined>(undefined);
 export function UserProvider({ children }: { children: ReactNode }) {
   // start with a default user
   const [currentUser, setCurrentUser] = useState<User | null>({
-    id: 'test-user-1',
-    name: 'John Doe',
-    email: 'john@example.com',
-    photoUrl: 'https://api.dicebear.com/7.x/avataaars/svg?seed=TestUser',
+    id: '',
+    name: '',
+    email: '',
+    photoUrl: '',
   });
 
-  // test user with localStorage
   useEffect(() => {
-    const storedUser = localStorage.getItem('octalTaskUser');
-    if (storedUser) {
-      setCurrentUser(JSON.parse(storedUser));
-    } else {
-      // Save our test user to localStorage
-      localStorage.setItem('octalTaskUser', JSON.stringify(currentUser));
+  const fetchUser = async () => {
+    try {
+      const data = await authInformation(); // Gọi API lấy thông tin user
+      const { id, name, email } = data.user;
+
+      const user: User = {
+        id: id.toString(),
+        name,
+        email,
+        photoUrl: `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=random`,
+      };
+
+      setCurrentUser(user);
+      localStorage.setItem('octalTaskUser', JSON.stringify(user));
+    } catch (err) {
+      console.error('Failed to fetch user info:', err);
+      setCurrentUser(null);
+      localStorage.removeItem('octalTaskUser');
     }
-  }, []);
+  };
+
+  fetchUser();
+}, []);
 
   const login = async (email: string, password: string) => {
     // login successfully with email and password

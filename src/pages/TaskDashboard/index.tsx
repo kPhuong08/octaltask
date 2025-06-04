@@ -5,7 +5,6 @@ import { ShareListModal } from '@/components/feature/list/ShareListModal';
 import { TaskDetailModal } from '@/components/feature/task/TaskDetailModal';
 import { TaskList } from '@/components/feature/task/TaskList';
 import { TaskListHeader } from '@/components/feature/task/TaskListHeader';
-import { Footer } from '@/components/layout/Footer';
 import { TaskListSidebar } from '@/components/layout/TaskListSidebar';
 import { UserMenu } from '@/components/layout/UserMenu';
 import { useTask } from '@/contexts/TaskContext';
@@ -114,18 +113,33 @@ export default function TaskDashboard() {
     //   const pendingTasks = totalTasks - completedTasks;
 
     // Sort tasks based on option
-    const sortedTasks = [...filteredTasks].sort((a, b) => {
-        if (sortOption === 'date-desc') {
-            return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+    // const sortedTasks = [...filteredTasks].sort((a, b) => {
+    //     if (sortOption === 'date-desc') {
+    //         return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
 
-        } else if (sortOption === 'date-asc') {
-            return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
-        } else if (sortOption === 'alpha-asc') {
-            return a.title.localeCompare(b.title);
-        } else {
-            return b.title.localeCompare(a.title);
-        }
-    });
+    //     } else if (sortOption === 'date-asc') {
+    //         return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
+    //     } else if (sortOption === 'alpha-asc') {
+    //         return a.title.localeCompare(b.title);
+    //     } else {
+    //         return b.title.localeCompare(a.title);
+    //     }
+    // });
+
+    const sortedTasks = [...filteredTasks].sort((a, b) => {
+            if (sortOption === 'date-desc') {
+                // Sắp xếp theo ID giảm dần (ID lớn hơn trước)
+                return Number(b.id) - Number(a.id);
+            } else if (sortOption === 'date-asc') {
+                // Sắp xếp theo ID tăng dần (ID nhỏ hơn trước)
+                return Number(a.id) - Number(b.id);
+            } else if (sortOption === 'alpha-asc') {
+                return a.title.localeCompare(b.title);
+            } else {
+                return b.title.localeCompare(a.title);
+            }
+        });
+
 
     const handleEditTask = (task: Task) => {
         setSelectedTask(task);
@@ -383,7 +397,7 @@ export default function TaskDashboard() {
 
     return (
         <div className="flex flex-col min-h-screen bg-gray-50 dark:bg-gray-900">
-            <header className="sticky top-0 bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
+            <header className="top-0 bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
                 <div className="px-4 py-2.5 flex justify-between items-center">
                     <div className="flex items-center gap-3 ">
                         <button
@@ -400,19 +414,19 @@ export default function TaskDashboard() {
 
                         <Logo
                             size="md"
-                            color={darkMode ? 'text-blue-400' : 'text-blue-600'}
+                            color={darkMode ? 'blueDark' : 'blueLight'}
                             className="font-sans"
                         />
                     </div>
 
-                    <div className="flex items-center gap-3 ">
+                    <div className="flex items-center gap-3">
                         <ThemeToggle />
                         {currentUser && <UserMenu user={currentUser} onLogout={handleLogout} />}
                     </div>
                 </div>
             </header>
 
-            <div className={`flex-1 flex ${showTaskDetail ? 'relative' : ''}`}>
+            <div className={`flex ${showTaskDetail ? 'relative' : ''}`}>
                 {/* Mobile Sidebar */}
                 {showMobileSidebar && (
                     <div
@@ -442,7 +456,7 @@ export default function TaskDashboard() {
                     className={`hidden md:block w-0 transition-all duration-300 ease-in-out ${showDesktopSidebar ? 'w-64' : 'w-0'
                         }  shrink-0 overflow-hidden border-r pt-3 border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800`}
                 >
-                    <div className="sticky top-[73px] h-[calc(100vh-73px-73px)] overflow-y-auto">
+                    <div className="sticky top-0 h-screen overflow-y-hidden">
                         <TaskListSidebar
                             lists={lists}
                             activeListId={activeListId}
@@ -455,7 +469,7 @@ export default function TaskDashboard() {
                 </div>
 
                 <main
-                    className={`flex-1 p-5 md:p-8 overflow-y-auto overflow-x-hidden max-h-[calc(100vh-73px-68px)] bg-gray-50 dark:bg-gray-900 transition-all duration-300 ease-in-out ${showDesktopSidebar ? '' : 'md:px-20'
+                    className={`flex-1 p-5 md:p-8 overflow-y-auto overflow-x-hidden max-h-screen bg-gray-50 dark:bg-gray-900 transition-all duration-300 ease-in-out ${showDesktopSidebar ? '' : 'md:px-20'
                         }`}
                 >
                     <div className="max-w-3xl mx-auto">
@@ -549,9 +563,7 @@ export default function TaskDashboard() {
                 />
             )}
 
-            <div className="bottom-0 fix">
-                <Footer />
-            </div>
+
         </div>
     );
 }

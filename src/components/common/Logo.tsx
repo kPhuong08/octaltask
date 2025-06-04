@@ -3,11 +3,12 @@ import { Link } from 'react-router-dom';
 interface LogoProps {
   size?: 'sm' | 'md' | 'lg';
   showText?: boolean;
-  color?: string;
+  color?: 'blueLight' | 'blueDark' | 'white';
   className?: string;
+  fontWeight?: 'semibold' | 'bold';
 }
 
-export function Logo({ size = 'md', showText = true, color = 'text-blue-600', className = '' }: LogoProps) {
+export function Logo({ size = 'md', showText = true, color = 'blue', className = '', fontWeight = 'bold' }: LogoProps) {
   // Size classes mapping
   const sizeClasses = {
     sm: 'h-3 w-5',
@@ -21,6 +22,17 @@ export function Logo({ size = 'md', showText = true, color = 'text-blue-600', cl
     lg: 'text-2xl'
   };
 
+  const colorClasses = {
+    blueLight: 'text-blue-600',
+    blueDark: 'text-blue-400',
+    white: 'text-white'
+  };
+
+  const fontClasses = {
+    semibold: 'font-semibold',
+    bold: 'font-bold'
+  };
+
   return (
     <Link to="/" className={`flex items-center gap-2 ${className}`}>
       <div className="relative">
@@ -31,7 +43,7 @@ export function Logo({ size = 'md', showText = true, color = 'text-blue-600', cl
         />
       </div>
       {showText && (
-        <span className={`font-bold ${color} ${textSizeClasses[size]}`}>
+        <span className={`${fontClasses[fontWeight]} ${colorClasses[color]} ${textSizeClasses[size]}`}>
           OctalTask
         </span>
       )}

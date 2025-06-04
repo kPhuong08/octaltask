@@ -1,11 +1,13 @@
-import { Footer } from '@/components/layout/Footer';
+import { Footer } from '@/components/common/Footer';
 import { Button } from '@/components/ui/button';
 import { Home, Search } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Logo } from '@/components/common/Logo'
+import { useTheme } from '@/contexts/ThemeContext';
 
 export default function NotFound() {
   const navigate = useNavigate();
+  const { darkMode } = useTheme();
 
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900 flex flex-col">
@@ -13,15 +15,16 @@ export default function NotFound() {
         <div className="px-4 py-2.5 flex justify-between items-center">
           <div className="flex items-center gap-3 ">
             <Logo
-              size="lg"
-              className="font-sans"
+                size="md"
+                color={darkMode ? 'blueDark' : 'blueLight'}
+                className="font-sans"
             />
           </div>
 
 
         </div>
       </header>
-      <main className="flex-1 flex flex-col items-center justify-center px-6 py-20">
+      <main className="flex-1 flex flex-col items-center justify-center px-6 py-20 min-h-screen">
         <div className="text-center space-y-6">
           {/* 404 Graphic */}
           <div className="inline-flex items-center text-6xl font-bold tracking-tight text-blue-600 dark:text-blue-400">
@@ -55,6 +58,7 @@ export default function NotFound() {
               Go Back
             </Button>
 
+            {/* need to fix logic here */}
             <Link to="/" className="w-full sm:w-auto">
               <Button className="flex items-center gap-2 w-full justify-center bg-blue-600 hover:bg-blue-700 text-white">
                 <Home className="h-4 w-4" />
