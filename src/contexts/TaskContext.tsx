@@ -3,7 +3,7 @@ import { Task, TaskList, Comment, Attachment } from '@/types/task';
 import { useUser } from './UserContext';
 import {createList, getLists, getListsById,  updateListById, deleteListById} from '@/lib/api/tasks';
 import { createTask, getTasks, getTaskById, updateTaskById, deleteTaskById } from '@/lib/api/tasks';
-import { getSubtasksByTaskId } from '@/lib/api/tasks';
+import { getSubtasksByTaskId, createSubtaskByTaskId, deleteSubtaskById  } from '@/lib/api/tasks';
 import { getCommentsByTaskId } from '@/lib/api/tasks';
 interface TaskContextType {
     tasks: Task[];
@@ -267,7 +267,7 @@ export function TaskProvider({ children }: { children: ReactNode }) {
             id: createdTask.id.toString(),
             title: createdTask.title,
             completed: createdTask.isCompleted || false,
-            listId: createdTask.listId.toString(),
+            listId: createdTask.listId.toString() || null,
             dueDate: createdTask.dueDate || undefined,
             notes: createdTask.description || '',
             isStarred: false,
@@ -282,37 +282,107 @@ export function TaskProvider({ children }: { children: ReactNode }) {
         };
 
 
-    const updateTask = async (taskId: string, updates: Partial<Task>): Promise<Task> => {
-        const updatePayload = {
-            title: updates.title,
-            description: updates.notes,
-            isCompleted: updates.completed,
-            dueDate: updates.dueDate,
-            listId: updates.listId ? parseInt(updates.listId) : undefined,
+const updateTask = async (taskId: string, updates: Partial<Task>): Promise<Task> => {
+  const formatDueDate = (rawDate?: string): string | undefined => {
+    if (!rawDate || typeof rawDate !== 'string' || rawDate.trim() === '') return undefined;
+    const isoCandidate = new Date(`${rawDate}T00:00:00.000Z`);
+    return isNaN(isoCandidate.getTime()) ? undefined : isoCandidate.toISOString();
+  };
+
+  const processListId = (listId?: string | number): number | undefined => {
+    if (listId === null || listId === undefined || listId === '') return undefined;
+    if (typeof listId === 'number') return isNaN(listId) ? undefined : listId;
+    if (typeof listId === 'string') {
+      const parsed = parseInt(listId.trim(), 10);
+      return isNaN(parsed) ? undefined : parsed;
+    }
+    return undefined;
+  };
+
+  const updatePayload = {
+    title: updates.title ?? '',
+    description: updates.notes ?? '',
+    isCompleted: updates.completed ?? false,
+    dueDate: formatDueDate(updates.dueDate),
+    listId: processListId(updates.listId),
+  };
+
+  try {
+    // Cập nhật task chính
+    const updatedData = await updateTaskById(taskId, updatePayload);
+
+    // Lấy task hiện tại từ state
+    const currentTask = tasks.find(t => t.id === taskId);
+    const currentSubtaskIds = new Set(currentTask?.subtasks?.map(st => st.id));
+
+    const newSubtasks = updates.subtasks ?? [];
+
+    // ID subtasks cần giữ lại
+    const incomingIds = new Set(newSubtasks.filter(st => st.id).map(st => st.id));
+    const subtasksToDelete = currentTask?.subtasks?.filter(st => !incomingIds.has(st.id)) || [];
+    const subtasksToCreate = newSubtasks.filter(st => !st.id);
+
+    // 1. Xoá subtasks không còn nữa
+    await Promise.all(subtasksToDelete.map(async (st) => {
+      try {
+        await deleteSubtaskById(st.id);
+      } catch (err) {
+        console.error(`Failed to delete subtask ${st.id}`, err);
+      }
+    }));
+
+    // 2. Tạo subtasks mới
+    const createdSubtasks = await Promise.all(
+      subtasksToCreate.map(async (sub) => {
+        const created = await createSubtaskByTaskId(taskId, sub.title, sub.completed);
+        return {
+          id: created.id.toString(),
+          title: created.content,
+          completed: created.isCompleted,
         };
+      })
+    );
 
-        const updatedData = await updateTaskById(taskId, updatePayload);
+    // 3. Ghép subtasks giữ lại (có id) và subtasks vừa tạo
+    const finalSubtasks = [
+      ...newSubtasks.filter(st => st.id), // giữ lại subtasks cũ còn tồn tại
+      ...createdSubtasks // subtasks vừa tạo
+    ];
 
-        const updatedTask: Task = {
-            id: updatedData.id.toString(),
-            title: updatedData.title,
-            completed: updatedData.isCompleted,
-            listId: updatedData.listId.toString(),
-            dueDate: updatedData.dueDate || undefined,
-            notes: updatedData.description || '',
-            isStarred: false,
-            assignedTo: undefined,
-            subtasks: [],
-            comments: [],
-            sharedWith: [],
-        };
+    // 4. Cập nhật lại task trong state
+    const updatedTask: Task = {
+      id: updatedData.id.toString(),
+      title: updatedData.title,
+      completed: updatedData.isCompleted,
+      listId: updatedData.listId,
+      dueDate: updatedData.dueDate
+        ? new Date(updatedData.dueDate).toISOString().split('T')[0]
+        : undefined,
+      notes: updatedData.description || '',
+      isStarred: updatedData.isStarred ?? false,
+      assignedTo: updatedData.userId || undefined,
+      subtasks: finalSubtasks.map(st => ({
+            id: st.id,
+            title: st.title,
+            completed: st.completed, // đổi lại đúng định dạng của SubTask
+        })),
 
-        setTasks(prev =>
-            prev.map(task => (task.id === taskId ? updatedTask : task))
-        );
+      comments: [],
+      sharedWith: [],
+      attachments: [],
+    };
 
-        return updatedTask;
-        };
+    setTasks(prev =>
+      prev.map(task => (task.id === taskId ? updatedTask : task))
+    );
+
+    return updatedTask;
+  } catch (error) {
+    console.error('Error updating task with subtasks:', error);
+    throw error;
+  }
+};
+
 
 
    const deleteTask = async (taskId: string): Promise<void> => {
