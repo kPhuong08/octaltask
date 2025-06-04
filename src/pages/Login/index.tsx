@@ -30,7 +30,7 @@ const Login = () => {
         handleSubmit,
         formState: { errors, isSubmitting },
     } = useForm<LoginFormValues>({
-        resolver: zodResolver(loginSchema),
+       resolver: zodResolver(loginSchema) || true,
         defaultValues: {
             email: '',
             password: '',

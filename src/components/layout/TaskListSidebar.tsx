@@ -40,14 +40,14 @@ export function TaskListSidebar({
     activeListId,
     onSelectList,
     onCreateList,
-    onEditList,
+    //onEditList,
     onDeleteList,
     onUpdateList
 }: TaskListSidebarProps) {
     const [showCreateListModal, setShowCreateListModal] = useState(false);
     const [selectedList, setSelectedList] = useState<TaskList | null>(null);
     const [listToEdit, setListToEdit] = useState<TaskList | null>(null);
-    const { darkMode } = useTheme();
+    // const { darkMode } = useTheme();
     const { shareList, updateListPermission, removeListUser } = useTask();
 
     const handleCreateList = (name: string, color: ListColor, icon: ListIcon) => {

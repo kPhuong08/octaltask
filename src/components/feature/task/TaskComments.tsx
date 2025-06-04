@@ -20,8 +20,8 @@ interface TaskCommentsProps {
 export function TaskComments({
     task,
     currentUserId,
-    currentUserName,
-    currentUserPhoto,
+    //currentUserName,
+    //currentUserPhoto,
     onAddComment,
     onDeleteComment,
 }: TaskCommentsProps) {
@@ -61,7 +61,7 @@ export function TaskComments({
                         className={`flex gap-2 group rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800/30 p-2 transition-all ${deletingCommentId === comment.id ? 'opacity-50 scale-95' : ''}`}
                     >
                         <Avatar className="h-7 w-7 mt-0.5 flex-shrink-0">
-                            {/* <AvatarImage src={comment.userPhotoUrl || '/avatar-placeholder.png'} alt={comment.userName} /> */}
+                            <AvatarImage src={comment.userPhotoUrl || '/avatar-placeholder.png'} alt={comment.userName} />
                             <AvatarFallback>{comment.userName.charAt(0)}</AvatarFallback>
                         </Avatar>
                         <div className="flex-1 space-y-1">

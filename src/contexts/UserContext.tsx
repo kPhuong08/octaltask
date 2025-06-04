@@ -1,6 +1,5 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { SharedUser } from '@/types/task';
-import Cookies from 'js-cookie'; 
 import { authInformation } from '@/lib/api/auth'; 
 
 type UserRole = 'viewer' | 'editor' | 'admin';
@@ -60,7 +59,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
   fetchUser();
 }, []);
 
-  const login = async (email: string, password: string) => {
+  const login = async (email: string) => {
     // login successfully with email and password
     const user: User = {
       id: '1',
@@ -78,7 +77,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
     localStorage.removeItem('octalTaskUser');
   };
 
-  const register = async (name: string, email: string, password: string) => {
+  const register = async (name: string, email: string) => {
     // test user
     const user: User = {
       id: Date.now().toString(),
