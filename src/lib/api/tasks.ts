@@ -287,3 +287,33 @@ export const getCommentsByTaskId = async (taskId: number | string) => {
 
   return res.data;
 };
+
+export const createComment = async (taskId: string, content: string) => {
+  const token = Cookies.get('token');
+  if (!token) throw new Error('No token found');
+
+  const res = await axios.post(
+    `${API_BASE}/tasks/${taskId}/comments`,
+    { content },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  return res.data;
+};
+
+export const deleteCommentById = async (commentId: string) => {
+  const token = Cookies.get('token');
+  if (!token) throw new Error('No token found');
+
+  const res = await axios.delete(`${API_BASE}/comments/${commentId}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return res.data;
+};

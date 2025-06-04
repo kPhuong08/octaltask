@@ -1,10 +1,10 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { Task, TaskList, Comment, Attachment } from '@/types/task';
 import { useUser } from './UserContext';
-import {createList, getLists, getListsById,  updateListById, deleteListById} from '@/lib/api/tasks';
-import { createTask, getTasks, getTaskById, updateTaskById, deleteTaskById } from '@/lib/api/tasks';
+import {createList, getLists,  updateListById, deleteListById} from '@/lib/api/tasks';
+import { createTask, getTasks, updateTaskById, deleteTaskById } from '@/lib/api/tasks';
 import { getSubtasksByTaskId, createSubtaskByTaskId, deleteSubtaskById  } from '@/lib/api/tasks';
-import { getCommentsByTaskId } from '@/lib/api/tasks';
+import { getCommentsByTaskId, createComment, deleteCommentById } from '@/lib/api/tasks';
 interface TaskContextType {
     tasks: Task[];
     lists: TaskList[];
@@ -383,8 +383,6 @@ const updateTask = async (taskId: string, updates: Partial<Task>): Promise<Task>
   }
 };
 
-
-
    const deleteTask = async (taskId: string): Promise<void> => {
         await deleteTaskById(taskId);
         setTasks(prev => prev.filter(task => task.id !== taskId));
@@ -658,75 +656,49 @@ const updateTask = async (taskId: string, updates: Partial<Task>): Promise<Task>
     // Comments & Questions operations
     const addComment = async (taskId: string, content: string): Promise<Comment> => {
         try {
-            // In a real app, this would make an API call
-            const task = tasks.find(t => t.id === taskId);
-            if (!task) {
-                throw new Error("Task not found");
-            }
+            const res = await createComment(taskId, content);
 
             const newComment: Comment = {
-                id: `comment-${Date.now()}`,
-                taskId,
-                userId: currentUser?.id || 'anonymous',
-                content,
-                createdAt: new Date().toISOString(),
-                userName: '',
+            id: res.id.toString(),
+            taskId: taskId,
+            userId: res.user?.userId?.toString() ?? '',
+            content: res.content,
+            createdAt: res.createdAt,
+            userName: res.user?.email || 'Unknown',
             };
 
-            // Update the task with the new comment
-            const updatedTask = {
-                ...task,
-                comments: [...(task.comments || []), newComment]
-            };
-
-            // Update the tasks array
-            const updatedTasks = tasks.map(t => t.id === taskId ? updatedTask : t);
-            setTasks(updatedTasks);
-
-            // Save to localStorage immediately
-            localStorage.setItem('octalTasks', JSON.stringify(updatedTasks));
+            setTasks(prev =>
+            prev.map(task =>
+                task.id === taskId
+                ? { ...task, comments: [...(task.comments || []), newComment] }
+                : task
+            )
+            );
 
             return newComment;
-        } catch (error) {
-            console.error("Error adding comment:", error);
-            throw error;
+        } catch (err) {
+            console.error('Failed to create comment:', err);
+            throw err;
         }
-    };
+        };
+
 
     const deleteComment = async (commentId: string): Promise<void> => {
         try {
-            // Find the task containing this comment
-            const taskWithComment = tasks.find(task =>
-                task.comments && task.comments.some(comment => comment.id === commentId)
+            await deleteCommentById(commentId);
+
+            setTasks(prev =>
+            prev.map(task => ({
+                ...task,
+                comments: (task.comments || []).filter(c => c.id !== commentId),
+            }))
             );
-
-            if (!taskWithComment) {
-                console.error(`No task found with comment ID: ${commentId}`);
-                return;
-            }
-
-            // Update that specific task's comments
-            const updatedTasks = tasks.map(task => {
-                if (task.id === taskWithComment.id) {
-                    return {
-                        ...task,
-                        comments: (task.comments || []).filter(comment => comment.id !== commentId)
-                    };
-                }
-                return task;
-            });
-
-            // Update state
-            setTasks(updatedTasks);
-
-            // Save to localStorage immediately
-            localStorage.setItem('octalTasks', JSON.stringify(updatedTasks));
-            console.log(`Comment ${commentId} deleted successfully`);
-        } catch (error) {
-            console.error("Error deleting comment:", error);
-            throw error;
+        } catch (err) {
+            console.error('Failed to delete comment:', err);
+            throw err;
         }
-    };
+        };
+
 
     const addAttachment = async (taskId: string, file: File): Promise<Attachment> => {
       try {

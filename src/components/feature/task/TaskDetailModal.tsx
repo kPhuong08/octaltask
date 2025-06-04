@@ -26,6 +26,16 @@ interface SubTask {
     completed: boolean;
 }
 
+interface Comment {
+    id: string;
+    content: string;
+    taskId: string;
+    userName: string;
+    userId: string;
+    //authorPhoto?: string;
+    createdAt: string;
+}
+
 interface TaskDetailModalProps {
     task: Task;
     lists?: TaskList[];
@@ -63,58 +73,48 @@ export function TaskDetailModal({
 }: TaskDetailModalProps) {
     const [editedTask, setEditedTask] = useState<Task>({ ...task });
     const [subtasks, setSubtasks] = useState<SubTask[]>(task.subtasks || []);
+    // Removed separate comments state - will use editedTask.comments instead
     const [newSubtaskTitle, setNewSubtaskTitle] = useState('');
     const [showListSelector, setShowListSelector] = useState(false);
     const [showShareModal, setShowShareModal] = useState(false);
     const [isUploading, setIsUploading] = useState(false);
     const fileInputRef = useRef<HTMLInputElement>(null);
 
-    // const handleSave = () => {
-    //     if (editedTask.title.trim()) {
-    //         onSave({
-    //             ...editedTask,
-    //             subtasks,
-    //             updatedAt: new Date().toISOString()
-    //         });
-    //         onClose();
-    //     }
-    // };
     const handleSave = () => {
-    if (editedTask.title.trim()) {
-        console.log('Saving task with dueDate:', editedTask.dueDate); // Debug log
-        
-        onSave({
-            ...editedTask,
-            subtasks: subtasks.map(st => ({
-                id: st.id?.startsWith('temp-') ? '' : st.id || '',
-                title: st.title,
-                completed: st.completed
-              }))
-            //updatedAt: new Date().toISOString()
-        });
-        onClose();
-    }
+        if (editedTask.title.trim()) {
+            console.log('Saving task with dueDate:', editedTask.dueDate); // Debug log
+            
+            onSave({
+                ...editedTask,
+                subtasks: subtasks.map(st => ({
+                    id: st.id?.startsWith('temp-') ? '' : st.id || '',
+                    title: st.title,
+                    completed: st.completed
+                })),
+                comments: (editedTask.comments || []).map(comment => ({
+                    id: comment.id?.startsWith('temp-') ? '' : comment.id || '',
+                    content: comment.content,
+                    userId: comment.userId,
+                    userName: comment.userName,
+                    taskId: comment.taskId,
+                    //authorPhoto: comment.authorPhoto,
+                    createdAt: comment.createdAt
+                }))
+            });
+            onClose();
+        }
     };
 
     const addSubtask = () => {
-        // if (newSubtaskTitle.trim()) {
-        //     const newSubtask: SubTask = {
-        //         id: Date.now().toString(),
-        //         title: newSubtaskTitle,
-        //         completed: false
-        //     };
-        //     setSubtasks([...subtasks, newSubtask]);
-        //     setNewSubtaskTitle('');
-        // }
         if (newSubtaskTitle.trim()) {
-        const newSubtask: SubTask = {
-            id: `temp-${Date.now()}`, // gắn tiền tố tạm
-            title: newSubtaskTitle,
-            completed: false
-        };
-        setSubtasks([...subtasks, newSubtask]);
-        setNewSubtaskTitle('');
-    }
+            const newSubtask: SubTask = {
+                id: `temp-${Date.now()}`, // gắn tiền tố tạm
+                title: newSubtaskTitle,
+                completed: false
+            };
+            setSubtasks([...subtasks, newSubtask]);
+            setNewSubtaskTitle('');
+        }
     };
 
     const toggleSubtaskCompletion = (subtaskId: string) => {
@@ -129,6 +129,59 @@ export function TaskDetailModal({
 
     const deleteSubtask = (subtaskId: string) => {
         setSubtasks(subtasks.filter(subtask => subtask.id !== subtaskId));
+    };
+
+    // Fixed Comment handlers - update editedTask.comments directly
+    const handleAddComment = async (taskId: string, content: string) => {
+        if (!content.trim()) return;
+
+        // Tạo comment mới với id tạm thời
+        const newComment: Comment = {
+            id: `temp-${Date.now()}`,
+            content: content.trim(),
+            userId: currentUserId,
+            userName: currentUserName,
+            taskId: taskId,
+            createdAt: new Date().toISOString()
+        };
+
+        // Cập nhật editedTask.comments ngay lập tức để UI update
+        setEditedTask(prev => ({
+            ...prev,
+            comments: [...(prev.comments || []), newComment]
+        }));
+
+        // Gọi API để lưu vào database (nếu có)
+        if (onAddComment) {
+            try {
+                await onAddComment(taskId, content.trim());
+            } catch (error) {
+                console.error('Error adding comment:', error);
+                // Nếu lỗi, rollback state
+                setEditedTask(prev => ({
+                    ...prev,
+                    comments: (prev.comments || []).filter(c => c.id !== newComment.id)
+                }));
+            }
+        }
+    };
+
+    const handleDeleteComment = async (commentId: string) => {
+        // Cập nhật editedTask.comments ngay lập tức để UI update
+        setEditedTask(prev => ({
+            ...prev,
+            comments: (prev.comments || []).filter(comment => comment.id !== commentId)
+        }));
+
+        // Gọi API để xóa khỏi database (nếu có và không phải comment tạm)
+        if (onDeleteComment && !commentId.startsWith('temp-')) {
+            try {
+                await onDeleteComment(commentId);
+            } catch (error) {
+                console.error('Error deleting comment:', error);
+                // Nếu lỗi, có thể rollback state (cần lưu trạng thái trước đó)
+            }
+        }
     };
 
     const handleDelete = () => {
@@ -179,7 +232,6 @@ export function TaskDetailModal({
                 return 'bg-gray-200'; // Fallback default color
         }
     };
-
 
     const isShared = editedTask.sharedWith && editedTask.sharedWith.length > 0;
 
@@ -545,12 +597,12 @@ export function TaskDetailModal({
 
                       <div className="flex-grow overflow-y-auto scrollbar-thin">
                         <TaskComments
-                          task={editedTask}
+                          task={editedTask} // Pass editedTask instead of original task
                           currentUserId={currentUserId}
                           currentUserName={currentUserName}
                           currentUserPhoto={currentUserPhoto}
-                          onAddComment={onAddComment}
-                          onDeleteComment={onDeleteComment || (() => {})}
+                          onAddComment={handleAddComment}
+                          onDeleteComment={handleDeleteComment || (() => {})}
                         />
                       </div>
                     </div>
