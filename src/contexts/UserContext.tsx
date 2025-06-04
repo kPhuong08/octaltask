@@ -92,8 +92,8 @@ export function UserProvider({ children }: { children: ReactNode }) {
 
   // Simulated functions for sharing
   const shareWithUser = async (
-    itemId: string,
-    itemType: 'task' | 'list',
+    _itemId: string,
+    _itemType: 'task' | 'list',
     email: string,
     role: UserRole
   ): Promise<SharedUser> => {
@@ -131,8 +131,8 @@ export function UserProvider({ children }: { children: ReactNode }) {
   };
 
   const getSharedUsers = async (
-    itemId: string,
-    itemType: 'task' | 'list'
+    _itemId: string,
+    _itemType: 'task' | 'list'
   ): Promise<SharedUser[]> => {
     // In a real app, this would be an API call to get shared users
     // For demo, return an empty array

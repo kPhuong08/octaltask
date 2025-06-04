@@ -22,7 +22,7 @@ import { ShareListModal } from '../feature/list/ShareListModal';
 import { Button } from '../ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '../ui/dropdown-menu';
 
-type ListColor = 'blue' | 'green' | 'red' | 'purple' | 'amber';
+type ListColor = 'blue' | 'green' | 'red' | 'purple' | 'amber' | 'black';
 type ListIcon = 'personal' | 'work' | 'home' | 'study' | 'default';
 
 interface TaskListSidebarProps {
