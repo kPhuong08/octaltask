@@ -8,7 +8,7 @@ import { Input } from '../../ui/input';
 import { EmptyTaskState } from './EmptyTaskState';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-
+import { useTask } from '@/contexts/TaskContext';
 
 interface TaskListProps {
     tasks?: Task[];
@@ -21,6 +21,7 @@ interface TaskListProps {
     onStarTask?: (taskId: string) => void;
     onReorderTasks?: (startIndex: number, endIndex: number) => void;
 }
+
 
 const formatDueDate = (dateString: string) => {
   if (!dateString) {
@@ -95,13 +96,14 @@ export function TaskList({
     //listName,
     onEditTask,
     onAddTask,
-    onUpdateTask,
+    //onUpdateTask,
     onDeleteTask,
-    onStarTask
+    //onStarTask
 }: TaskListProps) {
     const [localTasks, setLocalTasks] = useState<Task[]>([]);
     const tasks = propTasks || localTasks;
-
+    const { completeTask } = useTask();
+    const { starTask } = useTask();
     const [newTaskTitle, setNewTaskTitle] = useState('');
     const [activeTaskId, setActiveTaskId] = useState<string | null>(null);
     const inputRef = useRef<HTMLInputElement>(null);
@@ -143,40 +145,50 @@ export function TaskList({
         const task = tasks.find(t => t.id === taskId);
         if (!task) return;
 
-        const newCompletedState = !task.completed;
+        // const newCompletedState = !task.completed;
+        completeTask(taskId).catch(err => {
+        console.error('Failed to complete task:', err);
+        });
 
-        if (onUpdateTask) {
-            onUpdateTask(taskId, {
-                completed: newCompletedState,
-                // updatedAt: new Date().toISOString()
-            });
-        } else {
-            setLocalTasks(localTasks.map(t =>
-                t.id === taskId ? {
-                    ...t,
-                    completed: newCompletedState,
-                    updatedAt: new Date().toISOString()
-                } : t
-            ));
-        }
+        // if (onUpdateTask) {
+        //     onUpdateTask(taskId, {
+        //         completed: completeTask(taskId),
+        //         // updatedAt: new Date().toISOString()
+        //     });
+        // } else {
+        //     setLocalTasks(localTasks.map(t =>
+        //         t.id === taskId ? {
+        //             ...t,
+        //             completed: newCompletedState,
+        //             updatedAt: new Date().toISOString()
+        //         } : t
+        //     ));
+        // }
     };
+
+
     const toggleTaskStar = (taskId: string, e: React.MouseEvent) => {
+        // e.stopPropagation();
+        // if (onStarTask) {
+        //     onStarTask(taskId);
+        // } else {
+        //     setLocalTasks(
+        //         localTasks.map(task =>
+        //             task.id === taskId
+        //                 ? {
+        //                     ...task,
+        //                     isStarred: !task.isStarred,
+        //                     updatedAt: new Date().toISOString(),
+        //                 }
+        //                 : task
+        //         )
+        //     );
+        // }
+
         e.stopPropagation();
-        if (onStarTask) {
-            onStarTask(taskId);
-        } else {
-            setLocalTasks(
-                localTasks.map(task =>
-                    task.id === taskId
-                        ? {
-                            ...task,
-                            isStarred: !task.isStarred,
-                            updatedAt: new Date().toISOString(),
-                        }
-                        : task
-                )
-            );
-        }
+        starTask(taskId).catch(err => {
+        console.error('Failed to star task:', err);
+    });
     };
     const deleteTask = (taskId: string) => {
         if (onDeleteTask) {

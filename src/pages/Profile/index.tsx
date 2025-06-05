@@ -28,7 +28,6 @@ export default function Profile() {
       try {
         const data = await authInformation();
         const { name, email, role } = data.user;
-
         setUser({
           name,
           email,

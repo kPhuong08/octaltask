@@ -5,6 +5,7 @@ import {createList, getLists,  updateListById, deleteListById} from '@/lib/api/t
 import { createTask, getTasks, updateTaskById, deleteTaskById } from '@/lib/api/tasks';
 import { getSubtasksByTaskId, createSubtaskByTaskId, deleteSubtaskById  } from '@/lib/api/tasks';
 import { getCommentsByTaskId, createComment, deleteCommentById } from '@/lib/api/tasks';
+import { toggleStarTask} from '@/lib/api/tasks';
 interface TaskContextType {
     tasks: Task[];
     lists: TaskList[];
@@ -17,6 +18,7 @@ interface TaskContextType {
     deleteTask: (taskId: string) => Promise<void>;
     getTasksByList: (listId: string) => Task[];
     starTask: (taskId: string) => Promise<Task>;
+    completeTask: (taskId: string) => Promise<Task>;
 
     // List operations
     addList: (list: Partial<TaskList>) => Promise<TaskList>;
@@ -395,15 +397,21 @@ export function TaskProvider({ children }: { children: ReactNode }) {
 
         // Implement the starTask function
         const starTask = async (taskId: string): Promise<Task> => {
-            const task = tasks.find(task => task.id === taskId);
-            if (!task) {
-                throw new Error('Task not found');
-            }
+        const task = tasks.find(task => task.id === taskId);
+        if (!task) {
+            throw new Error('Task not found');
+        }
 
-            // Toggle the isStarred status
+        try {
+            const newStarredStatus = !task.isStarred;
+            
+            // Gọi API để cập nhật
+            const updatedData = await toggleStarTask(taskId, newStarredStatus);
+            
+            // Cập nhật state local
             const updatedTask = {
                 ...task,
-                isStarred: !task.isStarred,
+                isStarred: updatedData.isStarred ?? newStarredStatus,
                 updatedAt: new Date().toISOString()
             };
 
@@ -412,6 +420,45 @@ export function TaskProvider({ children }: { children: ReactNode }) {
             );
 
             return updatedTask;
+        } catch (error) {
+            console.error('Error toggling star status:', error);
+            throw error;
+        }
+    };
+
+    const completeTask = async (taskId: string): Promise<Task> => {
+        const task = tasks.find(task => task.id === taskId);
+        if (!task) throw new Error('Task not found');
+
+        try {
+            const newCompletedStatus = !task.completed;
+
+            // Gửi đủ các trường backend yêu cầu
+            const updatedData = await updateTaskById(taskId, {
+                title: task.title, // BẮT BUỘC backend yêu cầu
+                description: task.notes || '', // nếu bạn lưu description là notes
+                isCompleted: newCompletedStatus,
+                dueDate: task.dueDate, // nếu backend yêu cầu
+                listId: task.listId,
+            });
+
+            const updatedTask = {
+                ...task,
+                completed: updatedData.isCompleted ?? newCompletedStatus,
+                updatedAt: new Date().toISOString()
+            };
+
+            setTasks(prev =>
+                prev.map(t => (t.id === taskId ? updatedTask : t))
+            );
+
+            return updatedTask;
+        } catch (error) {
+            console.error(
+            'Error toggling complete status:',
+            );
+            throw error;
+        }
     };
 
     // List operations
@@ -800,6 +847,7 @@ export function TaskProvider({ children }: { children: ReactNode }) {
                 deleteTask,
                 getTasksByList,
                 starTask,
+                completeTask,
 
                 // List operations
                 addList,

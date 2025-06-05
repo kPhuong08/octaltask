@@ -11,6 +11,8 @@ import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { z } from 'zod';
 import Cookies from 'js-cookie';
+import { useEffect } from 'react';
+import { authInformation } from '@/lib/api/auth';
 
 // Form validation schema
 const loginSchema = z.object({
@@ -56,6 +58,22 @@ const Login = () => {
             setLoginError(error?.response?.data?.message || 'Invalid email or password');
         }
     };
+
+    useEffect(() => {
+        const fetchUser = async () => {
+          try {
+            const data = await authInformation();
+            Cookies.set('id', data.id,{
+                expires: 1, // số ngày hết hạn
+            });
+          } catch (err) {
+            console.error('Error fetching user info:', err);
+            // Redirect to login if needed
+          }
+        };
+    
+        fetchUser();
+      }, []);
 
     return (
         <div className="flex min-h-screen bg-gray-50 dark:bg-gray-900">
