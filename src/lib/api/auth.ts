@@ -46,7 +46,7 @@ export const authInformation = async () => {
     const token = Cookies.get('token');
     if (!token) throw new Error('No token found');
 
-    console.log(token);
+    // console.log(token);
     const res = await axios.get(`${API_BASE}/auth/me`, {
       headers: {
         Authorization: `Bearer ${token}`,
