@@ -96,9 +96,9 @@ export function TaskList({
     //listName,
     onEditTask,
     onAddTask,
-    onUpdateTask,
+    //onUpdateTask,
     onDeleteTask,
-    onStarTask
+    //onStarTask
 }: TaskListProps) {
     const [localTasks, setLocalTasks] = useState<Task[]>([]);
     const tasks = propTasks || localTasks;

@@ -5,7 +5,7 @@ import {createList, getLists,  updateListById, deleteListById} from '@/lib/api/t
 import { createTask, getTasks, updateTaskById, deleteTaskById } from '@/lib/api/tasks';
 import { getSubtasksByTaskId, createSubtaskByTaskId, deleteSubtaskById  } from '@/lib/api/tasks';
 import { getCommentsByTaskId, createComment, deleteCommentById } from '@/lib/api/tasks';
-import { toggleStarTask, toggleCompleteTask } from '@/lib/api/tasks';
+import { toggleStarTask} from '@/lib/api/tasks';
 interface TaskContextType {
     tasks: Task[];
     lists: TaskList[];
