@@ -32,7 +32,7 @@ interface Comment {
     taskId: string;
     userName: string;
     userId: string;
-    //authorPhoto?: string;
+    authorPhoto?: string;
     createdAt: string;
 }
 
@@ -97,7 +97,7 @@ export function TaskDetailModal({
                     userId: comment.userId,
                     userName: comment.userName,
                     taskId: comment.taskId,
-                    //authorPhoto: comment.authorPhoto,
+                    authorPhoto: comment.userPhotoUrl,
                     createdAt: comment.createdAt
                 }))
             });
@@ -141,6 +141,7 @@ export function TaskDetailModal({
             content: content.trim(),
             userId: currentUserId,
             userName: currentUserName,
+            authorPhoto: currentUserPhoto,
             taskId: taskId,
             createdAt: new Date().toISOString()
         };
