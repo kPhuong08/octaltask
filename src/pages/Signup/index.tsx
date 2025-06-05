@@ -43,7 +43,7 @@ const Signup = () => {
         try {
             const res = await signup(data.email, data.password, data.name);
             console.log('Signup success:', res);
-            alert('Registration successful!');
+            alert('Registration successful!');         
             console.log('Form submitted:', data);
             navigate('/login');
         } catch (error) {
