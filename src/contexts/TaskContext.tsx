@@ -5,7 +5,7 @@ import {createList, getLists,  updateListById, deleteListById} from '@/lib/api/t
 import { createTask, getTasks, updateTaskById, deleteTaskById } from '@/lib/api/tasks';
 import { getSubtasksByTaskId, createSubtaskByTaskId, deleteSubtaskById  } from '@/lib/api/tasks';
 import { getCommentsByTaskId, createComment, deleteCommentById } from '@/lib/api/tasks';
-import { toggleStarTask} from '@/lib/api/tasks';
+
 interface TaskContextType {
     tasks: Task[];
     lists: TaskList[];
@@ -406,8 +406,16 @@ export function TaskProvider({ children }: { children: ReactNode }) {
             const newStarredStatus = !task.isStarred;
             
             // Gọi API để cập nhật
-            const updatedData = await toggleStarTask(taskId, newStarredStatus);
+            // const updatedData = await toggleStarTask(taskId, newStarredStatus);
             
+            // Gửi đủ các trường backend yêu cầu
+            const updatedData = await updateTaskById(taskId, {
+                title: task.title, // BẮT BUỘC backend yêu cầu
+                description: task.notes || '', // nếu bạn lưu description là notes
+                isStarred: newStarredStatus,
+                dueDate: task.dueDate, // nếu backend yêu cầu
+                listId: task.listId,
+            });
             // Cập nhật state local
             const updatedTask = {
                 ...task,

@@ -208,6 +208,7 @@ export const updateTaskById = async (
     title?: string;
     description?: string;
     isCompleted?: boolean;
+    isStarred?: boolean;
     dueDate?: string;
     listId?: number | string;
   }
