@@ -65,10 +65,10 @@ npm install
 
 # Start the development server
 npm run dev
-````
+```
 
 > Make sure you also have the backend API running. You can configure the API base URL via `.env`.  
-> The `.env` file only needs one variable `VITE_API_BASE`, it's the base url to the Backend server.
+> The `.env` file only needs one variable `VITE_API_BASE`, it's the base url to the Backend server.  
 
 # Related Projects
 
@@ -76,10 +76,20 @@ OctalTask consists of multiple services. Here are the related repositories:
 
 * [OctalTask Front-End (this repo)](https://github.com/jiraops/octaltask.git): The web-based user interface, built with React, TypeScript and Vite.
 * [OctalTask Backend API](https://github.com/jiraops/octaltask-api.git): A NestJS microservices architecture project using gRPC for communication between services.
-* [OctalTask MPA](https://github.com/jiraops/octaltask-mpa): A static multi-page version of OctalTask, useful for SEO and performance benchmarking.
 
 These services work together to provide a seamless experience for users.
 
 # License
 
 This project is licensed under the [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0).
+
+# Credits
+Contributors:
+- Tran Dong Truc Lam  (Student ID: 22520746)  
+Github link: [limelight-hub](https://github.com/limelight-hub)
+- Le Ngoc Duy Linh (Student ID: 22520762)  
+Github link: [YuilRin](https://github.com/YuilRin)
+- Vo Tran Phi  (Student ID: 22521081)  
+Github link: [votranphi](https://github.com/votranphi)
+- Thai Kieu Phuong  (Student ID: 22521170)  
+Github link: [kPhuong08](https://github.com/kPhuong08)
