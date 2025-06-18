@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 export default function Hero() {
     const navigate = useNavigate();
 
+    const baseURL = import.meta.env.BASE_URL;
+
     return (
       <section
         id="hero"
@@ -38,7 +40,7 @@ export default function Hero() {
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
                 <Button
-                  onClick={() => navigate('/signup')}
+                  onClick={() => navigate(`${baseURL}signup`)}
                   className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 text-lg shadow-md hover:shadow-lg transition-all animate-bounce hover:animate-none"
                   size="lg"
                 >

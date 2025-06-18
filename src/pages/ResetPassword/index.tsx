@@ -17,6 +17,8 @@ export default function ResetPasswordPage() {
     const [searchParams] = useSearchParams()
     const navigate = useNavigate()
 
+    const baseURL = import.meta.env.BASE_URL;
+
     const token = searchParams.get("token")
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -42,7 +44,7 @@ export default function ResetPasswordPage() {
 
             await resetPassword (token, newPassword);
             setSuccess("Password changed successfully. Redirecting...")
-            setTimeout(() => navigate("/login"), 2500)
+            setTimeout(() => navigate(`${baseURL}login`), 2500)
         } catch (err: any) {
             setError(err?.response?.data?.message || "An error occurred.")
         }

@@ -15,6 +15,8 @@ export default function Navbar({ activeSection = '' }: NavbarProps) {
     const navigate = useNavigate();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+    const baseURL = import.meta.env.BASE_URL;
+
     // Define navigation items
     const navItems = [
         { id: 'hero', label: 'Home', href: '#' },
@@ -64,13 +66,13 @@ export default function Navbar({ activeSection = '' }: NavbarProps) {
                         <div className="hidden md:flex items-center gap-3">
                             <Button
                                 variant="ghost"
-                                onClick={() => navigate('/login')}
+                                onClick={() => navigate(`${baseURL}login`)}
                                 className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400"
                             >
                                 Log in
                             </Button>
                             <Button
-                                onClick={() => navigate('/signup')}
+                                onClick={() => navigate(`${baseURL}signup`)}
                                 className="bg-blue-600 hover:bg-blue-700 text-white"
                             >
                                 Sign up
@@ -101,7 +103,7 @@ export default function Navbar({ activeSection = '' }: NavbarProps) {
                                 <Button
                                     variant="ghost"
                                     onClick={() => {
-                                        navigate('/login');
+                                        navigate(`${baseURL}login`);
                                         setIsMenuOpen(false);
                                     }}
                                     className="flex-1 justify-center text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400"
@@ -110,7 +112,7 @@ export default function Navbar({ activeSection = '' }: NavbarProps) {
                                 </Button>
                                 <Button
                                     onClick={() => {
-                                        navigate('/signup');
+                                        navigate(`${baseURL}signup`);
                                         setIsMenuOpen(false);
                                     }}
                                     className="flex-1 justify-center bg-blue-600 hover:bg-blue-700 text-white"
