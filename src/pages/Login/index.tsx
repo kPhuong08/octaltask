@@ -235,7 +235,7 @@ const Login = () => {
                                         </Label>
                                     </div>
                                     <a
-                                        href="/password-recovery"
+                                        href={`${baseURL}password-recovery`}
                                         className="text-sm font-medium text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300"
                                     >
                                         Forgot password?
@@ -258,7 +258,7 @@ const Login = () => {
                             <p className="text-sm text-gray-600 dark:text-gray-400">
                                 Don't have an account?{' '}
                                 <a
-                                    href="/signup"
+                                    href={`${baseURL}signup`}
                                     className="font-medium text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300"
                                 >
                                     Create account
