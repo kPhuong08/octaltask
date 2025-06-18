@@ -8,165 +8,78 @@
 ![ESLint](https://img.shields.io/badge/ESLint-9.21.0-yellowgreen)
 ![TypeScript](https://img.shields.io/badge/TailwindCSS-5.7.2-red)
 
+OctalTask is a website to help user manage their work conveniently and intuitively.
 
-OctalTask is a website to help user manage their work conveniently and intuitively
-
-# Feature
+# Features
 
 ## 1. User Authentication
 
-- **Login, Sign Up, Password Recovery**: User can create an account, login and reset password
+- **Login, Sign Up, Password Recovery**: User can create an account, login and reset password.
 - **Email Verification**: Verify email using a One-Time Password (OTP) for enhanced security.
 
 ## 2. Main Page 
 
 ### Sidebar: Display user information and quick access to different categorized tasks
 
-- **User information**: Display username, email and settings icon
+- **User information**: Display username, email and settings icon.
 
 - **Your task**: Your personal tasks
   - *Task today*: Lists tasks scheduled for today.
-  - *Important task*:  Shows tasks marked as important.
-  - *Planned task*:  Shows tasks have date due and scheduled for the future.
+  - *Important task*: Shows tasks marked as important.
+  - *Planned task*: Shows tasks that have a due date and are scheduled for the future.
   - *Assigned task*: Team tasks delegated to or assigned by others.
-  - *All task*: All task lists you have
+  - *All task*: All task lists you have.
 
-- **Team task**: Show all your team and tasks in the team
+- **Team task**: Show all your teams and tasks in the team.
 
 ### Main Content: Display the tasks
-- Display the tasks you have in each categories, which are incompleted and completed.
-- Each task shows its name, due date, task list and mark that it is important or not.
+- Display the tasks you have in each category, including incomplete and completed.
+- Each task shows its name, due date, task list, and whether it's marked as important.
 
 ### Task's Content: Display the details of the selected task
-- Include task list category, checkbox add to "Task today" and fields for remind, due date and note
+- Includes task list category, checkbox to add to "Task today", and fields for reminder, due date, and note.
 
 ## 3. About Task
-- Ticking and unticking the task to change the state of the task 
+- Ticking and unticking the task to change its completion state.
 
 ### Personal Task:
-- Create, delete and edit your task list 
-  - Add, delete and edit the tasks in task list
-  - Change the task list in a task
+- Create, delete, and edit your task list.
+  - Add, delete, and edit tasks within a task list.
+  - Change the task list a task belongs to.
 
 ### Team Task:
-- Add, delete and edit role of members in your team
-- Create, delete and edit your team task list
-  - Create, delete and edit the tasks
-  - Assign the tasks to team members
+- Add, delete, and edit roles of members in your team.
+- Create, delete, and edit your team task list.
+  - Create, delete, and edit tasks.
+  - Assign tasks to team members.
 
-## Related Projects
+# Installation
 
-OCtalTask consists of multiple services. Here are the related repositories:
+```bash
+# Clone the repository
+git clone https://github.com/jiraops/octaltask
+cd octaltask
 
-- [OctalTask Front-End (this repo)](https://github.com/jiraops/octaltask.git): The web-based user interface, built with React, TypeScript and Vite.
-- [OctalTask Backend API (this repo)](https://github.com/jiraops/octaltask-api.git): This is a NestJS microservices architecture project using gRPC for communication between services. It follows a modular, scalable design pattern where each service is self-contained and communicates through protocol buffers.
+# Install dependencies
+npm install
 
+# Start the development server
+npm run dev
+````
+
+> Make sure you also have the backend API running. You can configure the API base URL via `.env`.  
+> The `.env` file only needs one variable `VITE_API_BASE`, it's the base url to the Backend server.
+
+# Related Projects
+
+OctalTask consists of multiple services. Here are the related repositories:
+
+* [OctalTask Front-End (this repo)](https://github.com/jiraops/octaltask.git): The web-based user interface, built with React, TypeScript and Vite.
+* [OctalTask Backend API](https://github.com/jiraops/octaltask-api.git): A NestJS microservices architecture project using gRPC for communication between services.
+* [OctalTask MPA](https://github.com/jiraops/octaltask-mpa): A static multi-page version of OctalTask, useful for SEO and performance benchmarking.
 
 These services work together to provide a seamless experience for users.
 
-# React + TypeScript + Vite
+# License
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
-
-## Getting Started
-
-### Prerequisites
-- Node.js (version 14 or higher)
-- npm or yarn (package manager)
-
-### Installation
-
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/jiraops/octaltask.git
-   cd octaltask
-   ```
-
-2. Install dependencies:
-   ```bash
-   npm install
-   # or
-   yarn install
-   ```
-
-3. Start the development server:
-   ```bash
-   npm run dev
-   # or
-   yarn dev
-   ```
-4. Open the app in your browser:
-   ```
-   http://localhost:5173
-   ```
-## Acknowledgements
-
-OctalTask is an intuitive task management web application designed to help individuals and teams stay organized, prioritize effectively, and collaborate effortlessly. With features that support both team-based and personal task tracking, OctalTask can help users maintain a healthy balance between collaborative work and individual responsibilities.
-
-Thank you for your using!
-
-## License
-
-
-
-## Credits
-Contributors:
-- Tran Dong Truc Lam  (Student ID: 22520746)  
-Github link: [limelight-hub](https://github.com/limelight-hub)
-- Le Ngoc Duy Linh (Student ID: 22520762)  
-Github link: [YuilRin](https://github.com/YuilRin)
-- Vo Tran Phi  (Student ID: 22521081)  
-Github link: [votranphi](https://github.com/votranphi)
-- Thai Kieu Phuong  (Student ID: 22521170)  
-Github link: [kPhuong08](https://github.com/kPhuong08)
+This project is licensed under the [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0).
