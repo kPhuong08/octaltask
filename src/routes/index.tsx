@@ -16,16 +16,16 @@ export default function AppRoutes() {
 
     return (
         <Routes>
-            <Route path={`${baseURL}/`} element={<LandingPage />} />
-            <Route path={`${baseURL}/login`} element={<Login />} />
-            <Route path={`${baseURL}/signup`} element={<Signup />} />
-            <Route path={`${baseURL}/password-recovery`} element={<PasswordRecovery />} />
-            <Route path={`${baseURL}/reset-password`} element={<ResetPassword />} />
-            <Route path={`${baseURL}/tasks`} element={<TaskDashboard />} />
-            <Route path={`${baseURL}/profile`} element={<Profile />} />
-            <Route path={`${baseURL}/settings`} element={<Settings />} />
-            <Route path={`${baseURL}/about`} element={<About />} />
-            <Route path={`${baseURL}/tasks`} element={<TaskDashboard />} />
+            <Route path={`${baseURL}`} element={<LandingPage />} />
+            <Route path={`${baseURL}login`} element={<Login />} />
+            <Route path={`${baseURL}signup`} element={<Signup />} />
+            <Route path={`${baseURL}password-recovery`} element={<PasswordRecovery />} />
+            <Route path={`${baseURL}reset-password`} element={<ResetPassword />} />
+            <Route path={`${baseURL}tasks`} element={<TaskDashboard />} />
+            <Route path={`${baseURL}profile`} element={<Profile />} />
+            <Route path={`${baseURL}settings`} element={<Settings />} />
+            <Route path={`${baseURL}about`} element={<About />} />
+            <Route path={`${baseURL}tasks`} element={<TaskDashboard />} />
             <Route path={`${baseURL}*`} element={<NotFound />} />
         </Routes>
     );
