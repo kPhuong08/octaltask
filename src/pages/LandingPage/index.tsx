@@ -11,6 +11,8 @@ export default function LandingPage() {
   const [visibleFAQ, setVisibleFAQ] = useState<number | null>(null);
   const [activeSection, setActiveSection] = useState('hero');
 
+  const baseURL = import.meta.env.BASE_URL;
+
   const toggleFAQ = (index: number) => {
     setVisibleFAQ(visibleFAQ === index ? null : index);
   };
@@ -590,7 +592,7 @@ export default function LandingPage() {
               Join thousands of users who manage their tasks efficiently with OctalTask.
             </p>
             <Button
-              onClick={() => navigate('/signup')}
+              onClick={() => navigate(`${baseURL}signup`)}
               className="bg-white text-blue-600 hover:bg-gray-100 px-8 py-3 text-lg"
               size="lg"
             >

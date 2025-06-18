@@ -27,6 +27,8 @@ const Login = () => {
     const [loginError, setLoginError] = useState('');
     const navigate = useNavigate();
 
+    const baseURL = import.meta.env.BASE_URL;
+
     const {
         register,
         handleSubmit,
@@ -49,7 +51,7 @@ const Login = () => {
                 Cookies.set('token', res.accessToken, {
                 expires: 1, // số ngày hết hạn
             });
-                navigate('/tasks');
+                navigate(`${baseURL}tasks`);
             } else {
                 setLoginError('An unexpected error occurred');
             }

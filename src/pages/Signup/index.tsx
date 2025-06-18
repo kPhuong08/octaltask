@@ -39,13 +39,15 @@ const Signup = () => {
         },
     });
 
+    const baseURL = import.meta.env.BASE_URL;
+
     const onSubmit = async (data: SignupFormValues) => {
         try {
             const res = await signup(data.email, data.password, data.name);
             console.log('Signup success:', res);
             alert('Registration successful!');         
             console.log('Form submitted:', data);
-            navigate('/login');
+            navigate(`${baseURL}login`);
         } catch (error) {
             console.error('Signup error:', error);
             alert('Registration failed. Please try again.');
