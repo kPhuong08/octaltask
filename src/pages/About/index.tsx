@@ -11,6 +11,8 @@ export default function About() {
     { name: 'Tran Phi', role: 'Team Lead & Backend' },
   ];
 
+  const baseURL = import.meta.env.BASE_URL;
+
   return (
     <div className="min-h-screen flex flex-col bg-white dark:bg-gray-900 text-gray-800 dark:text-white">
       {/* Header */}
@@ -18,7 +20,7 @@ export default function About() {
         <div className="max-w-5xl mx-auto px-6 flex items-center">
           {/* better logic here */}
           <Link
-            to="/tasks"
+            to={`${baseURL}tasks`}
             className="text-gray-500 hover:text-blue-600 dark:hover:text-blue-400 p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition"
           >
             <ArrowLeft className="h-5 w-5" />

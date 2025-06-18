@@ -11,6 +11,8 @@ import { authInformation } from '@/lib/api/auth';
 export default function Profile() {
   //const navigate = useNavigate();
 
+  const baseURL = import.meta.env.BASE_URL;
+
   // Placeholder user data - would come from auth context in a real app
   const [user, setUser] = useState({
     name: '',
@@ -61,7 +63,7 @@ export default function Profile() {
         <div className="flex items-center max-w-5xl px-6 mx-auto">
           {/* better logic here */}
           <Link
-            to="/tasks"
+            to={`${baseURL}tasks`}
             className="p-1 mr-4 text-gray-500 transition-colors rounded-full hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
           >
             <ArrowLeft className="w-5 h-5" />
