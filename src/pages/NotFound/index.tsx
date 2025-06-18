@@ -9,6 +9,8 @@ export default function NotFound() {
   const navigate = useNavigate();
   const { darkMode } = useTheme();
 
+  const baseURL = import.meta.env.BASE_URL;
+
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900 flex flex-col">
       <header className="sticky top-0 bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
@@ -59,7 +61,7 @@ export default function NotFound() {
             </Button>
 
             {/* need to fix logic here */}
-            <Link to="/" className="w-full sm:w-auto">
+            <Link to={`${baseURL}`} className="w-full sm:w-auto">
               <Button className="flex items-center gap-2 w-full justify-center bg-blue-600 hover:bg-blue-700 text-white">
                 <Home className="h-4 w-4" />
                 Home Page

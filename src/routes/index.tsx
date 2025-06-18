@@ -25,7 +25,6 @@ export default function AppRoutes() {
             <Route path={`${baseURL}profile`} element={<Profile />} />
             <Route path={`${baseURL}settings`} element={<Settings />} />
             <Route path={`${baseURL}about`} element={<About />} />
-            <Route path={`${baseURL}tasks`} element={<TaskDashboard />} />
             <Route path={`${baseURL}*`} element={<NotFound />} />
         </Routes>
     );
