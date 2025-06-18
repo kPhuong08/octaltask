@@ -238,7 +238,7 @@ const Signup = () => {
                             <p className="text-sm text-gray-600 dark:text-gray-400">
                                 Already have an account?{' '}
                                 <a
-                                    href="/login"
+                                    href={`${baseURL}login`}
                                     className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 font-medium"
                                 >
                                     Sign in instead

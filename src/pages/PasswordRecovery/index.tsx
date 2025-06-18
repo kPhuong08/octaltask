@@ -21,6 +21,8 @@ type PasswordRecoveryFormValues = z.infer<typeof passwordRecoverySchema>
 const PasswordRecovery = () => {
     const [isSubmitted, setIsSubmitted] = useState(false)
 
+    const baseURL = import.meta.env.BASE_URL;
+
     const {
         register,
         handleSubmit,
@@ -144,13 +146,13 @@ const PasswordRecovery = () => {
                         <CardFooter className="flex justify-center p-6 border-t border-gray-100 dark:border-gray-700">
                             <p className="text-sm text-gray-600 dark:text-gray-400">
                                 {isSubmitted ? (
-                                    <a href="/login" className="font-medium text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300">
+                                    <a href={`${baseURL}login`} className="font-medium text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300">
                                         Back to sign in
                                     </a>
                                 ) : (
                                     <>
                                         Remember your password?{" "}
-                                        <a href="/login" className="font-medium text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300">
+                                        <a href={`${baseURL}login`} className="font-medium text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300">
                                             Sign in
                                         </a>
                                     </>

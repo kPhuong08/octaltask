@@ -155,7 +155,7 @@ export default function ResetPasswordPage() {
                         </CardContent>
 
                         <CardFooter className="flex justify-center p-6 border-t border-gray-100 dark:border-gray-700">
-                            <a href="/login" className="text-sm font-medium text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300">
+                            <a href={`${baseURL}login`} className="text-sm font-medium text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300">
                                 Back to sign in
                             </a>
                         </CardFooter>
