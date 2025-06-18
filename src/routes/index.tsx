@@ -12,19 +12,21 @@ import { Route, Routes } from 'react-router-dom';
 // import { Navigate } from 'react-router-dom';
 
 export default function AppRoutes() {
+    const baseURL = import.meta.env.BASE_URL;
+
     return (
         <Routes>
-            <Route path="/" element={<LandingPage />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<Signup />} />
-            <Route path="/password-recovery" element={<PasswordRecovery />} />
-            <Route path="/reset-password" element={<ResetPassword />} />
-            <Route path="/tasks" element={<TaskDashboard />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/settings" element={<Settings />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/tasks" element={<TaskDashboard />} />
-            <Route path="*" element={<NotFound />} />
+            <Route path={`${baseURL}/`} element={<LandingPage />} />
+            <Route path={`${baseURL}/login`} element={<Login />} />
+            <Route path={`${baseURL}/signup`} element={<Signup />} />
+            <Route path={`${baseURL}/password-recovery`} element={<PasswordRecovery />} />
+            <Route path={`${baseURL}/reset-password`} element={<ResetPassword />} />
+            <Route path={`${baseURL}/tasks`} element={<TaskDashboard />} />
+            <Route path={`${baseURL}/profile`} element={<Profile />} />
+            <Route path={`${baseURL}/settings`} element={<Settings />} />
+            <Route path={`${baseURL}/about`} element={<About />} />
+            <Route path={`${baseURL}/tasks`} element={<TaskDashboard />} />
+            <Route path={`${baseURL}*`} element={<NotFound />} />
         </Routes>
     );
 }
