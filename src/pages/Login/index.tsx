@@ -83,7 +83,7 @@ const Login = () => {
             <div className="items-center justify-center hidden p-12 lg:flex lg:w-1/2 bg-blue-50 dark:bg-gray-800">
                 <div className="max-w-md">
                     <div className="mb-8 text-center lg:text-left">
-                        <h1 className="mb-2 text-4xl font-normal">
+                        <h1 className="mb-2 text-4xl font-normal cursor-pointer" onClick={ () => { navigate(baseURL) } }>
                             <span className="font-medium text-blue-600 dark:text-blue-400">Octal</span>
                             <span className="font-normal text-gray-800 dark:text-gray-200">Task</span>
                         </h1>
