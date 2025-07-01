@@ -155,7 +155,7 @@ export default function LandingPage() {
               </div>
               <div className="animate-on-scroll" style={{ transitionDelay: '300ms' }}>
                 <img
-                  src="/TaskMain.png"
+                  src={`${baseURL}TaskMain.png`}
                   alt="OctalTask Project Screenshot"
                   className="rounded-xl shadow-xl w-full h-auto object-cover"
                   onError={e => {
@@ -178,7 +178,7 @@ export default function LandingPage() {
               >
                 <div className="aspect-square bg-gradient-to-tr from-blue-400 to-purple-500 relative overflow-hidden">
                   <img
-                    src="/TeamMember1.jpg"
+                    src={`${baseURL}TeamMember1.jpg`}
                     alt="Team Member"
                     className="w-full h-full object-cover opacity-90"
                     onError={e => {
@@ -232,7 +232,7 @@ export default function LandingPage() {
               >
                 <div className="aspect-square bg-gradient-to-tr from-green-400 to-blue-500 relative overflow-hidden">
                   <img
-                    src="/TeamMember2.jpg"
+                    src={`${baseURL}TeamMember2.jpg`}
                     alt="Team Member"
                     className="w-full h-full object-cover opacity-90"
                     onError={e => {
@@ -285,7 +285,7 @@ export default function LandingPage() {
               >
                 <div className="aspect-square bg-gradient-to-tr from-purple-400 to-pink-500 relative overflow-hidden">
                   <img
-                    src="/TeamMember3.jpg"
+                    src={`${baseURL}TeamMember3.jpg`}
                     alt="Team Member"
                     className="w-full h-full object-cover opacity-90"
                     onError={e => {
@@ -338,7 +338,7 @@ export default function LandingPage() {
               >
                 <div className="aspect-square bg-gradient-to-tr from-orange-400 to-red-500 relative overflow-hidden">
                   <img
-                    src="/TeamMember4.jpg"
+                    src={`${baseURL}TeamMember4.jpg`}
                     alt="Team Member"
                     className="w-full h-full object-cover opacity-90"
                     onError={e => {
