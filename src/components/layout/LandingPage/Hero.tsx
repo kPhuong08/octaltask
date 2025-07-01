@@ -52,7 +52,7 @@ export default function Hero() {
               <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-purple-600/20 rounded-lg blur-3xl"></div>
               <div className="relative shadow-2xl rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden transform rotate-1 hover:rotate-0 transition-transform duration-300">
                 <img
-                  src="/mockup.png"
+                  src="public/DashBoard.png"
                   alt="OctalTask Dashboard"
                   className="w-full h-auto"
                   onError={e => {

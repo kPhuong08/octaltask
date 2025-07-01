@@ -131,7 +131,7 @@ export default function LandingPage() {
                       </p>
                       <div className="flex flex-wrap gap-2 mt-2">
                         <span className="px-3 py-1 bg-gray-100 dark:bg-gray-700 rounded-full text-sm">
-                          React
+                          Reactjs
                         </span>
                         <span className="px-3 py-1 bg-gray-100 dark:bg-gray-700 rounded-full text-sm">
                           TypeScript
@@ -155,7 +155,7 @@ export default function LandingPage() {
               </div>
               <div className="animate-on-scroll" style={{ transitionDelay: '300ms' }}>
                 <img
-                  src="/project-screenshot.png"
+                  src="public/TaskMain.png"
                   alt="OctalTask Project Screenshot"
                   className="rounded-xl shadow-xl w-full h-auto object-cover"
                   onError={e => {
@@ -178,7 +178,7 @@ export default function LandingPage() {
               >
                 <div className="aspect-square bg-gradient-to-tr from-blue-400 to-purple-500 relative overflow-hidden">
                   <img
-                    src="/team-member1.jpg"
+                    src="public/TeamMember1.jpg"
                     alt="Team Member"
                     className="w-full h-full object-cover opacity-90"
                     onError={e => {
@@ -189,15 +189,15 @@ export default function LandingPage() {
                 </div>
                 <div className="p-6">
                   <h4 className="text-xl font-bold text-gray-900 dark:text-white">
-                    Team Member Name
+                    Vo Tran Phi
                   </h4>
-                  <p className="text-blue-600 dark:text-blue-400 mb-2">Role / Student ID</p>
+                  <p className="text-blue-600 dark:text-blue-400 mb-2">BackEnd Developer / 22521081</p>
                   <p className="text-gray-600 dark:text-gray-300 text-sm mb-4">
-                    Short description or responsibility in the project.
+                    Team leader, responsibility for BackEnd of the website
                   </p>
                   <div className="flex gap-3">
                     <a
-                      href="#"
+                      href="https://github.com/votranphi"
                       className="text-gray-600 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400"
                     >
                       <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -205,7 +205,7 @@ export default function LandingPage() {
                       </svg>
                     </a>
                     <a
-                      href="#"
+                      href="linkedin"
                       className="text-gray-600 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400"
                     >
                       <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -213,7 +213,7 @@ export default function LandingPage() {
                       </svg>
                     </a>
                     <a
-                      href="mailto:student@example.com"
+                      href="22521081@gm.uit.edu.vn"
                       className="text-gray-600 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400"
                     >
                       <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -231,7 +231,7 @@ export default function LandingPage() {
               >
                 <div className="aspect-square bg-gradient-to-tr from-green-400 to-blue-500 relative overflow-hidden">
                   <img
-                    src="/team-member2.jpg"
+                    src="public/TeamMember2.jpg"
                     alt="Team Member"
                     className="w-full h-full object-cover opacity-90"
                     onError={e => {
@@ -242,15 +242,15 @@ export default function LandingPage() {
                 </div>
                 <div className="p-6">
                   <h4 className="text-xl font-bold text-gray-900 dark:text-white">
-                    Team Member Name
+                    Le Ngoc Duy Linh
                   </h4>
-                  <p className="text-blue-600 dark:text-blue-400 mb-2">Role / Student ID</p>
+                  <p className="text-blue-600 dark:text-blue-400 mb-2">Main BackEnd Developer / 22520762</p>
                   <p className="text-gray-600 dark:text-gray-300 text-sm mb-4">
-                    Short description or responsibility in the project.
+                    Main responsive for developing BackEnd of the website
                   </p>
                   <div className="flex gap-3">
                     <a
-                      href="#"
+                      href="https://github.com/YuilRin"
                       className="text-gray-600 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400"
                     >
                       <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -258,7 +258,7 @@ export default function LandingPage() {
                       </svg>
                     </a>
                     <a
-                      href="#"
+                      href="linkedin"
                       className="text-gray-600 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400"
                     >
                       <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -266,7 +266,7 @@ export default function LandingPage() {
                       </svg>
                     </a>
                     <a
-                      href="mailto:student@example.com"
+                      href="22520762@gm.uit.edu.vn"
                       className="text-gray-600 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400"
                     >
                       <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -284,7 +284,7 @@ export default function LandingPage() {
               >
                 <div className="aspect-square bg-gradient-to-tr from-purple-400 to-pink-500 relative overflow-hidden">
                   <img
-                    src="/team-member3.jpg"
+                    src="public/TeamMember3.jpg"
                     alt="Team Member"
                     className="w-full h-full object-cover opacity-90"
                     onError={e => {
@@ -295,15 +295,15 @@ export default function LandingPage() {
                 </div>
                 <div className="p-6">
                   <h4 className="text-xl font-bold text-gray-900 dark:text-white">
-                    Team Member Name
+                    Thai Kieu Phuong
                   </h4>
-                  <p className="text-blue-600 dark:text-blue-400 mb-2">Role / Student ID</p>
+                  <p className="text-blue-600 dark:text-blue-400 mb-2">UX/UI FrontEnd Developer / 22521170</p>
                   <p className="text-gray-600 dark:text-gray-300 text-sm mb-4">
-                    Short description or responsibility in the project.
+                    Design UX/UI, support develop FrontEnd, main reposive for applying API 
                   </p>
                   <div className="flex gap-3">
                     <a
-                      href="#"
+                      href="https://github.com/kPhuong08"
                       className="text-gray-600 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400"
                     >
                       <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -311,7 +311,7 @@ export default function LandingPage() {
                       </svg>
                     </a>
                     <a
-                      href="#"
+                      href="linkedin"
                       className="text-gray-600 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400"
                     >
                       <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -319,7 +319,7 @@ export default function LandingPage() {
                       </svg>
                     </a>
                     <a
-                      href="mailto:student@example.com"
+                      href="22521170@gm.uit.edu.vn"
                       className="text-gray-600 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400"
                     >
                       <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -337,7 +337,7 @@ export default function LandingPage() {
               >
                 <div className="aspect-square bg-gradient-to-tr from-orange-400 to-red-500 relative overflow-hidden">
                   <img
-                    src="/team-member4.jpg"
+                    src="public/TeamMember4.jpg"
                     alt="Team Member"
                     className="w-full h-full object-cover opacity-90"
                     onError={e => {
@@ -348,15 +348,15 @@ export default function LandingPage() {
                 </div>
                 <div className="p-6">
                   <h4 className="text-xl font-bold text-gray-900 dark:text-white">
-                    Team Member Name
+                    Tran Dong Truc Lam
                   </h4>
-                  <p className="text-blue-600 dark:text-blue-400 mb-2">Role / Student ID</p>
+                  <p className="text-blue-600 dark:text-blue-400 mb-2">FrontEnd Developer / 22520746</p>
                   <p className="text-gray-600 dark:text-gray-300 text-sm mb-4">
-                    Short description or responsibility in the project.
+                    Main responsive for developing FrontEnd
                   </p>
                   <div className="flex gap-3">
                     <a
-                      href="#"
+                      href="https://github.com/limelight-hub"
                       className="text-gray-600 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400"
                     >
                       <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -364,7 +364,7 @@ export default function LandingPage() {
                       </svg>
                     </a>
                     <a
-                      href="#"
+                      href="linkedin"
                       className="text-gray-600 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400"
                     >
                       <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -372,7 +372,7 @@ export default function LandingPage() {
                       </svg>
                     </a>
                     <a
-                      href="mailto:student@example.com"
+                      href="22520746@gm.uit.edu.vn"
                       className="text-gray-600 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400"
                     >
                       <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
