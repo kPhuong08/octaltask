@@ -155,7 +155,7 @@ export default function LandingPage() {
               </div>
               <div className="animate-on-scroll" style={{ transitionDelay: '300ms' }}>
                 <img
-                  src="public/TaskMain.png"
+                  src="/TaskMain.png"
                   alt="OctalTask Project Screenshot"
                   className="rounded-xl shadow-xl w-full h-auto object-cover"
                   onError={e => {
@@ -178,7 +178,7 @@ export default function LandingPage() {
               >
                 <div className="aspect-square bg-gradient-to-tr from-blue-400 to-purple-500 relative overflow-hidden">
                   <img
-                    src="public/TeamMember1.jpg"
+                    src="/TeamMember1.jpg"
                     alt="Team Member"
                     className="w-full h-full object-cover opacity-90"
                     onError={e => {
@@ -191,9 +191,10 @@ export default function LandingPage() {
                   <h4 className="text-xl font-bold text-gray-900 dark:text-white">
                     Vo Tran Phi
                   </h4>
-                  <p className="text-blue-600 dark:text-blue-400 mb-2">BackEnd Developer / 22521081</p>
+                  <p className="text-blue-600 dark:text-blue-400 mb-2">BackEnd Developer - Team Leader / 22521081</p>
                   <p className="text-gray-600 dark:text-gray-300 text-sm mb-4">
-                    Team leader, responsibility for BackEnd of the website
+                    Lead developer responsible for backend architecture and database design.
+                    Project coordinator and quality assurance lead for the team.
                   </p>
                   <div className="flex gap-3">
                     <a
@@ -231,7 +232,7 @@ export default function LandingPage() {
               >
                 <div className="aspect-square bg-gradient-to-tr from-green-400 to-blue-500 relative overflow-hidden">
                   <img
-                    src="public/TeamMember2.jpg"
+                    src="/TeamMember2.jpg"
                     alt="Team Member"
                     className="w-full h-full object-cover opacity-90"
                     onError={e => {
@@ -284,7 +285,7 @@ export default function LandingPage() {
               >
                 <div className="aspect-square bg-gradient-to-tr from-purple-400 to-pink-500 relative overflow-hidden">
                   <img
-                    src="public/TeamMember3.jpg"
+                    src="/TeamMember3.jpg"
                     alt="Team Member"
                     className="w-full h-full object-cover opacity-90"
                     onError={e => {
@@ -337,7 +338,7 @@ export default function LandingPage() {
               >
                 <div className="aspect-square bg-gradient-to-tr from-orange-400 to-red-500 relative overflow-hidden">
                   <img
-                    src="public/TeamMember4.jpg"
+                    src="/TeamMember4.jpg"
                     alt="Team Member"
                     className="w-full h-full object-cover opacity-90"
                     onError={e => {
