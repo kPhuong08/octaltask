@@ -19,6 +19,7 @@ export function UserMenu({ user, onLogout }: UserMenuProps) {
     const { darkMode, toggleDarkMode } = useTheme();
     const navigate = useNavigate();
     
+    const baseURL = import.meta.env.BASE_URL;
 
     useEffect(() => {
         function handleClickOutside(event: MouseEvent) {
@@ -93,21 +94,21 @@ export function UserMenu({ user, onLogout }: UserMenuProps) {
 
                 <div className="py-1">
                     <button
-                        onClick={() => handleNavigation('/profile')}
+                        onClick={() => handleNavigation(`${baseURL}profile`)}
                         className="flex items-center w-full px-6 py-3 text-sm text-left text-gray-700 cursor-pointer dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700/50"
                     >
                         <User className="w-5 h-5 mr-3 text-gray-500 dark:text-gray-400" />
                         <span>Your Profile</span>
                     </button>
                     <button
-                        onClick={() => handleNavigation('/settings')}
+                        onClick={() => handleNavigation(`${baseURL}settings`)}
                         className="flex items-center w-full px-6 py-3 text-sm text-left text-gray-700 cursor-pointer dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700/50"
                     >
                         <Settings className="w-5 h-5 mr-3 text-gray-500 dark:text-gray-400" />
                         <span>Settings</span>
                     </button>
                     <button
-                        onClick={() => handleNavigation('/about')}
+                        onClick={() => handleNavigation(`${baseURL}about`)}
                         className="flex items-center w-full px-6 py-3 text-sm text-left text-gray-700 cursor-pointer dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700/50"
                     >
                         <Info className="w-5 h-5 mr-3 text-gray-500 dark:text-gray-400" />

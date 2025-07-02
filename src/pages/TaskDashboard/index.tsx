@@ -57,6 +57,8 @@ export default function TaskDashboard() {
     const [showCreateListModal, setShowCreateListModal] = useState(false);
     const [selectedListForShare, setSelectedListForShare] = useState<TaskListType | null>(null);
 
+    const baseURL = import.meta.env.BASE_URL;
+
     // Toggle sidebar function for both mobile and desktop
     const toggleSidebar = () => {
         // On mobile screens
@@ -330,7 +332,7 @@ export default function TaskDashboard() {
 
     const handleLogout = () => {
         logout();
-        navigate('/login');
+        navigate(`${baseURL}login`);
     };
 
     // Get the taskList ID in the correct format for the component

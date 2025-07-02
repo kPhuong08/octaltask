@@ -1,5 +1,5 @@
 import { useTask } from '@/contexts/TaskContext';
-import { useTheme } from '@/contexts/ThemeContext';
+//import { useTheme } from '@/contexts/ThemeContext';
 import { TaskList } from '@/types/task';
 import {
     BookOpen,
@@ -22,7 +22,7 @@ import { ShareListModal } from '../feature/list/ShareListModal';
 import { Button } from '../ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '../ui/dropdown-menu';
 
-type ListColor = 'blue' | 'green' | 'red' | 'purple' | 'amber';
+type ListColor = 'blue' | 'green' | 'red' | 'purple' | 'amber' | 'black';
 type ListIcon = 'personal' | 'work' | 'home' | 'study' | 'default';
 
 interface TaskListSidebarProps {
@@ -40,14 +40,14 @@ export function TaskListSidebar({
     activeListId,
     onSelectList,
     onCreateList,
-    onEditList,
+    //onEditList,
     onDeleteList,
     onUpdateList
 }: TaskListSidebarProps) {
     const [showCreateListModal, setShowCreateListModal] = useState(false);
     const [selectedList, setSelectedList] = useState<TaskList | null>(null);
     const [listToEdit, setListToEdit] = useState<TaskList | null>(null);
-    const { darkMode } = useTheme();
+    // const { darkMode } = useTheme();
     const { shareList, updateListPermission, removeListUser } = useTask();
 
     const handleCreateList = (name: string, color: ListColor, icon: ListIcon) => {

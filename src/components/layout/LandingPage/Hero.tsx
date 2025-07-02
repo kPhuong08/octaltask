@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 export default function Hero() {
     const navigate = useNavigate();
 
+    const baseURL = import.meta.env.BASE_URL;
+
     return (
       <section
         id="hero"
@@ -38,7 +40,7 @@ export default function Hero() {
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
                 <Button
-                  onClick={() => navigate('/signup')}
+                  onClick={() => navigate(`${baseURL}signup`)}
                   className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 text-lg shadow-md hover:shadow-lg transition-all animate-bounce hover:animate-none"
                   size="lg"
                 >
@@ -50,7 +52,7 @@ export default function Hero() {
               <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-purple-600/20 rounded-lg blur-3xl"></div>
               <div className="relative shadow-2xl rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden transform rotate-1 hover:rotate-0 transition-transform duration-300">
                 <img
-                  src="/mockup.png"
+                  src={`${baseURL}/DashBoard.png`}
                   alt="OctalTask Dashboard"
                   className="w-full h-auto"
                   onError={e => {

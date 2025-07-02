@@ -5,6 +5,7 @@ import {createList, getLists,  updateListById, deleteListById} from '@/lib/api/t
 import { createTask, getTasks, updateTaskById, deleteTaskById } from '@/lib/api/tasks';
 import { getSubtasksByTaskId, createSubtaskByTaskId, deleteSubtaskById  } from '@/lib/api/tasks';
 import { getCommentsByTaskId, createComment, deleteCommentById } from '@/lib/api/tasks';
+
 interface TaskContextType {
     tasks: Task[];
     lists: TaskList[];
@@ -17,6 +18,7 @@ interface TaskContextType {
     deleteTask: (taskId: string) => Promise<void>;
     getTasksByList: (listId: string) => Task[];
     starTask: (taskId: string) => Promise<Task>;
+    completeTask: (taskId: string) => Promise<Task>;
 
     // List operations
     addList: (list: Partial<TaskList>) => Promise<TaskList>;
@@ -282,136 +284,189 @@ export function TaskProvider({ children }: { children: ReactNode }) {
         };
 
 
-const updateTask = async (taskId: string, updates: Partial<Task>): Promise<Task> => {
-  const formatDueDate = (rawDate?: string): string | undefined => {
-    if (!rawDate || typeof rawDate !== 'string' || rawDate.trim() === '') return undefined;
-    const isoCandidate = new Date(`${rawDate}T00:00:00.000Z`);
-    return isNaN(isoCandidate.getTime()) ? undefined : isoCandidate.toISOString();
-  };
-
-  const processListId = (listId?: string | number): number | undefined => {
-    if (listId === null || listId === undefined || listId === '') return undefined;
-    if (typeof listId === 'number') return isNaN(listId) ? undefined : listId;
-    if (typeof listId === 'string') {
-      const parsed = parseInt(listId.trim(), 10);
-      return isNaN(parsed) ? undefined : parsed;
-    }
-    return undefined;
-  };
-
-  const updatePayload = {
-    title: updates.title ?? '',
-    description: updates.notes ?? '',
-    isCompleted: updates.completed ?? false,
-    dueDate: formatDueDate(updates.dueDate),
-    listId: processListId(updates.listId),
-  };
-
-  try {
-    // Cập nhật task chính
-    const updatedData = await updateTaskById(taskId, updatePayload);
-
-    // Lấy task hiện tại từ state
-    const currentTask = tasks.find(t => t.id === taskId);
-    const currentSubtaskIds = new Set(currentTask?.subtasks?.map(st => st.id));
-
-    const newSubtasks = updates.subtasks ?? [];
-
-    // ID subtasks cần giữ lại
-    const incomingIds = new Set(newSubtasks.filter(st => st.id).map(st => st.id));
-    const subtasksToDelete = currentTask?.subtasks?.filter(st => !incomingIds.has(st.id)) || [];
-    const subtasksToCreate = newSubtasks.filter(st => !st.id);
-
-    // 1. Xoá subtasks không còn nữa
-    await Promise.all(subtasksToDelete.map(async (st) => {
-      try {
-        await deleteSubtaskById(st.id);
-      } catch (err) {
-        console.error(`Failed to delete subtask ${st.id}`, err);
-      }
-    }));
-
-    // 2. Tạo subtasks mới
-    const createdSubtasks = await Promise.all(
-      subtasksToCreate.map(async (sub) => {
-        const created = await createSubtaskByTaskId(taskId, sub.title, sub.completed);
-        return {
-          id: created.id.toString(),
-          title: created.content,
-          completed: created.isCompleted,
-        };
-      })
-    );
-
-    // 3. Ghép subtasks giữ lại (có id) và subtasks vừa tạo
-    const finalSubtasks = [
-      ...newSubtasks.filter(st => st.id), // giữ lại subtasks cũ còn tồn tại
-      ...createdSubtasks // subtasks vừa tạo
-    ];
-
-    // 4. Cập nhật lại task trong state
-    const updatedTask: Task = {
-      id: updatedData.id.toString(),
-      title: updatedData.title,
-      completed: updatedData.isCompleted,
-      listId: updatedData.listId,
-      dueDate: updatedData.dueDate
-        ? new Date(updatedData.dueDate).toISOString().split('T')[0]
-        : undefined,
-      notes: updatedData.description || '',
-      isStarred: updatedData.isStarred ?? false,
-      assignedTo: updatedData.userId || undefined,
-      subtasks: finalSubtasks.map(st => ({
-            id: st.id,
-            title: st.title,
-            completed: st.completed, // đổi lại đúng định dạng của SubTask
-        })),
-
-      comments: [],
-      sharedWith: [],
-      attachments: [],
-    };
-
-    setTasks(prev =>
-      prev.map(task => (task.id === taskId ? updatedTask : task))
-    );
-
-    return updatedTask;
-  } catch (error) {
-    console.error('Error updating task with subtasks:', error);
-    throw error;
-  }
-};
-
-   const deleteTask = async (taskId: string): Promise<void> => {
-        await deleteTaskById(taskId);
-        setTasks(prev => prev.filter(task => task.id !== taskId));
+    const updateTask = async (taskId: string, updates: Partial<Task>): Promise<Task> => {
+        const formatDueDate = (rawDate?: string): string | undefined => {
+            if (!rawDate || typeof rawDate !== 'string' || rawDate.trim() === '') return undefined;
+            const isoCandidate = new Date(`${rawDate}T00:00:00.000Z`);
+            return isNaN(isoCandidate.getTime()) ? undefined : isoCandidate.toISOString();
         };
 
+        const processListId = (listId?: string | number): number | undefined => {
+            if (listId === null || listId === undefined || listId === '') return undefined;
+            if (typeof listId === 'number') return isNaN(listId) ? undefined : listId;
+            if (typeof listId === 'string') {
+            const parsed = parseInt(listId.trim(), 10);
+            return isNaN(parsed) ? undefined : parsed;
+            }
+            return undefined;
+        };
 
-    const getTasksByList = (listId: string): Task[] => {
-        return tasks.filter(task => task.listId === listId);
-    };
+        const updatePayload = {
+            title: updates.title ?? '',
+            description: updates.notes ?? '',
+            isCompleted: updates.completed ?? false,
+            dueDate: formatDueDate(updates.dueDate),
+            listId: processListId(updates.listId),
+        };
 
-    // Implement the starTask function
-    const starTask = async (taskId: string): Promise<Task> => {
+        try {
+        // Cập nhật task chính
+        const updatedData = await updateTaskById(taskId, updatePayload);
+
+        // Lấy task hiện tại từ state
+        const currentTask = tasks.find(t => t.id === taskId);
+        //const currentSubtaskIds = new Set(currentTask?.subtasks?.map(st => st.id));
+
+        const newSubtasks = updates.subtasks ?? [];
+
+        // ID subtasks cần giữ lại
+        const incomingIds = new Set(newSubtasks.filter(st => st.id).map(st => st.id));
+        const subtasksToDelete = currentTask?.subtasks?.filter(st => !incomingIds.has(st.id)) || [];
+        const subtasksToCreate = newSubtasks.filter(st => !st.id);
+
+        // 1. Xoá subtasks không còn nữa
+        await Promise.all(subtasksToDelete.map(async (st) => {
+            try {
+                await deleteSubtaskById(st.id);
+            } catch (err) {
+                console.error(`Failed to delete subtask ${st.id}`, err);
+            }
+            }));
+
+            // 2. Tạo subtasks mới
+            const createdSubtasks = await Promise.all(
+            subtasksToCreate.map(async (sub) => {
+                const created = await createSubtaskByTaskId(taskId, sub.title, sub.completed);
+                return {
+                id: created.id.toString(),
+                title: created.content,
+                completed: created.isCompleted,
+                };
+            })
+            );
+
+        // 3. Ghép subtasks giữ lại (có id) và subtasks vừa tạo
+        const finalSubtasks = [
+            ...newSubtasks.filter(st => st.id), // giữ lại subtasks cũ còn tồn tại
+            ...createdSubtasks // subtasks vừa tạo
+            ];
+
+        // 4. Cập nhật lại task trong state
+        const updatedTask: Task = {
+            id: updatedData.id.toString(),
+            title: updatedData.title,
+            completed: updatedData.isCompleted,
+            listId: updatedData.listId,
+            dueDate: updatedData.dueDate
+                ? new Date(updatedData.dueDate).toISOString().split('T')[0]
+                : undefined,
+            notes: updatedData.description || '',
+            isStarred: updatedData.isStarred ?? false,
+            assignedTo: updatedData.userId || undefined,
+            subtasks: finalSubtasks.map(st => ({
+                    id: st.id,
+                    title: st.title,
+                    completed: st.completed, // đổi lại đúng định dạng của SubTask
+                })),
+
+            comments: [],
+            sharedWith: [],
+            attachments: [],
+            };
+
+            setTasks(prev =>
+            prev.map(task => (task.id === taskId ? updatedTask : task))
+            );
+
+            return updatedTask;
+        } catch (error) {
+            console.error('Error updating task with subtasks:', error);
+            throw error;
+        }
+        };
+
+    const deleteTask = async (taskId: string): Promise<void> => {
+            await deleteTaskById(taskId);
+            setTasks(prev => prev.filter(task => task.id !== taskId));
+            };
+
+
+        const getTasksByList = (listId: string): Task[] => {
+            return tasks.filter(task => task.listId === listId);
+        };
+
+        // Implement the starTask function
+        const starTask = async (taskId: string): Promise<Task> => {
         const task = tasks.find(task => task.id === taskId);
         if (!task) {
             throw new Error('Task not found');
         }
 
-        // Toggle the isStarred status
-        const updatedTask = {
-            ...task,
-            isStarred: !task.isStarred,
-            updatedAt: new Date().toISOString()
-        };
+        try {
+            const newStarredStatus = !task.isStarred;
+            
+            // Gọi API để cập nhật
+            // const updatedData = await toggleStarTask(taskId, newStarredStatus);
+            
+            // Gửi đủ các trường backend yêu cầu
+            const updatedData = await updateTaskById(taskId, {
+                title: task.title, // BẮT BUỘC backend yêu cầu
+                description: task.notes || '', // nếu bạn lưu description là notes
+                isStarred: newStarredStatus,
+                dueDate: task.dueDate, // nếu backend yêu cầu
+                listId: task.listId,
+            });
+            // Cập nhật state local
+            const updatedTask = {
+                ...task,
+                isStarred: updatedData.isStarred ?? newStarredStatus,
+                updatedAt: new Date().toISOString()
+            };
 
-        setTasks(prevTasks =>
-            prevTasks.map(t => t.id === taskId ? updatedTask : t)
-        );
+            setTasks(prevTasks =>
+                prevTasks.map(t => t.id === taskId ? updatedTask : t)
+            );
 
-        return updatedTask;
+            return updatedTask;
+        } catch (error) {
+            console.error('Error toggling star status:', error);
+            throw error;
+        }
+    };
+
+    const completeTask = async (taskId: string): Promise<Task> => {
+        const task = tasks.find(task => task.id === taskId);
+        if (!task) throw new Error('Task not found');
+
+        try {
+            const newCompletedStatus = !task.completed;
+
+            // Gửi đủ các trường backend yêu cầu
+            const updatedData = await updateTaskById(taskId, {
+                title: task.title, // BẮT BUỘC backend yêu cầu
+                description: task.notes || '', // nếu bạn lưu description là notes
+                isCompleted: newCompletedStatus,
+                dueDate: task.dueDate, // nếu backend yêu cầu
+                listId: task.listId,
+            });
+
+            const updatedTask = {
+                ...task,
+                completed: updatedData.isCompleted ?? newCompletedStatus,
+                updatedAt: new Date().toISOString()
+            };
+
+            setTasks(prev =>
+                prev.map(t => (t.id === taskId ? updatedTask : t))
+            );
+
+            return updatedTask;
+        } catch (error) {
+            console.error(
+            'Error toggling complete status:',
+            );
+            throw error;
+        }
     };
 
     // List operations
@@ -665,6 +720,7 @@ const updateTask = async (taskId: string, updates: Partial<Task>): Promise<Task>
             content: res.content,
             createdAt: res.createdAt,
             userName: res.user?.email || 'Unknown',
+            userPhotoUrl: `https://ui-avatars.com/api/?name=${encodeURIComponent(res.user?.email || 'Unknown')}&background=random`
             };
 
             setTasks(prev =>
@@ -799,6 +855,7 @@ const updateTask = async (taskId: string, updates: Partial<Task>): Promise<Task>
                 deleteTask,
                 getTasksByList,
                 starTask,
+                completeTask,
 
                 // List operations
                 addList,

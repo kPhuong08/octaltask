@@ -1,6 +1,6 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import { CardTitle } from '@/components/ui/card';
+//import { CardTitle } from '@/components/ui/card';
 
 const API_BASE = import.meta.env.VITE_API_BASE; 
 
@@ -208,17 +208,21 @@ export const updateTaskById = async (
     title?: string;
     description?: string;
     isCompleted?: boolean;
+    isStarred?: boolean;
     dueDate?: string;
-    listId?: string | number;
+    listId?: number | string;
   }
 ) => {
   try {
     const token = Cookies.get('token');
     if (!token) throw new Error('No token found');
-
+    const formatted = {
+        ...updates,
+        listId: updates.listId ? parseInt(updates.listId.toString(), 10) : undefined,
+      };
     const res = await axios.patch(
       `${API_BASE}/tasks/${id}`,
-      updates, 
+      formatted, 
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -316,4 +320,48 @@ export const deleteCommentById = async (commentId: string) => {
   });
 
   return res.data;
+};
+
+// Star/Unstar task
+export const toggleStarTask = async (taskId: string | number, isStarred: boolean) => {
+  try {
+    const token = Cookies.get('token');
+    if (!token) throw new Error('No token found');
+
+    const res = await axios.patch(
+      `${API_BASE}/tasks/${taskId}`,
+      { isStarred },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    return res.data;
+  } catch (err: any) {
+    throw err.response?.data || err;
+  }
+};
+
+// Complete/Uncomplete task
+export const toggleCompleteTask = async (taskId: string | number, isCompleted: boolean) => {
+  try {
+    const token = Cookies.get('token');
+    if (!token) throw new Error('No token found');
+
+    const res = await axios.patch(
+      `${API_BASE}/tasks/${taskId}`,
+      { isCompleted },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    return res.data;
+  } catch (err: any) {
+    throw err.response?.data || err;
+  }
 };

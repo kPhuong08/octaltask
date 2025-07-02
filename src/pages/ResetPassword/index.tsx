@@ -1,12 +1,13 @@
 import type React from "react"
 import { useState } from "react"
 import { useSearchParams, useNavigate } from "react-router-dom"
-import axios from "axios"
+//import axios from "axios"
 import { Card, CardContent, CardFooter } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { CheckCircle, AlertCircle } from "lucide-react"
+import { resetPassword} from "@/lib/api/auth"
 
 export default function ResetPasswordPage() {
     const [newPassword, setNewPassword] = useState("")
@@ -15,6 +16,8 @@ export default function ResetPasswordPage() {
     const [success, setSuccess] = useState("")
     const [searchParams] = useSearchParams()
     const navigate = useNavigate()
+
+    const baseURL = import.meta.env.BASE_URL;
 
     const token = searchParams.get("token")
 
@@ -34,12 +37,14 @@ export default function ResetPasswordPage() {
         }
 
         try {
-            const response = await axios.post("http://localhost:3000/auth/reset-password", {
-                token: token,
-                newPassword: newPassword,
-            })
+            // const response = await axios.post("http://localhost:3000/auth/reset-password", {
+            //     token: token,
+            //     newPassword: newPassword,
+            // })
+
+            await resetPassword (token, newPassword);
             setSuccess("Password changed successfully. Redirecting...")
-            setTimeout(() => navigate("/login"), 2500)
+            setTimeout(() => navigate(`${baseURL}login`), 2500)
         } catch (err: any) {
             setError(err?.response?.data?.message || "An error occurred.")
         }
@@ -52,7 +57,7 @@ export default function ResetPasswordPage() {
             <div className="items-center justify-center hidden p-12 lg:flex lg:w-1/2 bg-blue-50 dark:bg-gray-800">
                 <div className="max-w-md">
                     <div className="mb-8 text-center lg:text-left">
-                        <h1 className="mb-2 text-4xl font-normal">
+                        <h1 className="mb-2 text-4xl font-normal cursor-pointer" onClick={ () => { navigate(baseURL) } }>
                             <span className="font-medium text-blue-600 dark:text-blue-400">Octal</span>
                             <span className="font-normal text-gray-800 dark:text-gray-200">Task</span>
                         </h1>
@@ -150,7 +155,7 @@ export default function ResetPasswordPage() {
                         </CardContent>
 
                         <CardFooter className="flex justify-center p-6 border-t border-gray-100 dark:border-gray-700">
-                            <a href="/login" className="text-sm font-medium text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300">
+                            <a href={`${baseURL}login`} className="text-sm font-medium text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300">
                                 Back to sign in
                             </a>
                         </CardFooter>

@@ -39,13 +39,15 @@ const Signup = () => {
         },
     });
 
+    const baseURL = import.meta.env.BASE_URL;
+
     const onSubmit = async (data: SignupFormValues) => {
         try {
             const res = await signup(data.email, data.password, data.name);
             console.log('Signup success:', res);
-            alert('Registration successful!');
+            alert('Registration successful!');         
             console.log('Form submitted:', data);
-            navigate('/login');
+            navigate(`${baseURL}login`);
         } catch (error) {
             console.error('Signup error:', error);
             alert('Registration failed. Please try again.');
@@ -58,7 +60,7 @@ const Signup = () => {
             <div className="hidden lg:flex lg:w-1/2 bg-blue-50 dark:bg-gray-800 items-center justify-center p-12">
                 <div className="max-w-md">
                     <div className="mb-8 text-center lg:text-left">
-                        <h1 className="text-4xl font-normal mb-2">
+                        <h1 className="text-4xl font-normal mb-2 cursor-pointer" onClick={ () => { navigate(baseURL) } }>
                             <span className="font-medium text-blue-600 dark:text-blue-400">Octal</span>
                             <span className="font-normal text-gray-800 dark:text-gray-200">Task</span>
                         </h1>
@@ -236,7 +238,7 @@ const Signup = () => {
                             <p className="text-sm text-gray-600 dark:text-gray-400">
                                 Already have an account?{' '}
                                 <a
-                                    href="/login"
+                                    href={`${baseURL}login`}
                                     className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 font-medium"
                                 >
                                     Sign in instead

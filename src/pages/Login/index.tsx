@@ -11,12 +11,14 @@ import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { z } from 'zod';
 import Cookies from 'js-cookie';
+import { useEffect } from 'react';
+import { authInformation } from '@/lib/api/auth';
 
 // Form validation schema
 const loginSchema = z.object({
     email: z.string().email({ message: 'Please enter a valid email address' }),
     password: z.string().min(1, { message: 'Password is required' }),
-    remember: z.boolean().default(false),
+    remember: z.boolean(),
 });
 
 type LoginFormValues = z.infer<typeof loginSchema>;
@@ -24,6 +26,8 @@ type LoginFormValues = z.infer<typeof loginSchema>;
 const Login = () => {
     const [loginError, setLoginError] = useState('');
     const navigate = useNavigate();
+
+    const baseURL = import.meta.env.BASE_URL;
 
     const {
         register,
@@ -47,7 +51,7 @@ const Login = () => {
                 Cookies.set('token', res.accessToken, {
                 expires: 1, // số ngày hết hạn
             });
-                navigate('/tasks');
+                navigate(`${baseURL}tasks`);
             } else {
                 setLoginError('An unexpected error occurred');
             }
@@ -57,13 +61,29 @@ const Login = () => {
         }
     };
 
+    useEffect(() => {
+        const fetchUser = async () => {
+          try {
+            const data = await authInformation();
+            Cookies.set('id', data.id,{
+                expires: 1, // số ngày hết hạn
+            });
+          } catch (err) {
+            console.error('Error fetching user info:', err);
+            // Redirect to login if needed
+          }
+        };
+    
+        fetchUser();
+      }, []);
+
     return (
         <div className="flex min-h-screen bg-gray-50 dark:bg-gray-900">
             {/* Left side illustration */}
             <div className="items-center justify-center hidden p-12 lg:flex lg:w-1/2 bg-blue-50 dark:bg-gray-800">
                 <div className="max-w-md">
                     <div className="mb-8 text-center lg:text-left">
-                        <h1 className="mb-2 text-4xl font-normal">
+                        <h1 className="mb-2 text-4xl font-normal cursor-pointer" onClick={ () => { navigate(baseURL) } }>
                             <span className="font-medium text-blue-600 dark:text-blue-400">Octal</span>
                             <span className="font-normal text-gray-800 dark:text-gray-200">Task</span>
                         </h1>
@@ -215,7 +235,7 @@ const Login = () => {
                                         </Label>
                                     </div>
                                     <a
-                                        href="/password-recovery"
+                                        href={`${baseURL}password-recovery`}
                                         className="text-sm font-medium text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300"
                                     >
                                         Forgot password?
@@ -238,7 +258,7 @@ const Login = () => {
                             <p className="text-sm text-gray-600 dark:text-gray-400">
                                 Don't have an account?{' '}
                                 <a
-                                    href="/signup"
+                                    href={`${baseURL}signup`}
                                     className="font-medium text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300"
                                 >
                                     Create account

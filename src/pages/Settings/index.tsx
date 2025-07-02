@@ -18,6 +18,8 @@ export default function Settings() {
     },
   });
 
+  const baseURL = import.meta.env.BASE_URL;
+
   const toggleSetting = (key: keyof typeof settings) => {
     if (typeof settings[key] === 'boolean') {
       setSettings({ ...settings, [key]: !settings[key] });
@@ -41,7 +43,7 @@ export default function Settings() {
         <div className="flex items-center max-w-5xl px-6 mx-auto">
           {/* better logic here */}
           <Link
-            to="/tasks"
+            to={`${baseURL}tasks`}
             className="p-1 mr-4 text-gray-500 transition-colors rounded-full hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
           >
             <ArrowLeft className="w-5 h-5" />
